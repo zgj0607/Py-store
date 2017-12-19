@@ -137,7 +137,7 @@ class Ui_MainWindow_reg(QtWidgets.QDialog):
 
     def translate(self):
         clipboard = QApplication.clipboard()
-        copy_text = self.lineEdit.text().encode()
+        copy_text = self.lineEdit.text()
         clipboard.setText(copy_text)
         QMessageBox.information(self.pushButton_2, "提示", '复制成功')
 
