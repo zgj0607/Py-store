@@ -17,7 +17,7 @@ from View.users.system_user import SystemUser
 class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
     _signal = QtCore.pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, level):
         super(MainView, self).__init__()
         self.setupUi(self)
 

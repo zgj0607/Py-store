@@ -131,8 +131,8 @@ def runView():
                     if Common.config.connect:
                         schedule.start()
 
-                except Exception as e:
-
+                except Exception as main_exception:
+                    print(main_exception)
                     Common.config.connect = False
 
             try:
