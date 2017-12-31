@@ -4,7 +4,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 import threading
 from Controller.Interface import login_handler
-from View.view import Ui_MainWindow
+# from View.view import Ui_MainWindow
+from View.main.main_view import MainView as Ui_MainWindow
 from Common.StaticFunc import md5
 from Common.Common import ClientClose
 from View.login.ui_login import Ui_MainWindow as UiLogin
