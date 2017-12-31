@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 __author__ = 'sunny'
-__mtime__ = '2017/3/1'
+__mtime__ = '2017/2/14'
 # code is far away from bugs with the god animal protecting
     I love animals. They taste delicious.
                    ┏┓      ┏┓
@@ -17,14 +17,21 @@ __mtime__ = '2017/3/1'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from socket import *
-from Common.config import ADDR, code
+import sqlite3
 
-linkKey = None
-# myClient = socket(AF_INET,SOCK_STREAM)
-# myClient.connect(ADDR)
-try:
-    myClient = socket(AF_INET, SOCK_STREAM)
-    myClient.connect(ADDR)
-except:
-    myClient = None
+
+def get_password(username: str) -> str:
+    try:
+        connection = sqlite3.connect('MYDATA.db')
+        sql_string = "SELECT pwd FROM Admin WHERE userName=\'{}\'".format(username)
+        cursor = connection.execute(sql_string)
+        data = cursor.fetchone()
+        cursor.close()
+        connection.close()
+
+        if data:
+            return data[0]
+        return ''
+    except Exception as e:
+        print(e)
+        return ''

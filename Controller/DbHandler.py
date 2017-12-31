@@ -33,7 +33,6 @@ class DB_Handler():
         if startTime == endTime or YeJi == True:
             today = True
         startTime = Common.MakeTime(startTime)
-        # endTime = Common.MakeTime(endTime,today)
         endTime = Common.MakeTime(endTime, True)
         if Table:
             sqlStr = 'SELECT orderNo,createdTime,pcSign,carId,carUser,carPhone,carModel,workerName,project,attribute,orderCheckId' \
@@ -359,43 +358,3 @@ class DB_Handler():
         cursor.close()
         self.conn.close()
         return datas
-
-        # d = DB_Handler()
-        # d.GetOrderNo(datetime.now())
-        # d.GetUserByKey()
-
-        # from datetime import datetime
-        # saveData = {
-        #     'createdTime':datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        #     'userId':"1",
-        #     'workerName':'操作员1',
-        #     'carId':"粤A-45646",
-        #     'carUser':"sam",
-        #     'totalPrice':155,
-        #     'carPhone':"1364646",
-        #     'carModel':"carModel",
-        #     'brand':'brand',
-        #     'model':'model',
-        #     'huawen':"螺旋",
-        #     'number':1,
-        #     'unitPrice':5000,
-        #     'xiaoji':100,
-        #     'gongshi':500,
-        #     'ghlc':"500公里",
-        #     'remark':"备注",
-        #     'project':"测试一级3-测试二级1",
-        #     'code':"1111111",
-        #     "name":"测试二级菜单3",
-        #     'father':1,
-        #     "orderNo":"11111111"
-        # }
-        # d.InsertXiaoFei(saveData)
-        # d.InsertOneMune(saveData)
-        # d.InsertTwoMune(saveData)
-        # value = "'测试链接3','195.3.3.3','0','{}'".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        # print (value)
-        # d.InsertData("Device","name,ip,state,createdTime",value)
-
-        # s = {'里程':'1234','单位':'次','数量':'1','单价':'200','小计':'200.00','备注':'下次做四轮定位','总价':'200.00'}
-        # import json
-        # print(json.dumps(s))

@@ -17,8 +17,8 @@ __mtime__ = '6/21/2016'
             ┗┻┛  ┗┻┛
 """
 import sys
-from View.reg import Ui_MainWindow_reg as Reg_Ui_MainWindow
-from View.shezhi import SheZhi_Ui_MainWindow
+from View.login.register import Register as Reg_Ui_MainWindow
+from View.login.login import Login
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QTranslator
 from PyQt5 import QtWidgets
@@ -28,14 +28,14 @@ import socket
 import json
 from Common.config import BUFSIZ
 from Common import config
-from Common.MySocket import myClient
+from server.MySocket import myClient
 from Common import Common
 import threading
 import CreateSqlite
 import sqlite3
 from datetime import datetime, timedelta
 import requests
-from View.callback import CallBack_Ui_MainWindow
+from View.main.callback import CallBack_Ui_MainWindow
 import apscheduler
 from apscheduler.triggers.cron import CronTrigger
 import os
@@ -136,13 +136,15 @@ def runView():
                     Common.config.connect = False
 
             try:
-                ui = SheZhi_Ui_MainWindow()
+                # ui = SheZhi_Ui_MainWindow()
+                ui = Login()
 
             except Exception as e:
+                print(e)
                 pass
         else:
             ui = Reg_Ui_MainWindow()
-
+        # Common.skin_change('Common/qss/white.qss')
         CallBack(ui)
         ui.show()
         sys.exit(app.exec_())
@@ -203,5 +205,6 @@ if __name__ == '__main__':
             runView()
             # viewThread = threading.Thread(target=runView)
             # viewThread.start()
-        except:
+        except Exception as e:
+            print(e)
             pass

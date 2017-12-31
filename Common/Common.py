@@ -17,13 +17,20 @@ __mtime__ = '2017/2/10'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
+import codecs
+
+from PyQt5 import QtGui
+
 import requests
 import json
 import tornado.ioloop
+from PyQt5.QtCore import QFile, QTextCodec
+from PyQt5.QtWidgets import qApp, QApplication
+
 from Common import config
-from datetime import datetime, timedelta
+from datetime import timedelta
 from socket import *
-from Common.MySocket import ADDR, myClient, code, linkKey
+from server.MySocket import ADDR, myClient, code, linkKey
 from Common.StaticFunc import md5
 import configparser
 import time
@@ -381,3 +388,14 @@ def cncurrency(value, capital=True, prefix=False, classical=True):
     so.reverse()
 
     return ''.join(so)
+
+
+def skin_change(qss_file_name):
+    qss_file = QFile(qss_file_name)
+    qss_file.open(QFile.ReadOnly)
+
+    # 转换成UTF-8编码格式
+    style_file = codecs.decode(qss_file.readAll(), 'utf-8')
+    qApp.setStyleSheet(style_file)
+
+    qss_file.close()

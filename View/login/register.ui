@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>317</width>
+    <height>138</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>验证</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background: #ECECEC;</string>
+  </property>
+  <widget class="QLabel" name="pc_code_label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#A1A1A1;</string>
+   </property>
+   <property name="text">
+    <string>序列号：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="reg_code_label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#A1A1A1;</string>
+   </property>
+   <property name="text">
+    <string>注册码：</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="copy_pc_code">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>20</y>
+     <width>50</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #B2B2B2;
+color: #606060;
+border: 1px solid #C5C5C5;
+border-radius: 5px;</string>
+   </property>
+   <property name="text">
+    <string>复制</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="verify_reg_code">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>100</y>
+     <width>50</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #4FA2F8;
+color: #FFFFFF;
+border: 1px solid #55A2F5;
+border-radius: 5px;</string>
+   </property>
+   <property name="text">
+    <string>验证</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="pc_code">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>20</y>
+     <width>150</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 1px solid #BCBCBC;
+border-radius: 5px;
+color: #000000;
+background-color: #E8E8E8;</string>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="serial_number">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>60</y>
+     <width>150</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:2px solid #8EACCC;
+color:#000000;
+background-color: #FFFFFF;
+border-radius: 5px;</string>
+   </property>
+   <property name="placeholderText">
+    <string>请输入16位注册码</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

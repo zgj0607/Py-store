@@ -23,14 +23,16 @@ from Common.StaticFunc import md5
 
 dbhelp = DbHandler.DB_Handler()
 
-def AddAdmin(username,pwd):
+
+def AddAdmin(username, pwd):
     key = "username,pwd,createdTime"
     repwd = md5(pwd)
-    value = "'{}','{}','{}'".format(username,repwd,datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    dbhelp.InsertData("Admin",key,value)
+    value = "'{}','{}','{}'".format(username, repwd, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    dbhelp.InsertData("Admin", key, value)
 
-def UpdateAdmin(id,pwd):
+
+def UpdateAdmin(id, pwd):
     repwd = md5(pwd)
     search = "id={}".format(id)
     updateData = "pwd=\'{}\'".format(repwd)
-    dbhelp.UpdateData("Admin",updateData,search)
+    dbhelp.UpdateData("Admin", updateData, search)
