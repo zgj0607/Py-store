@@ -10,33 +10,35 @@
 from PyQt5.QtGui import QIcon
 from Controller.Interface import ViewHandler
 from Controller.Interface.TableHandler import *
-from View.menu1 import Menu1_Ui_MainWindow
-from View.menu2 import Menu_Ui_MainWindow
-from Common.config import domain,code
-from View.worker import Worker_Ui_MainWindow
-from View.admin import Admin_Ui_MainWindow
-from View.changeAdmin import ChangeAdmin_Ui_MainWindow
-from PyQt5 import QtWidgets,QtCore,QtGui
+from View.types.menu1 import Menu1_Ui_MainWindow
+from View.types.menu2 import Menu_Ui_MainWindow
+from Common.config import domain, code
+from View.users.worker import Worker_Ui_MainWindow
+from View.users.admin import Admin_Ui_MainWindow
+from View.users.changeAdmin import ChangeAdmin_Ui_MainWindow
+from PyQt5 import QtWidgets, QtCore, QtGui
 from Common.Common import ClientClose
 from View.userConnect import Ui_MainWindow_UserConnect
 import requests
 import traceback
-from View.callback import CallBack_Ui_MainWindow
+from View.main.callback import CallBack_Ui_MainWindow
+
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     signal = QtCore.pyqtSignal(list)
     signal2 = QtCore.pyqtSignal()
-    def __init__(self,level=None):
+
+    def __init__(self, level=None):
         # super(Ui_MainWindow, self).__init__()
         QtWidgets.QMainWindow.__init__(self)
         self.myIcon = QIcon('img/logo.png')
         # self.setStyleSheet("background-color:#987e65")
         self.setWindowIcon(self.myIcon)
         self.level = level
-        #设置背景
+        # 设置背景
         bgIcon = QtGui.QPixmap('img/1.jpg')
-        palette=QtGui.QPalette()
-        palette.setBrush(self.backgroundRole(), QtGui.QBrush(bgIcon)) #添加背景图片
+        palette = QtGui.QPalette()
+        palette.setBrush(self.backgroundRole(), QtGui.QBrush(bgIcon))  # 添加背景图片
         self.setPalette(palette)
         self.deviceName = list()
 
@@ -637,20 +639,20 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
 
-        #如果不是超级管理员和安装员则只能看到：
-        #服务项目管理、门店人员管理、业绩报表、未回访列表
+        # 如果不是超级管理员和安装员则只能看到：
+        # 服务项目管理、门店人员管理、业绩报表、未回访列表
         if self.level != 0:
             self.tabWidget.removeTab(0)
             self.tabWidget.removeTab(2)
             self.tabWidget.removeTab(3)
             self.tabWidget.removeTab(4)
 
-        #去除问号
+        # 去除问号
         # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
-        #设置外边距
+        # 设置外边距
         # self.horizontalLayout_7.setContentsMargins(30,30,30,30)
 
-        #隐藏字段
+        # 隐藏字段
         self.hindMenu1 = QtWidgets.QLabel()
         self.hindMenu1.setEnabled(True)
         self.hindMenu1.setText("")
@@ -663,8 +665,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.hindWorkerId.setObjectName("hindWorkerId")
         self.hindWorkerId.hide()
 
-
-        #隔行变色
+        # 隔行变色
         # self.xiaofeiTable.setAlternatingRowColors(True)
         # self.mendianTable.setAlternatingRowColors(True)
         # self.mendianMenu1.setAlternatingRowColors(True)
@@ -673,19 +674,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # self.yejiTable.setAlternatingRowColors(True)
         # self.shebeiTable.setAlternatingRowColors(True)
 
-        #静态数据
+        # 静态数据
         self.checkDict = {}
-        self.mustSet = ['数量','单价','小计','总价','单位','备注']
+        self.mustSet = ['数量', '单价', '小计', '总价', '单位', '备注']
 
-        #表格设置
-        #单选
+        # 表格设置
+        # 单选
         self.xiaofeiTable.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
         self.mendianMenu1.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
         self.mendianMenu2.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
         self.UserTable.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
         self.callbackTable.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
 
-        #选择整行
+        # 选择整行
         self.mendianMenu1.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.mendianMenu2.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.UserTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
@@ -694,7 +695,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.yejiTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.callbackTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-        #表格铺满
+        # 表格铺满
         self.xiaofeiTable.horizontalHeader().setStretchLastSection(True)
         self.mendianMenu1.horizontalHeader().setStretchLastSection(True)
         self.mendianMenu2.horizontalHeader().setStretchLastSection(True)
@@ -708,12 +709,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.checkBoxTable.horizontalHeader().setStretchLastSection(True)
         self.callbackTable.horizontalHeader().setStretchLastSection(True)
 
-        #不可选择
+        # 不可选择
         # self.yejiTable.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.mendianTable.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.checkBoxTable.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
 
-        #设置单元格禁止更改
+        # 设置单元格禁止更改
         self.xiaofeiTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.mendianMenu1.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.mendianMenu2.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -725,7 +726,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.checkBoxTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.callbackTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
-        #表头信息显示居中
+        # 表头信息显示居中
         self.xiaofeiTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
         self.mendianMenu1.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
         self.mendianMenu2.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
@@ -736,12 +737,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.AdminTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
         self.callbackTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
 
-        #去除表头
+        # 去除表头
         self.pcTable.horizontalHeader().setVisible(False)
         self.pwdTable.horizontalHeader().setVisible(False)
         self.checkBoxTable.horizontalHeader().setVisible(False)
 
-        #去除数字列
+        # 去除数字列
         xiaofeiHeader = self.xiaofeiTable.verticalHeader()
         xiaofeiHeader.hide()
         yejiHeader = self.yejiTable.verticalHeader()
@@ -757,16 +758,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         checkBoxHeader = self.checkBoxTable.verticalHeader()
         checkBoxHeader.hide()
 
-
-        #去除表格网纹
+        # 去除表格网纹
         self.checkBoxTable.setShowGrid(False)
 
-        #初始化时间
+        # 初始化时间
         nowTime = datetime.now()
         self.dateEdit_5.setDate(nowTime.date())
         self.dateEdit_6.setDate(nowTime.date())
 
-        #添加按钮事件
+        # 添加按钮事件
         self.xiaofeiCheck.clicked.connect(self.XiaofeiCheck)
         # self.comboBox.currentTextChanged['QString'].connect(self.selectXiaoFei)
         self.xiaofeiOut.clicked.connect(self.XiaofeiOut)
@@ -799,7 +799,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.stop.clicked.connect(self.Stop)
         self.refresh.clicked.connect(self.Refresh)
 
-
         self.tabWidget.currentChanged.connect(self.TabChange)
         self.pwdUpdate.clicked.connect(self.UpdatePwd)
         self.pcSave.clicked.connect(self.SavePcName)
@@ -810,15 +809,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.callback.clicked.connect(self.CallBack)
 
-        #添加自定义信号槽
+        # 添加自定义信号槽
         self.signal.connect(self.AddYuanGong)
         self.signal2.connect(self.JustInfo)
 
-        #设置无边框
+        # 设置无边框
         # self.tabWidget.setDocumentMode(True)
 
-
-        #设置样式
+        # 设置样式
         self.setStyleSheet("""
             QMessageBox{background-image: url(img/1.jpg)}
             QLabel{color:#fff;}
@@ -850,9 +848,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                             color:#000;
             }
        """
-        )
+                           )
 
-        #局部修改
+        # 局部修改
         self.btnOrange = "background-image: url(img/btn_orange.png);background-color:transparent;background-repeat:no-repeat"
         self.btnGrey = "background-image: url(img/tag_grey.png);background-color:transparent;background-repeat:no-repeat"
         self.btnGrey2 = "background-image: url(img/tag_grey2.png);background-color:transparent;background-repeat:no-repeat"
@@ -866,9 +864,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.mendianMenu1.setStyleSheet("background-color:#f8f8f7")
         self.mendianMenu2.setStyleSheet("background-color:#f8f8f7")
 
-
-
-        #设置按钮图片
+        # 设置按钮图片
         # self.week.setStyleSheet("background-color: green")
 
         self.week.setStyleSheet(self.btnGrey2)
@@ -885,16 +881,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pcSave.setStyleSheet(self.btnOrange)
         self.pwdUpdate.setStyleSheet(self.btnOrange)
 
-
-        #设置label图片
+        # 设置label图片
         self.jiaoyiPrice.setStyleSheet("background-image: url(img/sec_moneypc.png);"
                                        "background-color:transparent;"
                                        "background-repeat:no-repeat;font-size:13px;"
                                        "padding:10px")
 
-
-        #设置tab图片
-        #QTabBar:tab {background-image: url(img/tab.jpg); height: 30px; width:125px;background-repeat:no-repeat;background-position: center;}
+        # 设置tab图片
+        # QTabBar:tab {background-image: url(img/tab.jpg); height: 30px; width:125px;background-repeat:no-repeat;background-position: center;}
         self.tabWidget.setStyleSheet("""
             QTabBar:tab {
                 background-image: url(img/TAG1.png);
@@ -912,9 +906,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             }
         """)
 
-
-
-        #微调：
+        # 微调：
         self.horizontalLayout_5.setSpacing(0)
         self.verticalLayout_5.setSpacing(10)
         self.horizontalLayout_15.setSpacing(15)
@@ -992,8 +984,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.month.setMaximumSize(QtCore.QSize(125, 52))
         self.year.setMinimumSize(QtCore.QSize(125, 52))
         self.year.setMaximumSize(QtCore.QSize(125, 52))
-        self.today.setMinimumSize(QtCore.QSize(125,52))
-        self.today.setMaximumSize(QtCore.QSize(125,52))
+        self.today.setMinimumSize(QtCore.QSize(125, 52))
+        self.today.setMaximumSize(QtCore.QSize(125, 52))
 
         self.xiaofeiCheck.setMinimumSize(QtCore.QSize(115, 36))
         self.xiaofeiCheck.setMaximumSize(QtCore.QSize(115, 36))
@@ -1017,11 +1009,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.loadCheck = True
 
         self.retranslateUi(self)
-        #默认选择第一个空间
+        # 默认选择第一个空间
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(self)
-
-
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1077,7 +1067,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         else:
             self.ResetMenu1()
 
-#=======================================================消费==============================================
+    # =======================================================消费==============================================
     def JustInfo(self):
         # self.pMovie.start()
         self.loading.show()
@@ -1092,20 +1082,21 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if text == "全店":
             remote = True
             self.signal2.emit()
-        resultStr = xiaofeiTableSet(self.xiaofeiTable,startTime,endTime,remote)
+        resultStr = xiaofeiTableSet(self.xiaofeiTable, startTime, endTime, remote)
         if resultStr == None:
             pass
-            #QtWidgets.QMessageBox.information(self.xiaofeiCheck,"提示","无消费信息")
+            # QtWidgets.QMessageBox.information(self.xiaofeiCheck,"提示","无消费信息")
         elif resultStr == False:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","网络连接错误")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "网络连接错误")
         elif resultStr == 'restart':
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","与服务器链接中断，请重新运行软件")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "与服务器链接中断，请重新运行软件")
         else:
             pass
         self.loading.hide()
         # self.pMovie.stop()
 
         # self.loading.hide()
+
     # def selectXiaoFei(self):
     #     startTime = self.dateEdit_5.text()
     #     endTime = self.dateEdit_6.text()
@@ -1115,87 +1106,85 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     #         remote = True
     #     xiaofeiTableSet(self.xiaofeiTable,startTime,endTime,remote)
 
-    #导出excel
+    # 导出excel
     def XiaofeiOut(self):
         startTime = self.dateEdit_5.text()
         endTime = self.dateEdit_6.text()
-        fileName = ViewHandler.CreateXls(startTime,endTime)
+        fileName = ViewHandler.CreateXls(startTime, endTime)
         if fileName:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","文件名为：{}".format(fileName))
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件名为：{}".format(fileName))
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","暂无消费记录")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "暂无消费记录")
 
-    #导入excel
+    # 导入excel
     def XiaofeiIn(self):
-        fileName, filetype = QtWidgets.QFileDialog.getOpenFileName(self,"选取文件","C:/",
-                                                          "Text Files (*.xlsx;*.xls)")   #设置文件扩展名过滤,注意用分号间隔
+        fileName, filetype = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", "C:/",
+                                                                   "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
         if fileName:
             try:
-                 ViewHandler.ImportExcel(fileName,self)
-                 QtWidgets.QMessageBox.information(self.menu1Add,"提示","导入成功")
+                ViewHandler.ImportExcel(fileName, self)
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "导入成功")
             except Exception as e:
-                 print (e)
-                 print ('traceback.print_exc():{}'.format(traceback.print_exc()))
-                 print ('traceback.format_exc():\n{}'.format(traceback.format_exc()))
-                 QtWidgets.QMessageBox.information(self.menu1Add,"提示","文件错误")
+                print(e)
+                print('traceback.print_exc():{}'.format(traceback.print_exc()))
+                print('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件错误")
 
-    #打印
-    def Printer(self,Item=None):
+    # 打印
+    def Printer(self, Item=None):
         try:
             model = self.xiaofeiTable.model()
             num = model.columnCount()
             import time
-            if Item == None or Item.column() != num-1:
+            if Item == None or Item.column() != num - 1:
                 return
             else:
                 try:
                     model = self.xiaofeiTable.model()
-                    index = model.index(Item.row(),0)
+                    index = model.index(Item.row(), 0)
                     orderNo = model.data(index)
 
                     result = ViewHandler.DoPrinter(self, orderNo)
                     if not result:
-                        QtWidgets.QMessageBox.information(self.menu1Add,"提示","打印格式出错")
+                        QtWidgets.QMessageBox.information(self.menu1Add, "提示", "打印格式出错")
 
                 except Exception as e:
-                    print (e)
-                    print ('traceback.print_exc():{}'.format(traceback.print_exc()))
-                    print ('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+                    print(e)
+                    print('traceback.print_exc():{}'.format(traceback.print_exc()))
+                    print('traceback.format_exc():\n{}'.format(traceback.format_exc()))
 
         except Exception as e:
-                    print (e)
-                    print ('traceback.print_exc():{}'.format(traceback.print_exc()))
-                    print ('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+            print(e)
+            print('traceback.print_exc():{}'.format(traceback.print_exc()))
+            print('traceback.format_exc():\n{}'.format(traceback.format_exc()))
 
+    # =======================================================消费==============================================
 
-#=======================================================消费==============================================
-
-#=======================================================菜单==============================================
-    def CheckMenu(self,Item=None):
-        #清空二级菜单
+    # =======================================================菜单==============================================
+    def CheckMenu(self, Item=None):
+        # 清空二级菜单
         self.ResetMenu2()
         if Item == None:
             return
         else:
             model = self.mendianMenu1.model()
-            index = model.index(Item.row(),0)
+            index = model.index(Item.row(), 0)
             id = model.data(index)
             self.hindMenu1.setText(id)
-            MenuTableSet(self.mendianMenu2,id)
+            MenuTableSet(self.mendianMenu2, id)
 
-
-     #点击二级菜单后修改属性（checkbox）状态
-    def CheckMenu2(self,Item=None):
+    # 点击二级菜单后修改属性（checkbox）状态
+    def CheckMenu2(self, Item=None):
         if Item == None:
             return
         else:
-            #因为不是每个按钮都有这个表单点击事件的触发，所以缓存一下列表
+            # 因为不是每个按钮都有这个表单点击事件的触发，所以缓存一下列表
             self.GetSelectMenu2Attribute(Item)
-            AttributeTableSet(self.checkBoxTable,self.showAttributeList)
+            AttributeTableSet(self.checkBoxTable, self.showAttributeList)
 
-    def GetSelectMenu2Attribute(self,Item):
+    def GetSelectMenu2Attribute(self, Item):
         model = self.mendianMenu2.model()
-        index = model.index(Item.row(),0)
+        index = model.index(Item.row(), 0)
         id = model.data(index)
         result = ViewHandler.GetTwoMenu(id)
         attribute = result[4].split(',')
@@ -1206,137 +1195,131 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 showNameList.append(attribute[i])
         self.showAttributeList = showNameList
 
-
-
-    #初始化一级菜单
+    # 初始化一级菜单
     def ResetMenu1(self):
         MenuTableSet(self.mendianMenu1)
         model = self.mendianMenu2.model()
         if model:
             model.clear()
 
-
-    #初始化二级菜单
+    # 初始化二级菜单
     def ResetMenu2(self):
-        MenuTableSet(self.mendianMenu2,self.hindMenu1.text())
-        AttributeTableSet(self.checkBoxTable,[])
+        MenuTableSet(self.mendianMenu2, self.hindMenu1.text())
+        AttributeTableSet(self.checkBoxTable, [])
 
-    #删除一级菜单
+    # 删除一级菜单
     def DeleteMenu1(self):
         id = ViewHandler.GetTableMsg(self.mendianMenu1, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
-                "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                                   "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 ViewHandler.RemoveById(id, 'OneMenu')
                 self.ResetMenu1()
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
 
-    #打开一级菜单修改界面
-    def UpdateMenu(self,Item=None):
-        #初始化新窗口
+    # 打开一级菜单修改界面
+    def UpdateMenu(self, Item=None):
+        # 初始化新窗口
         row = self.mendianMenu1.currentIndex().row()
         model = self.mendianMenu1.model()
         if model:
-            index = model.index(row,0)
+            index = model.index(row, 0)
             id = model.data(index)
             if id:
                 result = ViewHandler.GetOneMenu(id)
-                self.menu = Menu1_Ui_MainWindow(self,"修改一级菜单",id,result[2])
+                self.menu = Menu1_Ui_MainWindow(self, "修改一级菜单", id, result[2])
                 self.menu.exec()
             else:
-                QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
         else:
-                QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
 
-
-    #打开一级菜单新建界面
+    # 打开一级菜单新建界面
     def CreateMenu(self):
-        #初始化新窗口
+        # 初始化新窗口
         try:
             self.menu2 = Menu1_Ui_MainWindow(self, "创建一级菜单", menuId=self.hindMenu1.text())
             self.menu2.exec()
         except Exception as e:
-            print (e)
+            print(e)
 
-    #打开二级菜单修改界面
-    def UpdateMenu2(self,Item=None):
-        #初始化新窗口
+    # 打开二级菜单修改界面
+    def UpdateMenu2(self, Item=None):
+        # 初始化新窗口
         row = self.mendianMenu2.currentIndex().row()
         model = self.mendianMenu2.model()
         if model:
-            index = model.index(row,0)
+            index = model.index(row, 0)
             id = model.data(index)
             if id:
                 result = ViewHandler.GetTwoMenu(id)
-                self.menu2 = Menu_Ui_MainWindow(self,"修改二级菜单",self.mustSet,id,result[2],self.showAttributeList)
+                self.menu2 = Menu_Ui_MainWindow(self, "修改二级菜单", self.mustSet, id, result[2], self.showAttributeList)
                 self.menu2.exec()
             else:
-                QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择二级菜单")
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择二级菜单")
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
 
-    #打开二级菜单新建界面
+    # 打开二级菜单新建界面
     def CreateMenu2(self):
-        #初始化新窗口
+        # 初始化新窗口
         model = self.mendianMenu2.model()
         if model:
-            #初始化新窗口
+            # 初始化新窗口
             try:
-                self.menu2 = Menu_Ui_MainWindow(self,"创建二级菜单",menuId=self.hindMenu1.text())
+                self.menu2 = Menu_Ui_MainWindow(self, "创建二级菜单", menuId=self.hindMenu1.text())
                 self.menu2.exec()
             except Exception as e:
-                QtWidgets.QMessageBox.information(self.menu1Add,"提示",e)
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", e)
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
 
-    #删除二级菜单
+    # 删除二级菜单
     def DeleteMenu2(self):
         row = self.mendianMenu2.currentIndex().row()
         model = self.mendianMenu2.model()
         if model:
-            index = model.index(row,0)
+            index = model.index(row, 0)
             id = model.data(index)
             if id:
                 reply = QtWidgets.QMessageBox.question(self, 'Message',
-                "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                                       "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if reply == QtWidgets.QMessageBox.Yes:
                     ViewHandler.RemoveById(id, "TwoMenu")
                     self.ResetMenu2()
             else:
-                QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择二级菜单")
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择二级菜单")
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","请选择一级菜单")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
 
-
-    #导出excel
+    # 导出excel
     def MenuOutFunc(self):
         fileName = ViewHandler.CreateMenuExcel()
         if fileName:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","文件名为：{}".format(fileName))
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件名为：{}".format(fileName))
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add,"提示","菜单内容欠缺")
+            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "菜单内容欠缺")
 
-    #导入excel
+    # 导入excel
     def MenuInFunc(self):
-        fileName, filetype = QtWidgets.QFileDialog.getOpenFileName(self,"选取文件","C:/",
-                                                          "Text Files (*.xlsx;*.xls)")   #设置文件扩展名过滤,注意用分号间隔
+        fileName, filetype = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", "C:/",
+                                                                   "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
         if fileName:
             try:
-                 ViewHandler.ImportMenuExcel(fileName,self.mustSet)
-                 QtWidgets.QMessageBox.information(self.menu1Add,"提示","导入成功")
-                 self.ResetMenu1()
+                ViewHandler.ImportMenuExcel(fileName, self.mustSet)
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "导入成功")
+                self.ResetMenu1()
             except:
-                 QtWidgets.QMessageBox.information(self.menu1Add,"提示","文件错误")
+                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件错误")
 
-#=======================================================菜单==============================================
+    # =======================================================菜单==============================================
 
-#=======================================================员工==============================================
+    # =======================================================员工==============================================
     def CreateWorker(self):
-        self.worker = Worker_Ui_MainWindow(self,WorkerTableSet,"新建员工")
+        self.worker = Worker_Ui_MainWindow(self, WorkerTableSet, "新建员工")
         self.worker.exec()
-
 
     def UpdateWorker(self):
         id = ViewHandler.GetTableMsg(self.UserTable, 0)
@@ -1344,57 +1327,58 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sex = ViewHandler.GetTableMsg(self.UserTable, 2)
         idCard = ViewHandler.GetTableMsg(self.UserTable, 3)
         if id:
-            self.worker = Worker_Ui_MainWindow(self,WorkerTableSet,"修改员工信息",workerId=id,name=workerName,idCard=idCard,sex=sex)
+            self.worker = Worker_Ui_MainWindow(self, WorkerTableSet, "修改员工信息", workerId=id, name=workerName,
+                                               idCard=idCard, sex=sex)
             self.worker.exec()
             # WorkerTableSet(self.UserTable)
         else:
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","请选择员工")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
 
     def DeleteWorker(self):
         id = ViewHandler.GetTableMsg(self.UserTable, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
-                "是否删除此员工?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                                   "是否删除此员工?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 ViewHandler.RemoveById(id, "Worker")
                 WorkerTableSet(self.UserTable)
         else:
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","请选择员工")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
 
-#=======================================================员工==============================================
+    # =======================================================员工==============================================
 
-#=======================================================报表==============================================
+    # =======================================================报表==============================================
     def CheckWeek(self):
         self.week.setStyleSheet(self.btnGrey)
         self.year.setStyleSheet(self.btnGrey2)
         self.month.setStyleSheet(self.btnGrey2)
         self.today.setStyleSheet(self.btnGrey2)
-        YeJiTableSet(self.yejiTable,"week",self.jiaoyiPrice)
+        YeJiTableSet(self.yejiTable, "week", self.jiaoyiPrice)
 
     def CheckMonth(self):
         self.week.setStyleSheet(self.btnGrey2)
         self.year.setStyleSheet(self.btnGrey2)
         self.month.setStyleSheet(self.btnGrey)
         self.today.setStyleSheet(self.btnGrey2)
-        YeJiTableSet(self.yejiTable,"month",self.jiaoyiPrice)
+        YeJiTableSet(self.yejiTable, "month", self.jiaoyiPrice)
 
     def CheckYear(self):
         self.week.setStyleSheet(self.btnGrey2)
         self.year.setStyleSheet(self.btnGrey)
         self.month.setStyleSheet(self.btnGrey2)
         self.today.setStyleSheet(self.btnGrey2)
-        YeJiTableSet(self.yejiTable,"year",self.jiaoyiPrice)
+        YeJiTableSet(self.yejiTable, "year", self.jiaoyiPrice)
 
     def CheckToday(self):
         self.week.setStyleSheet(self.btnGrey2)
         self.year.setStyleSheet(self.btnGrey2)
         self.month.setStyleSheet(self.btnGrey2)
         self.today.setStyleSheet(self.btnGrey)
-        YeJiTableSet(self.yejiTable,"today",self.jiaoyiPrice)
+        YeJiTableSet(self.yejiTable, "today", self.jiaoyiPrice)
 
-#=======================================================报表==============================================
+    # =======================================================报表==============================================
 
-#=======================================================设备管理==============================================
+    # =======================================================设备管理==============================================
 
     def Start(self):
         id = ViewHandler.GetTableMsg(self.shebeiTable, 0)
@@ -1403,7 +1387,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             ViewHandler.UpdateById(id, "Device", updateData)
             SheBeiTableSet(self.shebeiTable)
         else:
-            QtWidgets.QMessageBox.information(self.start,"提示","请选择设备")
+            QtWidgets.QMessageBox.information(self.start, "提示", "请选择设备")
 
     def Stop(self):
         id = ViewHandler.GetTableMsg(self.shebeiTable, 0)
@@ -1412,15 +1396,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             ViewHandler.UpdateById(id, "Device", updateData)
             SheBeiTableSet(self.shebeiTable)
         else:
-            QtWidgets.QMessageBox.information(self,"提示","请选择设备")
+            QtWidgets.QMessageBox.information(self, "提示", "请选择设备")
 
     def Refresh(self):
         SheBeiTableSet(self.shebeiTable)
-        QtWidgets.QMessageBox.information(self,"提示","刷新成功")
+        QtWidgets.QMessageBox.information(self, "提示", "刷新成功")
 
-
-
-    def AddYuanGong(self,myList):
+    def AddYuanGong(self, myList):
         word = myList[0]
         key = myList[1]
         today = myList[2]
@@ -1428,89 +1410,88 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         ip = myList[4]
         if deviceName not in self.deviceName:
             self.deviceName.append(deviceName)
-            self.tempUi = Ui_MainWindow_UserConnect(word,key,today,deviceName,ip,ViewHandler.Insert())
+            self.tempUi = Ui_MainWindow_UserConnect(word, key, today, deviceName, ip, ViewHandler.Insert())
             self.tempUi.exec_()
             self.deviceName.remove(deviceName)
             SheBeiTableSet(self.shebeiTable)
 
-#=======================================================设备管理==============================================
+    # =======================================================设备管理==============================================
 
-#=======================================================设置==============================================
+    # =======================================================设置==============================================
     def SavePcName(self):
-        pcSign = ViewHandler.GetCellMsg(self.pcTable, 0,1)
+        pcSign = ViewHandler.GetCellMsg(self.pcTable, 0, 1)
         pcPhone = ViewHandler.GetCellMsg(self.pcTable, 1, 1)
         address = ViewHandler.GetCellMsg(self.pcTable, 2, 1)
         if pcSign == "":
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","标识不能为空")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "标识不能为空")
         elif address == "":
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","地址不能为空")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "地址不能为空")
         elif pcPhone == "":
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","联系方式不能为空")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "联系方式不能为空")
         else:
-            req = ViewHandler.UpdatePcName(pcSign,address,pcPhone,code)
+            req = ViewHandler.UpdatePcName(pcSign, address, pcPhone, code)
             if req:
-                QtWidgets.QMessageBox.information(self.updateWorker,"提示","修改成功")
-                url = domain+"store/api/list?code={}".format(code)
+                QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改成功")
+                url = domain + "store/api/list?code={}".format(code)
                 req = requests.get(url=url)
                 resultData = json.loads(req.text)
-                storeList = resultData.get("data").get("storeList",[])
-                store = resultData.get("data").get("store",{})
-                StoreTableSet(self.mendianTable,storeList)
-                SheZhiTableSet(self.pcTable,self.pwdTable,store)
+                storeList = resultData.get("data").get("storeList", [])
+                store = resultData.get("data").get("store", {})
+                StoreTableSet(self.mendianTable, storeList)
+                SheZhiTableSet(self.pcTable, self.pwdTable, store)
             else:
-                QtWidgets.QMessageBox.information(self.updateWorker,"提示","修改失败")
+                QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改失败")
 
     def UpdatePwd(self):
-        pwd = ViewHandler.GetCellMsg(self.pwdTable, 1,1)
-        repwd = ViewHandler.GetCellMsg(self.pwdTable, 2,1)
-        oldpwd = ViewHandler.GetCellMsg(self.pwdTable, 0,1)
+        pwd = ViewHandler.GetCellMsg(self.pwdTable, 1, 1)
+        repwd = ViewHandler.GetCellMsg(self.pwdTable, 2, 1)
+        oldpwd = ViewHandler.GetCellMsg(self.pwdTable, 0, 1)
         if oldpwd == "":
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","原密码不能为空")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "原密码不能为空")
         elif pwd == "":
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","密码不能为空")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "密码不能为空")
         elif pwd != repwd:
-           QtWidgets.QMessageBox.information(self.updateWorker,"提示","两次输入密码不一致")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "两次输入密码不一致")
         else:
-           if ViewHandler.UpdatePwd(pwd, oldpwd):
-               QtWidgets.QMessageBox.information(self.updateWorker,"提示","修改成功")
-               model = self.pwdTable.model()
-               model.setItem(0,1,QtGui.QStandardItem(""))
-               model.setItem(1,1,QtGui.QStandardItem(""))
-               model.setItem(2,1,QtGui.QStandardItem(""))
-               self.pwdTable.setModel(model)
-           else:
-               QtWidgets.QMessageBox.information(self.updateWorker,"提示","原密码输入有误")
+            if ViewHandler.UpdatePwd(pwd, oldpwd):
+                QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改成功")
+                model = self.pwdTable.model()
+                model.setItem(0, 1, QtGui.QStandardItem(""))
+                model.setItem(1, 1, QtGui.QStandardItem(""))
+                model.setItem(2, 1, QtGui.QStandardItem(""))
+                self.pwdTable.setModel(model)
+            else:
+                QtWidgets.QMessageBox.information(self.updateWorker, "提示", "原密码输入有误")
 
-#=======================================================设置==============================================
+    # =======================================================设置==============================================
 
-#=======================================================系统人员管理==============================================
+    # =======================================================系统人员管理==============================================
     def AddAdmin(self):
-        self.admin = Admin_Ui_MainWindow(self,AdminTableSet)
+        self.admin = Admin_Ui_MainWindow(self, AdminTableSet)
         self.admin.exec()
 
     def ChangeAdmin(self):
         id = ViewHandler.GetTableMsg(self.AdminTable, 0)
         if id:
-            self.worker = ChangeAdmin_Ui_MainWindow(self,id)
+            self.worker = ChangeAdmin_Ui_MainWindow(self, id)
             self.worker.exec()
             # WorkerTableSet(self.UserTable)
         else:
-            QtWidgets.QMessageBox.information(self.changeUser,"提示","请选择管理员")
-
+            QtWidgets.QMessageBox.information(self.changeUser, "提示", "请选择管理员")
 
     def RemoveAdmin(self):
         id = ViewHandler.GetTableMsg(self.AdminTable, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
-                "是否删除此管理员?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                                                   "是否删除此管理员?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 ViewHandler.RemoveById(id, "Admin")
                 AdminTableSet(self.AdminTable)
         else:
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","请选择员工")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
 
-#=======================================================系统人员管理==============================================
-#=======================================================回访==============================================
+    # =======================================================系统人员管理==============================================
+    # =======================================================回访==============================================
     def CallBack(self):
         id = ViewHandler.GetTableMsg(self.callbackTable, 0)
         username = ViewHandler.GetTableMsg(self.callbackTable, 1)
@@ -1519,83 +1500,85 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         callbackTime = ViewHandler.GetTableMsg(self.callbackTable, 4)
         print(callbackTime)
         if id:
-            msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(callbackTime[:10],username,carPhone,carId)
-            ui = CallBack_Ui_MainWindow(msg,id,carPhone,carId,username)
+            msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(callbackTime[:10],
+                                                                                                    username, carPhone,
+                                                                                                    carId)
+            ui = CallBack_Ui_MainWindow(msg, id, carPhone, carId, username)
             ui.exec_()
             CallBackSet(self.callbackTable)
         else:
-            QtWidgets.QMessageBox.information(self.updateWorker,"提示","请选择未回访记录")
+            QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择未回访记录")
 
-#=======================================================回访==============================================
+    # =======================================================回访==============================================
 
     def closeEvent(self, event):
         ClientClose()
 
-    #tab點擊事件
-    def TabChange(self,i):
-        #設置
+    # tab點擊事件
+    def TabChange(self, i):
+        # 設置
         self.ResetMenu2()
         if i == 7:
             try:
-                url = domain+"store/api/list?code={}".format(code)
+                url = domain + "store/api/list?code={}".format(code)
                 req = requests.get(url=url)
                 resultData = json.loads(req.text)
             except:
-                resultData = {'code':400}
-            print (resultData)
+                resultData = {'code': 400}
+            print(resultData)
             if resultData.get("code") != 200:
                 if resultData.get("code") == 400:
-                    QtWidgets.QMessageBox.information(self.updateWorker,"提示","与服务器链接失败")
+                    QtWidgets.QMessageBox.information(self.updateWorker, "提示", "与服务器链接失败")
                 else:
-                    QtWidgets.QMessageBox.information(self.updateWorker,"提示","门店已经失效，详情请联系客服")
+                    QtWidgets.QMessageBox.information(self.updateWorker, "提示", "门店已经失效，详情请联系客服")
             else:
-                store = resultData.get("data").get("store",{})
-                storeList = resultData.get("data").get("storeList",[])
-                StoreTableSet(self.mendianTable,storeList)
-                SheZhiTableSet(self.pcTable,self.pwdTable,store)
+                store = resultData.get("data").get("store", {})
+                storeList = resultData.get("data").get("storeList", [])
+                StoreTableSet(self.mendianTable, storeList)
+                SheZhiTableSet(self.pcTable, self.pwdTable, store)
 
         elif i == 0:
             if self.level == 0:
-                #門店消費
+                # 門店消費
                 # self.XiaofeiCheck()
                 pass
             else:
-                #服務項目管理
+                # 服務項目管理
                 MenuTableSet(self.mendianMenu1)
 
         elif i == 1:
             if self.level == 0:
-                #服務項目管理
+                # 服務項目管理
                 MenuTableSet(self.mendianMenu1)
             else:
-                #門店人員管理
+                # 門店人員管理
                 WorkerTableSet(self.UserTable)
 
         elif i == 2:
             if self.level == 0:
-                #門店人員管理
+                # 門店人員管理
                 WorkerTableSet(self.UserTable)
             else:
-                #業績報表
-                YeJiTableSet(self.yejiTable,"today",self.jiaoyiPrice)
+                # 業績報表
+                YeJiTableSet(self.yejiTable, "today", self.jiaoyiPrice)
 
 
         elif i == 3:
             if self.level == 0:
-                #系统管理员管理
+                # 系统管理员管理
                 AdminTableSet(self.AdminTable)
             else:
-                #回访设置
+                # 回访设置
                 CallBackSet(self.callbackTable)
 
-        #業績報表
+        # 業績報表
         elif i == 4:
-            YeJiTableSet(self.yejiTable,"today",self.jiaoyiPrice)
+            YeJiTableSet(self.yejiTable, "today", self.jiaoyiPrice)
 
-        #設備管理
+        # 設備管理
         elif i == 5:
             SheBeiTableSet(self.shebeiTable)
 
-        #回访设置
+        # 回访设置
         elif i == 6:
             CallBackSet(self.callbackTable)

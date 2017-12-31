@@ -18,7 +18,9 @@ __mtime__ = '6/22/2016'
 """
 import sqlite3
 from datetime import datetime
-#消费记录表
+
+
+# 消费记录表
 def CreateXiaofei():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE XiaoFei
@@ -35,7 +37,7 @@ def CreateXiaofei():
            carPhone  VARCHAR(50),
            carModel VARCHAR(30),
            attribute TEXT,
-           createdTime datetime NOT NULL,
+           createdTime DATETIME NOT NULL,
            orderNo VARCHAR(32) NOT NULL,
            orderCheckId VARCHAR(32) NOT NULL
            );''')
@@ -50,16 +52,17 @@ def CreateXiaofei():
           ''')
     conn.close()
 
-#用户表
+
+# 用户表
 def CreateUser():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE User
-           (id INTEGER PRIMARY KEY autoincrement,
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
            userName VARCHAR(20) NOT NULL,
            carModel VARCHAR (30) NOT NULL ,
            carPhone VARCHAR (15) NOT NULL,
            carId VARCHAR (10) NOT NULL,
-           createdTime datetime NOT NULL
+           createdTime DATETIME NOT NULL
            );''')
 
     conn.execute('''
@@ -68,26 +71,28 @@ def CreateUser():
           ''')
     conn.close()
 
-#员工表
+
+# 员工表
 def CreateWorker():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE Worker
-           (id INTEGER PRIMARY KEY autoincrement,
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
            workerName VARCHAR(20) NOT NULL,
            sex VARCHAR (4) NOT NULL ,
            idCard VARCHAR (20) NOT NULL ,
-           createdTime datetime NOT NULL
+           createdTime DATETIME NOT NULL
            );''')
     conn.close()
 
-#管理员（系统人员）表
+
+# 管理员（系统人员）表
 def CreateAdmin():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE Admin
-           (id INTEGER PRIMARY KEY autoincrement,
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
            userName VARCHAR(20) NOT NULL,
            pwd VARCHAR (32) NOT NULL ,
-           createdTime datetime NOT NULL
+           createdTime DATETIME NOT NULL
            );''')
 
     conn.execute('''
@@ -96,30 +101,32 @@ def CreateAdmin():
           ''')
 
     sqlStr = "INSERT INTO Admin (userName,pwd,createdTime) " \
-                  "VALUES ('{}','{}','{}')".format('admin','e93a9a6047903bd088bd4ffee28fdee8',datetime.now())
+             "VALUES ('{}','{}','{}')".format('admin', 'e93a9a6047903bd088bd4ffee28fdee8', datetime.now())
     conn.execute(sqlStr)
     conn.commit()
 
     conn.close()
 
-#门店服务的一级菜单
+
+# 门店服务的一级菜单
 def CreateOneMenu():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE OneMenu
-      (id INTEGER PRIMARY KEY autoincrement,
-      createdTime datetime NOT NULL ,
+      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+      createdTime DATETIME NOT NULL ,
        name VARCHAR (20) NOT NULL
       );
     ''')
 
     conn.close()
 
-#门店服务的二级菜单
+
+# 门店服务的二级菜单
 def CreateTwoMenu():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE TwoMenu
-      (id INTEGER PRIMARY KEY autoincrement,
-       createdTime datetime NOT NULL ,
+      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+       createdTime DATETIME NOT NULL ,
        name VARCHAR (20) NOT NULL ,
        father INTEGER NOT NULL ,
        attribute VARCHAR (1000) NOT NULL,
@@ -134,12 +141,13 @@ def CreateTwoMenu():
 
     conn.close()
 
-#设备表
+
+# 设备表
 def CreateDevice():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE Device
-      (id INTEGER PRIMARY KEY autoincrement,
-       createdTime datetime NOT NULL ,
+      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+       createdTime DATETIME NOT NULL ,
        name VARCHAR (20) NOT NULL ,
        ip VARCHAR (20) NOT NULL ,
        state VARCHAR (2) NOT NULL
@@ -153,13 +161,14 @@ def CreateDevice():
 
     conn.close()
 
-#回访表
+
+# 回访表
 def CreateCallBack():
     conn = sqlite3.connect('MYDATA.db')
     conn.execute('''CREATE TABLE CallBack
-      (id INTEGER PRIMARY KEY autoincrement,
-       createdTime datetime NOT NULL ,
-       callbackTime datetime NOT NULL ,
+      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+       createdTime DATETIME NOT NULL ,
+       callbackTime DATETIME NOT NULL ,
        phone VARCHAR(50) NOT NULL ,
        carId VARCHAR(10) NOT NULL ,
        username VARCHAR(50) NOT NULL ,
@@ -169,10 +178,10 @@ def CreateCallBack():
 
     conn.close()
 
-#创建所有表
-def CreateAllDb():
 
-    print ("Opened database successfully")
+# 创建所有表
+def CreateAllDb():
+    print("Opened database successfully")
     try:
         CreateXiaofei()
     except:
@@ -213,5 +222,4 @@ def CreateAllDb():
     except:
         pass
 
-    print ("Table created successfully")
-
+    print("Table created successfully")

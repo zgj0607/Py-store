@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'progressBar.ui'
+# Form implementation generated from reading ui file 'progress_bar.ui'
 #
 # Created: Thu Apr  6 13:27:41 2017
 #      by: PyQt5 UI code generator 5.4
