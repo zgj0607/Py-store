@@ -12,8 +12,16 @@ from View.types.service import Service
 from View.users.store_and_password import StoreAndPassword
 from View.users.staff import Staff
 from View.users.system_user import SystemUser
-
-
+from View.stock.normal_stock_query import stockQueryForm_stock
+from View.stock.write_off_query import write_offForm_stock
+from View.stock.history_stock_query import historystockQueryForm_stock
+from View.stock.stock_monitor_query import stockmonitorQueryForm_stock
+from View.stock.inventory_serch import inventory_serchQueryForm_stock
+from View.stock.inventory_unsalable_waring import  inventory_unsalable_warninForm
+from View.stock.inventory_money import inventory_moneyForm_stock
+from View.stock.supplier_arrears import supplierarrearsForm_stock
+from View.stock.sub_service_operation_data import sub_serviceoperationdataForm
+from View.stock.operation_total_data import operationtotaldataForm
 class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
     _signal = QtCore.pyqtSignal(str)
 
@@ -172,6 +180,36 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
             elif obj_name == 'return_visit':
                 tab_widget = ReturnVisit()
+
+            elif obj_name == 'normal_stock_add':
+                tab_widget = stockQueryForm_stock()
+
+            elif obj_name == 'write_off_add':
+                tab_widget = write_offForm_stock()
+
+            elif obj_name == 'history_stock':
+                tab_widget = historystockQueryForm_stock()
+
+            elif obj_name == 'stock_monitor':
+                tab_widget = stockmonitorQueryForm_stock()
+
+            elif obj_name == 'inventory_search_show':
+                tab_widget = inventory_serchQueryForm_stock()
+
+            elif obj_name == 'inventory_unsalable_pre_warning':
+                tab_widget = inventory_unsalable_warninForm()
+
+            elif obj_name == 'inventory_money':
+                tab_widget = inventory_moneyForm_stock()
+
+            elif obj_name == 'supplier_arrears':
+                tab_widget = supplierarrearsForm_stock()
+
+            elif obj_name == 'sub_service_operation_data':
+                tab_widget = sub_serviceoperationdataForm()
+
+            elif obj_name == 'operation_total_data':
+                tab_widget = operationtotaldataForm()
 
             elif obj_name == 'performance':
                 tab_widget = Performance()
