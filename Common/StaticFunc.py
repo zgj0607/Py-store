@@ -16,10 +16,10 @@ __mtime__ = '12/11/2016'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from datetime import datetime
+import hashlib
 import random
 import uuid
-import hashlib
+from datetime import datetime
 
 
 class ErrorCode:
@@ -148,3 +148,7 @@ def md5(string):
     m = hashlib.md5()
     m.update(string.encode())
     return m.hexdigest()
+
+
+def get_now():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
