@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'menu1.ui'
+# Form implementation generated from reading ui file 'ui_first_service_info.ui'
 #
 # Created: Mon Feb 13 20:03:47 2017
 #      by: PyQt5 UI code generator 5.4

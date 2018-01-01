@@ -68,6 +68,7 @@ class Ui_Form(object):
         self.verticalLayout_5.addWidget(self.label_3)
         self.store_info_table = QtWidgets.QTableView(Form)
         self.store_info_table.setObjectName("store_info_table")
+        self.store_info_table.verticalHeader().setVisible(False)
         self.verticalLayout_5.addWidget(self.store_info_table)
         self.verticalLayout.addLayout(self.verticalLayout_5)
         self.verticalLayout_2.addLayout(self.verticalLayout)

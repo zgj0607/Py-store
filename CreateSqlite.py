@@ -136,7 +136,7 @@ def CreateTwoMenu():
 
     conn.execute('''
           CREATE UNIQUE INDEX father
-              ON TwoMenu (father,name);
+              ON service (father,name);
           ''')
 
     conn.close()

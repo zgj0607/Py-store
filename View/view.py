@@ -10,8 +10,8 @@
 from PyQt5.QtGui import QIcon
 from Controller.Interface import ViewHandler
 from Controller.Interface.TableHandler import *
-from View.types.menu1 import Menu1_Ui_MainWindow
-from View.types.menu2 import Menu_Ui_MainWindow
+from View.types.first_service_info import Menu1_Ui_MainWindow
+from View.types.second_service_info import SecondServiceInfo
 from Common.config import domain, code
 from View.users.worker import Worker_Ui_MainWindow
 from View.users.admin import Admin_Ui_MainWindow
@@ -1255,7 +1255,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             id = model.data(index)
             if id:
                 result = ViewHandler.GetTwoMenu(id)
-                self.menu2 = Menu_Ui_MainWindow(self, "修改二级菜单", self.mustSet, id, result[2], self.showAttributeList)
+                self.menu2 = SecondServiceInfo(self, "修改二级菜单", self.mustSet, id, result[2], self.showAttributeList)
                 self.menu2.exec()
             else:
                 QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择二级菜单")
@@ -1269,7 +1269,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if model:
             # 初始化新窗口
             try:
-                self.menu2 = Menu_Ui_MainWindow(self, "创建二级菜单", menuId=self.hindMenu1.text())
+                self.menu2 = SecondServiceInfo(self, "创建二级菜单", service_id=self.hindMenu1.text())
                 self.menu2.exec()
             except Exception as e:
                 QtWidgets.QMessageBox.information(self.menu1Add, "提示", e)

@@ -21,6 +21,8 @@ import sqlite3
 from Common import Common
 from datetime import datetime
 from PyQt5 import QtWidgets
+
+from Common.StaticFunc import format_time
 from View.userConnect import Ui_MainWindow_UserConnect
 import Common.config as config
 
@@ -32,8 +34,8 @@ class DB_Handler():
         today = False
         if startTime == endTime or YeJi == True:
             today = True
-        startTime = Common.MakeTime(startTime)
-        endTime = Common.MakeTime(endTime, True)
+        startTime = format_time(startTime)
+        endTime = format_time(endTime, True)
         if Table:
             sqlStr = 'SELECT orderNo,createdTime,pcSign,carId,carUser,carPhone,carModel,workerName,project,attribute,orderCheckId' \
                      ' FROM XiaoFei WHERE createdTime BETWEEN \'{}\' and \'{}\' ORDER BY createdTime DESC '.format(
@@ -97,7 +99,7 @@ class DB_Handler():
     # 获取门店服务器二级菜单
     def getTwoMenu(self, father):
         self.conn = sqlite3.connect('MYDATA.db')
-        sqlStr = 'SELECT id,name,attribute,attributeState FROM TwoMenu WHERE father=\'{}\'ORDER BY createdTime DESC '.format(
+        sqlStr = 'SELECT id,name,attribute,attributeState FROM service WHERE father=\'{}\'ORDER BY createdTime DESC '.format(
             father)
 
         cursor = self.conn.execute(sqlStr)
@@ -109,7 +111,7 @@ class DB_Handler():
     # 插入二级菜单
     def InsertTwoMenu(self, saveData):
         self.conn = sqlite3.connect('MYDATA.db')
-        sqlStr = "INSERT INTO TwoMenu (name,father,attribute,attributeState,createdTime) " \
+        sqlStr = "INSERT INTO service (name,father,attribute,attributeState,createdTime) " \
                  "VALUES ('{}','{}','{}','{}','{}')".format(saveData.get('name', ""),
                                                             saveData.get("father", ""), saveData.get("attribute", ""),
                                                             saveData.get("attributeState", ""),
@@ -349,7 +351,7 @@ class DB_Handler():
         self.conn = sqlite3.connect('MYDATA.db')
         now = datetime.now()
         timeStr = "{}/{}/{}".format(now.year, now.month, now.day)
-        timeStr = Common.MakeTime(timeStr, True)
+        timeStr = Common.format_time(timeStr, True)
 
         sqlStr = 'SELECT id,username,carId,phone,callbackTime FROM CallBack WHERE state=\'0\' AND callbackTime <= \'{}\' ORDER BY createdTime DESC '.format(
             timeStr)

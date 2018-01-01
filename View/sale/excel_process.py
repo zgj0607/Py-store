@@ -3,14 +3,13 @@ import json
 import os
 import re
 from collections import defaultdict
-from datetime import datetime
 
 import xlrd
 import xlwt
 from PyQt5.QtWidgets import QProgressDialog
 
-from Common.Common import SocketServer, MakeTime
-from Common.StaticFunc import GetOrderId, GetToday
+from Common.Common import SocketServer
+from Common.StaticFunc import GetOrderId, get_now, format_time
 from Common.config import savePath
 from Controller import DbHandler
 from Controller.Interface.ViewHandler import set_style, MakeTempMsg
@@ -141,7 +140,7 @@ class ExcelProcess:
                                     value = "'{}','{}','{}','{}','{}'".format(user_save.get("carUser"),
                                                                               user_save.get("carPhone"),
                                                                               user_save.get("carModel"),
-                                                                              user_save.get("carId"), GetToday())
+                                                                              user_save.get("carId"), get_now())
                                     try:
                                         self.database_handler.InsertData("User", key, value)
                                     except Exception as e:
@@ -254,7 +253,7 @@ class ExcelProcess:
                             value = "'{}','{}','{}','{}','{}'".format(user_save.get("carUser"),
                                                                       user_save.get("carPhone"),
                                                                       user_save.get("carModel"), user_save.get("carId"),
-                                                                      GetToday())
+                                                                      get_now())
                             try:
                                 self.database_handler.InsertData("User", key, value)
                             except Exception as e:
@@ -265,7 +264,7 @@ class ExcelProcess:
             progress_dialog.close()
 
     def export_sale_detail(self, start_time, end_time, remote=False):
-        now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        now = get_now()
         file_name = now + ".xls"
 
         # 获取消费信息
@@ -318,8 +317,8 @@ class ExcelProcess:
             top = set_style('Times New Roman', 350, True, True)
             # 前两个参数表示需要合并的行范围，后两个参数表示需要合并的列范围
             # 合并单元格作为大标题，水平居中即可
-            start_time = MakeTime(start_time)[:10]
-            end_time = MakeTime(end_time)[:10]
+            start_time = format_time(start_time)[:10]
+            end_time = format_time(end_time)[:10]
             ws.write_merge(0, 0, 0, all_table_len - 1, '门店系统:{}至{}'.format(start_time, end_time), top)
 
             # 设置标题

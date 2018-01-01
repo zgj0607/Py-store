@@ -34,8 +34,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import *
 
-from Common.Common import SocketServer, cncurrency, MakeTime
-from Common.StaticFunc import GetOrderId, GetToday
+from Common.Common import SocketServer, cncurrency, format_time
+from Common.StaticFunc import GetOrderId, get_now
 from Common.config import domain, savePath, menuSavePath, connect as myconnect
 from Controller import DbHandler
 
@@ -199,8 +199,8 @@ def CreateXls(startTime, endTime, remote=False):
         top = set_style('Times New Roman', 350, True, True)
         # 前两个参数表示需要合并的行范围，后两个参数表示需要合并的列范围
         # 合并单元格作为大标题，水平居中即可
-        startTime = MakeTime(startTime)[:10]
-        endTime = MakeTime(endTime)[:10]
+        startTime = format_time(startTime)[:10]
+        endTime = format_time(endTime)[:10]
         ws.write_merge(0, 0, 0, allTableLen - 1, '门店系统:{}至{}'.format(startTime, endTime), top)
 
         # 设置标题
@@ -733,7 +733,7 @@ def ImportExcel(fileName, self):
                                 value = "'{}','{}','{}','{}','{}'".format(userSave.get("carUser"),
                                                                           userSave.get("carPhone"),
                                                                           userSave.get("carModel"),
-                                                                          userSave.get("carId"), GetToday())
+                                                                          userSave.get("carId"), get_now())
                                 try:
                                     # pass
                                     dbhelp.InsertData("User", key, value)
@@ -850,7 +850,7 @@ def ImportExcel(fileName, self):
                         key = "userName,carPhone,carModel,carId,createdTime"
                         value = "'{}','{}','{}','{}','{}'".format(userSave.get("carUser"), userSave.get("carPhone"),
                                                                   userSave.get("carModel"), userSave.get("carId"),
-                                                                  GetToday())
+                                                                  get_now())
                         try:
                             # pass
                             dbhelp.InsertData("User", key, value)

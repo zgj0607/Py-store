@@ -16,29 +16,32 @@ __mtime__ = '6/21/2016'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-import sys
-from View.login.register import Register as Reg_Ui_MainWindow
-from View.login.login import Login
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QTranslator
-from PyQt5 import QtWidgets
-import decimal
 import configparser
-import socket
+import decimal
 import json
-from Common.config import BUFSIZ
-from Common import config
-from server.MySocket import myClient
-from Common import Common
-import threading
-import CreateSqlite
-import sqlite3
-from datetime import datetime, timedelta
-import requests
-from View.main.callback import CallBack_Ui_MainWindow
-import apscheduler
-from apscheduler.triggers.cron import CronTrigger
 import os
+import socket
+import sqlite3
+import sys
+import threading
+from datetime import datetime, timedelta
+
+import apscheduler
+import requests
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTranslator
+from PyQt5.QtWidgets import *
+from apscheduler.triggers.cron import CronTrigger
+
+import CreateSqlite
+from Common import Common
+from Common import config
+from Common.config import BUFSIZ
+from View.login.login import Login
+from View.login.register import Register as Reg_Ui_MainWindow
+from View.main.callback import CallBack_Ui_MainWindow
+from database.dao.customer_handler import check_return_visit_info
+from server.MySocket import myClient
 
 decimal.__version__
 apscheduler.__version__
@@ -66,13 +69,12 @@ def beforeRun():
 
 def CheckCallBack():
     conn = sqlite3.connect('MYDATA.db')
-    now = datetime.now()
-    timeStr = "{}/{}/{}".format(now.year, now.month, now.day)
-    timeStr = Common.MakeTime(timeStr, True)
+    now = datetime.now().strftime('%Y/%m/%d')
+    time_str = Common.format_time(now, True)
 
-    sqlStr = 'SELECT callbackTime,phone,username,carId,id FROM CallBack WHERE state=\'0\' AND callbackTime <= \'{}\' ORDER BY createdTime DESC '.format(
-        timeStr)
-    cursor = conn.execute(sqlStr)
+    sql_str = 'SELECT callbackTime,phone,username,carId,id FROM CallBack WHERE state=\'0\' AND callbackTime <= \'{}\' ORDER BY createdTime DESC '.format(
+        time_str)
+    cursor = conn.execute(sql_str)
     datas = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -81,8 +83,8 @@ def CheckCallBack():
 
 # 回访设置
 def CallBack(ui):
-    datas = CheckCallBack()
-    for data in datas:
+    result_data = check_return_visit_info()
+    for data in result_data:
         msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(data[0][:10], data[2],
                                                                                                 data[1], data[3])
         ui = CallBack_Ui_MainWindow(msg, data[4], data[1], data[3], data[2])
@@ -107,7 +109,7 @@ def runView():
                     data, addr = myClient.recvfrom(BUFSIZ)
                     Common.linkKey = data.decode()
 
-                    def HeartBeat():
+                    def heart_beat():
                         try:
                             if config.heartbeatCheck:
                                 myClient.send("heartbeat heartbeat".encode())
@@ -119,15 +121,15 @@ def runView():
                             except:
                                 pass
 
-                    def SchedulerStart(scheduler):
+                    def scheduler_start(scheduler):
                         try:
                             scheduler.start()
                         except (KeyboardInterrupt, SystemExit, Exception):
                             scheduler.shutdown()
 
                     trigger = CronTrigger(minute='*')
-                    config.scheduler.add_job(HeartBeat, trigger)
-                    schedule = threading.Thread(target=SchedulerStart, args=[config.scheduler])
+                    config.scheduler.add_job(heart_beat, trigger)
+                    schedule = threading.Thread(target=scheduler_start, args=[config.scheduler])
                     if Common.config.connect:
                         schedule.start()
 
@@ -136,15 +138,14 @@ def runView():
                     Common.config.connect = False
 
             try:
-                # ui = SheZhi_Ui_MainWindow()
                 ui = Login()
 
-            except Exception as e:
-                print(e)
+            except Exception as exception:
+                print(exception)
                 pass
         else:
             ui = Reg_Ui_MainWindow()
-        # Common.skin_change('Common/qss/white.qss')
+        Common.skin_change('View/main/qss/white.qss')
         CallBack(ui)
         ui.show()
         sys.exit(app.exec_())
@@ -180,7 +181,8 @@ def TryUse():
         return "online"
     jsonData = json.loads(req.text)
     now = datetime.strptime(jsonData.get("data"), "%Y-%m-%d %H:%M:%S")
-    if (os.path.isfile('secret.conf')):
+
+    if os.path.isfile('secret.conf'):
         fp = open('secret.conf', 'rb')
         record = fp.readline()
         if not record:
@@ -203,8 +205,6 @@ if __name__ == '__main__':
         try:
             CreateSqlite.CreateAllDb()
             runView()
-            # viewThread = threading.Thread(target=runView)
-            # viewThread.start()
         except Exception as e:
             print(e)
             pass
