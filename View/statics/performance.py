@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 
-from View.statics.ui_performance import Ui_Form as UiPerformance
+from View.statics.ui.ui_performance import Ui_Form as UiPerformance
 
 
 class Performance(QtWidgets.QWidget, UiPerformance):

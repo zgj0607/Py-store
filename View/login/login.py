@@ -8,7 +8,7 @@ from Controller.Interface import login_handler
 from View.main.main_view import MainView as Ui_MainWindow
 from Common.StaticFunc import md5
 from Common.Common import ClientClose
-from View.login.ui_login import Ui_MainWindow as UiLogin
+from View.login.ui.ui_login import Ui_MainWindow as UiLogin
 
 import Common.config as config
 from server.socket import run_socket

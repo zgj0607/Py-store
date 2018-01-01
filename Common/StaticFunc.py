@@ -144,7 +144,7 @@ def GetToday():
 
 
 # md5加密
-def md5(str):
+def md5(string):
     m = hashlib.md5()
-    m.update(str.encode())
+    m.update(string.encode())
     return m.hexdigest()

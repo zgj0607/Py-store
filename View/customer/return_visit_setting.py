@@ -6,7 +6,7 @@ from _datetime import datetime
 from PyQt5 import QtWidgets
 
 from Common.StaticFunc import GetOrderId
-from View.customer.ui_return_visit_setting import Ui_MainWindow
+from View.customer.ui.ui_return_visit_setting import Ui_MainWindow
 
 
 class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
