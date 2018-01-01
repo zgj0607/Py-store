@@ -17,25 +17,27 @@ __mtime__ = '2017/2/13'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from Controller import DbHandler
 import configparser
 import hashlib
-import requests
 import json
-from Common.config import domain, savePath, menuSavePath, connect as myconnect
-from Common.StaticFunc import GetOrderId, GetToday
-from Common.Common import SocketServer, cncurrency, MakeTime
-import xlwt
-from datetime import datetime
 import os
-from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
 import re
-import xlrd
+from collections import OrderedDict
 from collections import defaultdict
+from datetime import datetime
+
+import requests
+import xlrd
+import xlwt
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import *
-from collections import OrderedDict
+
+from Common.Common import SocketServer, cncurrency, MakeTime
+from Common.StaticFunc import GetOrderId, GetToday
+from Common.config import domain, savePath, menuSavePath, connect as myconnect
+from Controller import DbHandler
 
 dbhelp = DbHandler.DB_Handler()
 selectOrderNo = None

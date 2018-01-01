@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 
 from View.sale.excel_process import ExcelProcess
-from View.sale.ui_sale_detail import Ui_SaleDetail as SaleDetail
+from View.sale.ui.ui_sale_detail import Ui_SaleDetail as SaleDetail
 
 
 class SaleBase(QtWidgets.QWidget, SaleDetail):

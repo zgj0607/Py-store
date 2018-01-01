@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtGui import QIcon
 import os
 import sys
 from Common import Common
-from View.login.ui_register import Ui_Dialog as UiRegister
+from View.login.ui.ui_register import Ui_Dialog as UiRegister
 import configparser
 
 

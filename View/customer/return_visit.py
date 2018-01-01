@@ -1,8 +1,10 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 from Controller import DbHandler
-from View.customer.ui_return_visit import Ui_ReturnVisit as UiReturnVisit
+from View.customer.ui.ui_return_visit import Ui_ReturnVisit as UiReturnVisit
 from View.customer.return_visit_setting import ReturnVisitSetting
+from View.utils.table_utils import get_table_current_index_info
+
 try:
     _from_utf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -37,11 +39,11 @@ class ReturnVisit(QtWidgets.QWidget, UiReturnVisit):
         self.return_visit_table.setColumnWidth(0, 60)
 
     def _return_visit_process(self):
-        record_id = self.get_table_msg(0)
-        username = self.get_table_msg(1)
-        car_id = self.get_table_msg(2)
-        car_phone = self.get_table_msg(3)
-        return_visit_date = self.get_table_msg(4)
+        record_id = get_table_current_index_info(self.return_visit_table, 0)
+        username = get_table_current_index_info(self.return_visit_table, 1)
+        car_id = get_table_current_index_info(self.return_visit_table, 2)
+        car_phone = get_table_current_index_info(self.return_visit_table, 3)
+        return_visit_date = get_table_current_index_info(self.return_visit_table, 4)
         print(return_visit_date)
         if record_id:
             msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(
@@ -53,12 +55,6 @@ class ReturnVisit(QtWidgets.QWidget, UiReturnVisit):
             self.return_visit_setting()
         else:
             QtWidgets.QMessageBox.information(self.return_visit_button, "提示", "请选择未回访记录")
-
-    def get_table_msg(self, num):
-        row = self.return_visit_table.currentIndex().row()
-        model = self.return_visit_table.model()
-        index = model.index(row, num)
-        return model.data(index)
 
     def return_visit_setting(self):
 

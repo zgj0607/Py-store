@@ -15,7 +15,7 @@ from View.types.menu2 import Menu_Ui_MainWindow
 from Common.config import domain, code
 from View.users.worker import Worker_Ui_MainWindow
 from View.users.admin import Admin_Ui_MainWindow
-from View.users.changeAdmin import ChangeAdmin_Ui_MainWindow
+from View.users.change_password import ChangeAdmin_Ui_MainWindow
 from PyQt5 import QtWidgets, QtCore, QtGui
 from Common.Common import ClientClose
 from View.userConnect import Ui_MainWindow_UserConnect

@@ -2,14 +2,14 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
-from View.main.ui_main_view import Ui_MainWindow
+from View.main.ui.ui_main_view import Ui_MainWindow
 from PyQt5 import QtWidgets, QtCore
 
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.statics.performance import Performance
 from View.types.service import Service
-from View.users.password import Password
+from View.users.store_and_password import StoreAndPassword
 from View.users.staff import Staff
 from View.users.system_user import SystemUser
 from View.stock.normal_stock_query import stockQueryForm_stock
@@ -227,7 +227,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = Device()
 
             elif obj_name == 'setting_password':
-                tab_widget = Password()
+                tab_widget = StoreAndPassword()
 
             self._add_tab(tab_widget, tab_id)
             self._add_tab_info_dict(obj_name, tab_id)

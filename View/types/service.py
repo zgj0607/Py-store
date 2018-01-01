@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5 import QtWidgets
 
-from View.types.ui_service import Ui_Form as UiService
+from View.types.ui.ui_service import Ui_Form as UiService
 
 
 class Service(QtWidgets.QWidget, UiService):
