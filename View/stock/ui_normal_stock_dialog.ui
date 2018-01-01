@@ -13,29 +13,13 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>460</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
      <x>60</x>
      <y>10</y>
      <width>601</width>
-     <height>431</height>
+     <height>455</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_2">
@@ -53,166 +37,160 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_2"/>
-    </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>商品型号</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_3"/>
-    </item>
-    <item row="4" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
        <string>进货数量</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEdit_4"/>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="shuolianglineEdit"/>
     </item>
-    <item row="5" column="0">
+    <item row="7" column="0">
      <widget class="QLabel" name="label_5">
       <property name="text">
        <string>单位</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="lineEdit_5"/>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="danweilineEdit"/>
     </item>
-    <item row="6" column="0">
+    <item row="8" column="0">
      <widget class="QLabel" name="label_6">
       <property name="text">
        <string>进货单价</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
-     <widget class="QLineEdit" name="lineEdit_6"/>
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="danjialineEdit"/>
     </item>
-    <item row="7" column="0">
+    <item row="9" column="0">
      <widget class="QLabel" name="label_8">
       <property name="text">
        <string>单品小计</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
-     <widget class="QLineEdit" name="lineEdit_7">
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QLabel" name="label_7">
-      <property name="text">
-       <string>供应商</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="1">
-     <widget class="QLineEdit" name="lineEdit_8"/>
-    </item>
-    <item row="9" column="0">
-     <widget class="QLabel" name="label_10">
-      <property name="text">
-       <string>所属项目</string>
-      </property>
-     </widget>
-    </item>
     <item row="9" column="1">
-     <widget class="QLineEdit" name="lineEdit_9"/>
-    </item>
-    <item row="10" column="0">
-     <widget class="QLabel" name="label_9">
-      <property name="text">
-       <string>付款金额</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="1">
-     <widget class="QLineEdit" name="lineEdit_10">
+     <widget class="QLineEdit" name="xiaojilineEdit">
       <property name="readOnly">
        <bool>true</bool>
       </property>
      </widget>
     </item>
     <item row="11" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>供应商</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>所属项目</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>付款金额</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1">
+     <widget class="QLineEdit" name="paylineEdit">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="0">
      <widget class="QLabel" name="label_11">
       <property name="text">
        <string>未付金额</string>
       </property>
      </widget>
     </item>
-    <item row="11" column="1">
-     <widget class="QLineEdit" name="lineEdit_11"/>
+    <item row="14" column="1">
+     <widget class="QLineEdit" name="nopaylineEdit"/>
     </item>
-    <item row="12" column="0">
+    <item row="15" column="0">
      <widget class="QLabel" name="label_12">
       <property name="text">
        <string>付款方式</string>
       </property>
      </widget>
     </item>
-    <item row="12" column="1">
-     <widget class="QLineEdit" name="lineEdit_12"/>
+    <item row="15" column="1">
+     <widget class="QLineEdit" name="methodlineEdit"/>
     </item>
-    <item row="13" column="0">
+    <item row="16" column="0">
      <widget class="QLabel" name="label_13">
       <property name="text">
        <string>备注</string>
       </property>
      </widget>
     </item>
-    <item row="13" column="1">
-     <widget class="QLineEdit" name="lineEdit_13"/>
+    <item row="16" column="1">
+     <widget class="QLineEdit" name="notelineEdit"/>
     </item>
     <item row="1" column="1">
-     <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+     <widget class="QDateTimeEdit" name="dateTimeEdit">
+      <property name="dateTime">
+       <datetime>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2018</year>
+        <month>1</month>
+        <day>1</day>
+       </datetime>
+      </property>
+      <property name="displayFormat">
+       <string>yyyy/MM/dd HH:mm</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QComboBox" name="pinpaicomboBox"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="xinghaocomboBox"/>
+    </item>
+    <item row="11" column="1">
+     <widget class="QComboBox" name="gongyingshangcomboBox"/>
+    </item>
+    <item row="12" column="1">
+     <widget class="QComboBox" name="projectcomboBox"/>
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="commitButton">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>450</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>提交</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>428</x>
-     <y>474</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>496</x>
-     <y>480</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

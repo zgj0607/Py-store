@@ -81,7 +81,7 @@ def GetPCcode():
 
 
 def CheckCodeLocal(code):
-    result = False
+    result = True
     pcCode = GetPCcode()
     if md5(pcCode)[8:-8].upper() == code:
         result = True
