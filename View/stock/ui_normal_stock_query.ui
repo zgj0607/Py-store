@@ -13,93 +13,6 @@
   <property name="windowTitle">
    <string>进货信息</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>40</y>
-     <width>971</width>
-     <height>661</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>971</width>
-     <height>0</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>971</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <column>
-    <property name="text">
-     <string>序号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>进货日期</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品型号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品品牌</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>进货数量</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>单位</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>进货单价</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>单品小计</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>供应商</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>所属项目</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>付款金额</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>未付金额</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>备注</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
@@ -124,6 +37,16 @@
    </property>
    <property name="text">
     <string>修改</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="stocktableView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>961</width>
+     <height>641</height>
+    </rect>
    </property>
   </widget>
  </widget>
