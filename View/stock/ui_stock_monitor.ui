@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>historymonitorForm</class>
+ <widget class="QWidget" name="historymonitorForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>880</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>40</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>起始时间</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>245</x>
+     <y>40</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>结束时间</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>851</width>
+     <height>601</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>一级分类</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>二级分类</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>进货数量</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>进货金额</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="serchButton">
+   <property name="geometry">
+    <rect>
+     <x>475</x>
+     <y>36</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>查询</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="moniButton">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>35</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>模拟操作</string>
+   </property>
+  </widget>
+  <widget class="QDateTimeEdit" name="dateTimeEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>36</y>
+     <width>141</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QDateTimeEdit" name="dateTimeEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>37</y>
+     <width>141</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

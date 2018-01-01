@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>sub_serviceoperationdataForm</class>
+ <widget class="QWidget" name="sub_serviceoperationdataForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>880</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>851</width>
+     <height>601</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>一级分类</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>二级分类</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>成交单量</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>成交车次</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>成交数量</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>成交金额</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>成交毛利</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>731</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>选择门店</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineEdit"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>起始时间</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>结束时间</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateTimeEdit" name="dateTimeEdit_2"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="serchButton">
+      <property name="text">
+       <string>查询</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="exportButton">
+      <property name="text">
+       <string>导出</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
