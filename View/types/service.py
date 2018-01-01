@@ -102,7 +102,7 @@ class Service(QtWidgets.QWidget, UiService):
     def _update_first_service(self):
         service_id = get_table_current_index_info(self.first_service_table, 0)
         if not service_id:
-            QtWidgets.QMessageBox.information(self, "提示", "删除成功！")
+            QtWidgets.QMessageBox.information(self, "提示", "请选择一级服务项目")
             return
         service_name = get_table_current_index_info(self.first_service_table, 1)
         service = FirstLevelServiceInfo('修改一级服务项目', service_id=service_id, service_name=service_name)
