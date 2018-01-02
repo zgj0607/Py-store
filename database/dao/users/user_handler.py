@@ -1,5 +1,6 @@
 from _datetime import datetime
 
+from Common.StaticFunc import get_now
 from database.db_common_handler import delete_by_int_column, get_all_record, execute
 
 staff_table_name = "worker"
@@ -21,7 +22,7 @@ def update_staff_info(name, sex, id_card_no, staff_id):
 
 
 def insert_staff_info(name, sex, id_card_no):
-    time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    time_now = get_now()
     sql_text = "INSERT INTO {}(workerName, sex, idcard, createdTime) VALUES ('{}','{}','{}','{}')".format(
         staff_table_name, name, sex,
         id_card_no, time_now)
@@ -40,7 +41,7 @@ def get_all_sys_user():
 
 
 def insert_sys_user_info(username, password):
-    time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    time_now = get_now()
     sql_text = "INSERT INTO {}(username, pwd, createdTime) VALUES ('{}','{}','{}')".format(sys_user_table_name,
                                                                                            username, password, time_now)
     execute(sql_text)

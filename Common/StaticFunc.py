@@ -16,10 +16,12 @@ __mtime__ = '12/11/2016'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from datetime import datetime
+import hashlib
 import random
 import uuid
-import hashlib
+from datetime import datetime
+
+import xlwt
 
 
 class ErrorCode:
@@ -137,14 +139,60 @@ def GetDiscountCode(count=10):
     return slice
 
 
-# 获取当时间
-def GetToday():
-    today = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return today
-
-
 # md5加密
 def md5(string):
     m = hashlib.md5()
     m.update(string.encode())
     return m.hexdigest()
+
+
+def get_now():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def set_style(name, height, bold=False, center=False, upDown=False):
+    style = xlwt.XFStyle()  # 初始化样式
+
+    font = xlwt.Font()  # 为样式创建字体
+    font.name = name  # 'Times New Roman'
+    font.bold = bold
+    font.color_index = 4
+    font.height = height
+    style.font = font
+    alignment = xlwt.Alignment()
+    # 左右居中
+    if center:
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+    # 上下居中
+    if upDown:
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+
+    style.alignment = alignment
+    return style
+
+
+def format_time(time_str, today=False):
+    time_list = time_str.split('/')
+    # XP上的时间是以-分割的
+    if len(time_list) < 3:
+        time_list = time_str.split("-")
+
+    # 有时候年份会在以后一个,如：03-25-2016，此时查询数据将出错，因此要判断一下
+    if len(time_list[2]) == 4:
+        mon = time_list[0]
+        day = time_list[1]
+        time_list[0] = time_list[2]
+        time_list[1] = mon
+        time_list[2] = day
+
+    time_str = ""
+    for t in time_list:
+        if len(t) < 2:
+            t = "0" + t
+        time_str += t + "-"
+    time_str = time_str[:-1]
+    if today:
+        time_str += " 23:59:59"
+    else:
+        time_str += " 00:00:00"
+    return time_str

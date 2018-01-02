@@ -17,7 +17,7 @@ QWidget#customWidget {
 }
 
 /**********子界面中央背景**********/
-QWidget#centerWidget {
+QWidget#centralwidget QTabWidget{
         background: rgb(232, 241, 252);
 }
 
@@ -164,8 +164,18 @@ QTabBar::tab {
         min-width: 85px;
         margin-right: 5px;
         padding-left: 5px;
-        padding-right: 5px;
+        padding-right: 2px;
 }
+
+QTabBar::close-button {
+    image: url(img/close.png);
+    subcontrol-position: right;
+    width: 16px;
+    height: 16px;
+    margin-left: -1px;
+    padding-right: 2px;
+}
+
 QTabBar::tab:hover {
         background: rgb(0, 78, 161);
 }
@@ -721,38 +731,39 @@ QPushButton{
         border: none;
         width: 75px;
         height: 25px;
+        background-color: rgb(120, 170, 220);
 }
 QPushButton:enabled {
-        background: rgb(120, 170, 220);
+        background-color: rgb(120, 170, 220);
         color: white;
 }
 QPushButton:!enabled {
-        background: rgb(180, 180, 180);
+        background-color: rgb(180, 180, 180);
         color: white;
 }
 QPushButton:enabled:hover{
-        background: rgb(100, 160, 220);
+        background-color: rgb(100, 160, 220);
 }
 QPushButton:enabled:pressed{
-        background: rgb(0, 78, 161);
+        background-color: rgb(0, 78, 161);
 }
 
 QPushButton#blueButton {
         color: white;
 }
 QPushButton#blueButton:enabled {
-        background: rgb(0, 78, 161);
+        background-color: rgb(0, 78, 161);
         color: white;
 }
 QPushButton:!enabled {
-        background: rgb(180, 180, 180);
+        background-color: rgb(180, 180, 180);
         color: white;
 }
 QPushButton#blueButton:enabled:hover {
-        background: rgb(2, 65, 132);
+        background-color: rgb(2, 65, 132);
 }
 QPushButton#blueButton:enabled:pressed {
-        background: rgb(6, 94, 187);
+        background-color: rgb(6, 94, 187);
 }
 
 QPushButton#selectButton {

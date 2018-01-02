@@ -30,10 +30,12 @@ def add_table_header(table: QTableView, table_title: tuple):
     table.setColumnWidth(0, 120)
 
 
-def set_table_content(table: QTableView, record, table_title: tuple):
-    add_table_header(table, table_title)
+def set_table_content(table: QTableView, record, table_title=()):
+    if table_title:
+        add_table_header(table, table_title)
     column_len = len(table_title)
     model = table.model()
     for row_index, data in enumerate(record):
         for column_index in range(column_len):
             model.setItem(row_index, column_index, QStandardItem(str(data[column_index])))
+

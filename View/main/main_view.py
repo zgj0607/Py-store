@@ -1,27 +1,29 @@
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
+from Common.Common import ClientClose
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
 from View.main.ui.ui_main_view import Ui_MainWindow
-from PyQt5 import QtWidgets, QtCore
-
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.statics.performance import Performance
-from View.types.service import Service
-from View.users.store_and_password import StoreAndPassword
-from View.users.staff import Staff
-from View.users.system_user import SystemUser
-from View.stock.normal_stock_query import stockQueryForm_stock
-from View.stock.write_off_query import write_offForm_stock
 from View.stock.history_stock_query import historystockQueryForm_stock
-from View.stock.stock_monitor_query import stockmonitorQueryForm_stock
-from View.stock.inventory_serch import inventory_serchQueryForm_stock
-from View.stock.inventory_unsalable_waring import  inventory_unsalable_warninForm
 from View.stock.inventory_money import inventory_moneyForm_stock
-from View.stock.supplier_arrears import supplierarrearsForm_stock
-from View.stock.sub_service_operation_data import sub_serviceoperationdataForm
+from View.stock.inventory_serch import inventory_serchQueryForm_stock
+from View.stock.inventory_unsalable_waring import inventory_unsalable_warninForm
+from View.stock.normal_stock_query import stockQueryForm_stock
 from View.stock.operation_total_data import operationtotaldataForm
+from View.stock.stock_monitor_query import stockmonitorQueryForm_stock
+from View.stock.sub_service_operation_data import sub_serviceoperationdataForm
+from View.stock.supplier_arrears import supplierarrearsForm_stock
+from View.stock.write_off_query import write_offForm_stock
+from View.types.service import Service
+from View.users.staff import Staff
+from View.users.store_and_password import StoreAndPassword
+from View.users.system_user import SystemUser
+
+
 class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
     _signal = QtCore.pyqtSignal(str)
 
@@ -257,9 +259,13 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         del self.tab_index[tab_index]
         self.tabWidget.removeTab(tab_index)
 
+    def closeEvent(self, event):
+        ClientClose()
+
 
 if __name__ == '__main__':
     import sys
+
     app = QApplication(sys.argv)
     windows = MainView()
     windows.show()

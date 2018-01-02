@@ -18,22 +18,20 @@ __mtime__ = '2017/2/10'
             ┗┻┛  ┗┻┛
 """
 import codecs
-
-from PyQt5 import QtGui
-
-import requests
+import configparser
 import json
-import tornado.ioloop
-from PyQt5.QtCore import QFile, QTextCodec
-from PyQt5.QtWidgets import qApp, QApplication
-
-from Common import config
+import time
 from datetime import timedelta
 from socket import *
-from server.MySocket import ADDR, myClient, code, linkKey
+
+import requests
+import tornado.ioloop
+from PyQt5.QtCore import QFile
+from PyQt5.QtWidgets import qApp
+
+from Common import config
 from Common.StaticFunc import md5
-import configparser
-import time
+from server.MySocket import ADDR, myClient, code, linkKey
 
 
 # 获取本地pcid
@@ -88,30 +86,30 @@ def CheckCodeLocal(code):
     return result
 
 
-def MakeTime(timeStr, today=False):
-    timeList = timeStr.split('/')
+def format_time(time_str, today=False):
+    time_list = time_str.split('/')
     # XP上的时间是以-分割的
-    if len(timeList) < 3:
-        timeList = timeStr.split("-")
+    if len(time_list) < 3:
+        time_list = time_str.split("-")
     # 有时候年份会在以后一个,如：03-25-2016，此时查询数据将出错，因此要判断一下
-    if len(timeList[2]) == 4:
-        mon = timeList[0]
-        day = timeList[1]
-        timeList[0] = timeList[2]
-        timeList[1] = mon
-        timeList[2] = day
+    if len(time_list[2]) == 4:
+        mon = time_list[0]
+        day = time_list[1]
+        time_list[0] = time_list[2]
+        time_list[1] = mon
+        time_list[2] = day
 
-    timeStr = ""
-    for t in timeList:
+    time_str = ""
+    for t in time_list:
         if len(t) < 2:
             t = "0" + t
-        timeStr += t + "-"
-    timeStr = timeStr[:-1]
+        time_str += t + "-"
+    time_str = time_str[:-1]
     if today:
-        timeStr += " 23:59:59"
+        time_str += " 23:59:59"
     else:
-        timeStr += " 00:00:00"
-    return timeStr
+        time_str += " 00:00:00"
+    return time_str
 
 
 # 获取本周信息

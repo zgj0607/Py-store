@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.tabWidget.setFont(font)
-        self.tabWidget.setStyleSheet("background-color:transparent;")
+        self.tabWidget.setStyleSheet("")
         self.tabWidget.setIconSize(QtCore.QSize(16, 16))
         self.tabWidget.setElideMode(QtCore.Qt.ElideNone)
         self.tabWidget.setDocumentMode(True)

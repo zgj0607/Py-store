@@ -6,129 +6,137 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>947</width>
-    <height>611</height>
+    <width>942</width>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>942</width>
-     <height>611</height>
+     <y>550</y>
+     <width>941</width>
+     <height>32</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_20">
+   <layout class="QHBoxLayout" name="horizontalLayout_19">
     <item>
-     <widget class="QTableView" name="sys_user_table">
+     <widget class="QPushButton" name="add_sys_user">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
-        <width>940</width>
-        <height>541</height>
+        <width>75</width>
+        <height>29</height>
        </size>
       </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
+      <property name="maximumSize">
+       <size>
+        <width>75</width>
+        <height>29</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>添加用户</string>
       </property>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_19">
-      <item>
-       <widget class="QPushButton" name="add_sys_user">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>添加用户</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="change_sys_user">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>修改用户</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="remove_sys_user">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>75</width>
-          <height>58</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>删除用户</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_23">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
+     <widget class="QPushButton" name="change_sys_user">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>75</width>
+        <height>29</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>75</width>
+        <height>29</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>修改用户</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="remove_sys_user">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>75</width>
+        <height>29</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>75</width>
+        <height>29</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>删除用户</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_23">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
+  </widget>
+  <widget class="QTableView" name="sys_user_table">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>1</y>
+     <width>940</width>
+     <height>551</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>940</width>
+     <height>551</height>
+    </size>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="horizontalHeaderStretchLastSection">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
   </widget>
  </widget>
  <resources/>
