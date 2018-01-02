@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_supplier_arrears_dialog import Ui_supplierarrearsDialog
+from PyQt5 import QtWidgets
+from View.supplier.ui.ui_supplier_arrears_dialog import Ui_supplierarrearsDialog
 
 
 class Diglog_supplier_arrears(QtWidgets.QDialog, Ui_supplierarrearsDialog):

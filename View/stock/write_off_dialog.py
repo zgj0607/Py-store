@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_write_off_dialog import Ui_writeOffDialog
+from PyQt5 import QtWidgets
+from View.stock.ui.ui_write_off_dialog import Ui_writeOffDialog
 
 
 class DiglogWriteOff(QtWidgets.QDialog, Ui_writeOffDialog):

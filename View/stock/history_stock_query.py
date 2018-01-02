@@ -9,7 +9,7 @@
 from PyQt5 import QtWidgets
 
 from View.stock.history_compare_dialog import Diglog_historystock
-from View.stock.ui_history_stock import Ui_historySockForm
+from View.stock.ui.ui_history_stock import Ui_historySockForm
 
 
 class HistoryStock(QtWidgets.QWidget, Ui_historySockForm):

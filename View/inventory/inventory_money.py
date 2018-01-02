@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_inventory_money import Ui_inventorymoneyForm
+from PyQt5 import QtWidgets
+from View.inventory.ui.ui_inventory_money import Ui_inventorymoneyForm
 
 
 

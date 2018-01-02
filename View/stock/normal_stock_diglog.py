@@ -8,7 +8,7 @@
 
 from PyQt5 import QtWidgets
 
-from View.stock.ui_normal_stock_dialog import Ui_Dialog
+from View.stock.ui.ui_normal_stock_dialog import Ui_Dialog
 
 
 class StockInputDialog(QtWidgets.QDialog, Ui_Dialog):

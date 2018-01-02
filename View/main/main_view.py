@@ -4,19 +4,19 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from Common.Common import ClientClose
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
+from View.inventory.inventory_money import inventory_moneyForm_stock
+from View.inventory.inventory_serch import inventory_serchQueryForm_stock
+from View.inventory.inventory_unsalable_waring import inventory_unsalable_warninForm
 from View.main.ui.ui_main_view import Ui_MainWindow
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.statics.performance import Performance
 from View.stock.history_stock_query import HistoryStock
-from View.stock.inventory_money import inventory_moneyForm_stock
-from View.stock.inventory_serch import inventory_serchQueryForm_stock
-from View.stock.inventory_unsalable_waring import inventory_unsalable_warninForm
 from View.stock.normal_stock_query import StockQuery
-from View.stock.operation_total_data import operationtotaldataForm
+from View.operation.operation_total_data import operationtotaldataForm
 from View.stock.stock_monitor_query import stockmonitorQueryForm_stock
-from View.stock.sub_service_operation_data import sub_serviceoperationdataForm
-from View.stock.supplier_arrears import supplierarrearsForm_stock
+from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
+from View.supplier.supplier_arrears import supplierarrearsForm_stock
 from View.stock.write_off_query import write_offForm_stock
 from View.types.service import Service
 from View.users.staff import Staff
@@ -170,8 +170,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             return
 
         if self._exists(obj_name):
-            tab_index = self.tab_name.get(obj_name)
-            tab_widget = self.tabWidget.widget(tab_index)
+            tab_widget = self.tab_name.get(obj_name)
 
         else:
             if obj_name == 'local_sale':
@@ -232,7 +231,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StoreAndPassword()
 
             self._add_tab(tab_widget, tab_id)
-            self._add_tab_info_dict(obj_name, tab_id)
+            self._add_tab_info_dict(obj_name, tab_widget)
 
         self.tabWidget.setCurrentWidget(tab_widget)
 
@@ -242,9 +241,8 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.tabWidget.setTabIcon(tab_id, self.tab_icon)
 
     # 统一处理Tab页的所有字典信息
-    def _add_tab_info_dict(self, obj_name: str, tab_id: int):
-        self.tab_index[tab_id] = obj_name
-        self.tab_name[obj_name] = tab_id
+    def _add_tab_info_dict(self, obj_name: str, tab_widget: QWidget):
+        self.tab_name[obj_name] = tab_widget
 
     # 判断将要打开的页面是否已经在Tab页中打开，同一个页面强制只能打开一个
     def _exists(self, tab_name):
@@ -254,11 +252,9 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 统一处理Tab页的关闭
     def close_tab(self, tab_index):
-        tab_name = self.tab_index.get(tab_index)
+        tab_widget = self.tabWidget.widget(tab_index)
+        tab_name = list(self.tab_name.keys())[list(self.tab_name.values()).index(tab_widget)]
         del self.tab_name[tab_name]
-        del self.tab_index[tab_index]
-        print(self.tab_name)
-        print(self.tab_index)
         self.tabWidget.removeTab(tab_index)
 
     def closeEvent(self, event):

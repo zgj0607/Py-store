@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_sub_service_operation_data import Ui_sub_serviceoperationdataForm
+from PyQt5 import QtWidgets
+from View.operation.ui.ui_sub_service_operation_data import Ui_sub_serviceoperationdataForm
 
 
 class sub_serviceoperationdataForm(QtWidgets.QWidget, Ui_sub_serviceoperationdataForm):

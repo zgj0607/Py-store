@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_inventory_unsalable_warning import Ui_inventoryunsalablewarningForm
+from PyQt5 import QtWidgets
+from View.inventory.ui.ui_inventory_unsalable_warning import Ui_inventoryunsalablewarningForm
 from View.stock.history_compare_dialog import Diglog_historystock
 
 

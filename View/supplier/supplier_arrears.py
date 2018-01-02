@@ -6,10 +6,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_supplier_arrears import Ui_supplierarrearsForm
-from View.stock.supplier_arrears_dialog import Diglog_supplier_arrears
-from View.stock.supplier_payment_dialog import Diglog_supplier_payment
+from PyQt5 import QtWidgets
+from View.supplier.ui.ui_supplier_arrears import Ui_supplierarrearsForm
+from View.supplier.supplier_arrears_dialog import Diglog_supplier_arrears
+from View.supplier.supplier_payment_dialog import Diglog_supplier_payment
 
 class supplierarrearsForm_stock(QtWidgets.QWidget, Ui_supplierarrearsForm):
     def __init__(self):

@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_stock_monitor_two_detail import Ui_monitortwodetailDialog
+from PyQt5 import QtWidgets
+from View.stock.ui.ui_stock_monitor_two_detail import Ui_monitortwodetailDialog
 
 
 class Diglog_monitor_two_detail(QtWidgets.QDialog, Ui_monitortwodetailDialog):

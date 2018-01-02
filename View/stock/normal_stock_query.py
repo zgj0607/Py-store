@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
 from View.stock.normal_stock_diglog import StockInputDialog
-from View.stock.ui_normal_stock_query import Ui_stockQueryForm
+from View.stock.ui.ui_normal_stock_query import Ui_stockQueryForm
 from View.utils.table_utils import set_table_content
 from database.dao.stock.stock_handler import get_all_stock
 

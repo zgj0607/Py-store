@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_supplier_payment_dialog import Ui_supplierpaymentDialog
+from PyQt5 import QtWidgets
+from View.supplier.ui.ui_supplier_payment_dialog import Ui_supplierpaymentDialog
 
 
 class Diglog_supplier_payment(QtWidgets.QDialog, Ui_supplierpaymentDialog):

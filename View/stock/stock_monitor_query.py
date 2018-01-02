@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_stock_monitor import Ui_historymonitorForm
+from PyQt5 import QtWidgets
+from View.stock.ui.ui_stock_monitor import Ui_historymonitorForm
 from View.stock.stock_monitor_two_detail import Diglog_monitor_two_detail
 
 

@@ -6,8 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from View.stock.ui_operation_total_data import Ui_operationtotaldataForm
+from PyQt5 import QtWidgets
+from View.operation.ui.ui_operation_total_data import Ui_operationtotaldataForm
 
 
 
