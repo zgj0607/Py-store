@@ -8,11 +8,11 @@ from View.main.ui.ui_main_view import Ui_MainWindow
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.statics.performance import Performance
-from View.stock.history_stock_query import historystockQueryForm_stock
+from View.stock.history_stock_query import HistoryStock
 from View.stock.inventory_money import inventory_moneyForm_stock
 from View.stock.inventory_serch import inventory_serchQueryForm_stock
 from View.stock.inventory_unsalable_waring import inventory_unsalable_warninForm
-from View.stock.normal_stock_query import stockQueryForm_stock
+from View.stock.normal_stock_query import StockQuery
 from View.stock.operation_total_data import operationtotaldataForm
 from View.stock.stock_monitor_query import stockmonitorQueryForm_stock
 from View.stock.sub_service_operation_data import sub_serviceoperationdataForm
@@ -184,13 +184,13 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = ReturnVisit()
 
             elif obj_name == 'normal_stock_add':
-                tab_widget = stockQueryForm_stock()
+                tab_widget = StockQuery()
 
             elif obj_name == 'write_off_add':
                 tab_widget = write_offForm_stock()
 
             elif obj_name == 'history_stock':
-                tab_widget = historystockQueryForm_stock()
+                tab_widget = HistoryStock()
 
             elif obj_name == 'stock_monitor':
                 tab_widget = stockmonitorQueryForm_stock()
@@ -257,6 +257,8 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         tab_name = self.tab_index.get(tab_index)
         del self.tab_name[tab_name]
         del self.tab_index[tab_index]
+        print(self.tab_name)
+        print(self.tab_index)
         self.tabWidget.removeTab(tab_index)
 
     def closeEvent(self, event):

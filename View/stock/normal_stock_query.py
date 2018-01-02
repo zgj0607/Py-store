@@ -9,19 +9,19 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
-from View.stock.normal_stock_diglog import Diglog_stock
+from View.stock.normal_stock_diglog import StockInputDialog
 from View.stock.ui_normal_stock_query import Ui_stockQueryForm
 from View.utils.table_utils import set_table_content
 from database.dao.stock.stock_handler import get_all_stock
 
 
-class stockQueryForm_stock(QtWidgets.QWidget, Ui_stockQueryForm):
+class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
     def __init__(self):
-        super(stockQueryForm_stock, self).__init__()
+        super(StockQuery, self).__init__()
         self.setupUi(self)
         self.addButton.clicked.connect(self.addStock)
         self.editButton.clicked.connect(self.editStock)
-        self.setWindowTitle('进货监控')
+        self.setWindowTitle('普通进货录入')
         self.stocktableView.horizontalHeader().setDefaultAlignment(Qt.AlignCenter)
 
         self.table_title = (
@@ -42,14 +42,13 @@ class stockQueryForm_stock(QtWidgets.QWidget, Ui_stockQueryForm):
         # 新增进货录入信息
 
     def addStock(self):
-        dialog = Diglog_stock()
-        dialog.show()
+        dialog = StockInputDialog()
         dialog.exec()
         # stockForm.
 
         # 修改进货录入信息
 
     def editStock(self):
-        dialog = Diglog_stock()
+        dialog = StockInputDialog()
         dialog.show()
         dialog.exec()

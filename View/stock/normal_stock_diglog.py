@@ -6,20 +6,16 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5 import QtWidgets
 
 from View.stock.ui_normal_stock_dialog import Ui_Dialog
-from View.utils.table_utils import set_table_content
 
 
-class Diglog_stock(QtWidgets.QWidget, Ui_Dialog):
+class StockInputDialog(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self):
-        super(Diglog_stock, self).__init__()
+        super(StockInputDialog, self).__init__()
         self.setupUi(self)
-        self.commitButton.clicked().connect(self.commit)
-    def _retranslateUi(self):
-        print('123')
+        self.commitButton.clicked.connect(self.commit)
 
     # 进货信息录入
     def commit(self):
@@ -30,7 +26,7 @@ class Diglog_stock(QtWidgets.QWidget, Ui_Dialog):
         goodUnit = self.gender.text()
         price = self.gender.text()
         supplierName = self.gender.text()
-        payAmount= self.gender.text()
+        payAmount = self.gender.text()
         # id_card_no = self.id_card_no.text()
         # submit_staff_info(name, sex, id_card_no, self.staff_id)
         # QMessageBox.information(self.submit, "提示", "提交成功")
