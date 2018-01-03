@@ -36,20 +36,20 @@ class SaleBase(QtWidgets.QWidget, SaleDetail):
                 QtWidgets.QMessageBox.information(self.details_import_button, "提示", "文件错误")
 
     def _sale_detail_export(self):
-        start_time = self.dateEdit_5.text()
-        end_time = self.dateEdit_6.text()
+        start_time = self.start_date.text()
+        end_time = self.end_date.text()
         excel_handler = ExcelProcess()
         file_name = excel_handler.export_sale_detail(start_time, end_time)
         if file_name:
-            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件名为：{}".format(file_name))
+            QtWidgets.QMessageBox.information(self.details_export_button, "提示", "文件名为：{}".format(file_name))
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "暂无消费记录")
+            QtWidgets.QMessageBox.information(self.details_export_button, "提示", "暂无消费记录")
 
     def _result_process(self, result_str):
         if result_str:
             pass
         elif not result_str:
-            QtWidgets.QMessageBox.information(self.details_query_button, "提示", "网络连接错误")
+            QtWidgets.QMessageBox.information(self.details_query_button, "提示", "暂无消费记录")
         elif result_str == 'restart':
             QtWidgets.QMessageBox.information(self.details_query_button, "提示", "与服务器链接中断，请重新运行软件")
         else:

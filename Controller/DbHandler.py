@@ -18,13 +18,11 @@ __mtime__ = '2017/2/10'
             ┗┻┛  ┗┻┛
 """
 import sqlite3
-from Common import Common
 from datetime import datetime
-from PyQt5 import QtWidgets
 
-from Common.StaticFunc import format_time
-from View.userConnect import Ui_MainWindow_UserConnect
 import Common.config as config
+from Common import Common
+from Common.time_utils import format_time
 
 
 class DB_Handler():
@@ -38,11 +36,11 @@ class DB_Handler():
         endTime = format_time(endTime, True)
         if Table:
             sqlStr = 'SELECT orderNo,createdTime,pcSign,carId,carUser,carPhone,carModel,workerName,project,attribute,orderCheckId' \
-                     ' FROM XiaoFei WHERE createdTime BETWEEN \'{}\' and \'{}\' ORDER BY createdTime DESC '.format(
+                     ' FROM Sales WHERE createdTime BETWEEN \'{}\' and \'{}\' ORDER BY createdTime DESC '.format(
                 startTime, endTime)
         else:
             sqlStr = 'SELECT orderCheckId,orderNo,createdTime,pcSign,carId,carUser,carPhone,carModel,workerName,project,attribute' \
-                     ' FROM XiaoFei WHERE createdTime BETWEEN \'{}\' and \'{}\' ORDER BY createdTime DESC '.format(
+                     ' FROM Sales WHERE createdTime BETWEEN \'{}\' and \'{}\' ORDER BY createdTime DESC '.format(
                 startTime, endTime)
         cursor = self.conn.execute(sqlStr)
         data = cursor.fetchall()
@@ -53,7 +51,7 @@ class DB_Handler():
     # 插入消费信息
     def InsertXiaoFei(self, saveData):
         self.conn = sqlite3.connect('MYDATA.db')
-        sqlStr = "INSERT INTO XiaoFei (id,orderNo,carId,pcId,workerId,userId," \
+        sqlStr = "INSERT INTO Sales (id,orderNo,carId,pcId,workerId,userId," \
                  "workerName,code,carUser,attribute,pcSign," \
                  "carPhone,carModel,project,createdTime,orderCheckId) " \
                  "VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(
@@ -259,11 +257,11 @@ class DB_Handler():
         self.conn = sqlite3.connect('MYDATA.db')
         if remote:
             sqlStr = "SELECT createdTime,orderNo,carId,carUser,carPhone,carModel,workerName,project,attribute,pcId,orderCheckId,pcSign" \
-                     " FROM XiaoFei WHERE {}='{}' AND userId != '' AND userId IS NOT NULL ORDER BY createdTime DESC ".format(
+                     " FROM Sales WHERE {}='{}' AND userId != '' AND userId IS NOT NULL ORDER BY createdTime DESC ".format(
                 key, value)
         else:
             sqlStr = "SELECT createdTime,orderNo,carId,carUser,carPhone,carModel,workerName,project,attribute,pcId,orderCheckId,pcSign" \
-                     " FROM XiaoFei WHERE {}='{}' ORDER BY createdTime DESC ".format(key, value)
+                     " FROM Sales WHERE {}='{}' ORDER BY createdTime DESC ".format(key, value)
         cursor = self.conn.execute(sqlStr)
         data = cursor.fetchall()
         cursor.close()
@@ -275,12 +273,12 @@ class DB_Handler():
         self.conn = sqlite3.connect('MYDATA.db')
         if remote:
             sqlStr = "SELECT createdTime,orderNo,carId,carUser,carPhone,carModel,workerName,project,attribute,pcId,orderCheckId" \
-                     " FROM XiaoFei WHERE carId='{}' and carPhone='{}' AND userId != '' AND userId IS NOT NULL ORDER BY createdTime DESC ".format(
+                     " FROM Sales WHERE carId='{}' and carPhone='{}' AND userId != '' AND userId IS NOT NULL ORDER BY createdTime DESC ".format(
                 carId, carPhone)
         else:
             sqlStr = "SELECT createdTime,orderNo,carId,carUser,carPhone,carModel,workerName,project,attribute,pcId,orderCheckId" \
-                     " FROM XiaoFei WHERE carId='{}' and carPhone='{}' ORDER BY createdTime DESC ".format(carId,
-                                                                                                          carPhone)
+                     " FROM Sales WHERE carId='{}' and carPhone='{}' ORDER BY createdTime DESC ".format(carId,
+                                                                                                        carPhone)
         cursor = self.conn.execute(sqlStr)
         data = cursor.fetchall()
         cursor.close()
@@ -332,7 +330,7 @@ class DB_Handler():
         startTime = '{}-{}-{} 00:00:00'.format(year, month, day)
         endTime = '{}-{}-{} 23:59:59'.format(year, month, day)
 
-        sqlStr = "SELECT count(*) FROM XiaoFei WHERE createdTime BETWEEN \'{}\' and \'{}\' group by OrderNo".format(
+        sqlStr = "SELECT count(*) FROM Sales WHERE createdTime BETWEEN \'{}\' and \'{}\' group by OrderNo".format(
             startTime, endTime)
         cursor = self.conn.execute(sqlStr)
         data = cursor.fetchall()

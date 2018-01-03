@@ -1,12 +1,13 @@
 import configparser
 import json
-import sqlite3
 from _datetime import datetime
 
 from PyQt5 import QtWidgets
 
 from Common.StaticFunc import GetOrderId
 from View.customer.ui.ui_return_visit_setting import Ui_MainWindow
+from database.dao.customer import customer_handler
+from database.dao.sale import sale_handler
 
 
 class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
@@ -28,7 +29,7 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
         else:
             today = datetime.now()
             get_data = {}
-            order_no = self.dbhelp.GetOrderNo(today)
+            order_no = sale_handler.get_order_no(today)
             get_data["orderNo"] = order_no
             get_data["createdTime"] = today
             get_data["carUser"] = self.carUser
@@ -68,19 +69,14 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
                 'id': order_id
             }
 
-            self.dbhelp.InsertXiaoFei(save_data)
+            sale_handler.add_sale_detail(save_data)
 
-            conn = sqlite3.connect('MYDATA.db')
-            search = "id={}".format(self.id)
+            # 更新回访状态，标记已回访
+            customer_handler.update_return_visit_state(self.id, '1')
 
-            update_data = "state=\'{}\'".format("1")
-            sql_str = "UPDATE CallBack SET {} WHERE {}".format(update_data, search)
-            conn.execute(sql_str)
-            conn.commit()
-
-            if self.checkBox.isChecked():
+            # 如果填写了二次回访时间，则写入一条待回访数据
+            if self.do_set_next_date.isChecked():
                 # 回访设置
-                table_name = "CallBack"
                 time_str = self.dateEdit.text()
                 time_list = time_str.split('/')
                 # XP上的时间是以-分割的
@@ -100,10 +96,7 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
                         t = "0" + t
                     time_str += t + "-"
                 time_str = time_str[:-1]
-                key = "{},{},{},{},{},{}".format("callbackTime", "phone", 'carId', "username", 'createdTime', 'state')
-                value = "\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\'".format(time_str, car_phone, car_id, car_user, today,
-                                                                           '0')
-                self.dbhelp.InsertData(table_name, key, value)
+                customer_handler.add_return_visit_data(time_str, car_phone, car_id, car_user, today)
 
             conn.close()
             self.close()

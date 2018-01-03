@@ -21,7 +21,6 @@ import decimal
 import json
 import os
 import socket
-import sqlite3
 import sys
 import threading
 from datetime import datetime, timedelta
@@ -37,10 +36,10 @@ import CreateSqlite
 from Common import Common
 from Common import config
 from Common.config import BUFSIZ
+from View.customer.return_visit_setting import ReturnVisitSetting
 from View.login.login import Login
 from View.login.register import Register as Reg_Ui_MainWindow
-from View.main.callback import CallBack_Ui_MainWindow
-from database.dao.customer_handler import check_return_visit_info
+from database.dao.customer.customer_handler import get_return_visit_info
 from server.MySocket import myClient
 
 decimal.__version__
@@ -48,17 +47,18 @@ apscheduler.__version__
 
 
 # 运行之前要检查配置文件
-def beforeRun():
+def pre_check():
     result = False
     root = 'config.ini'
 
-    basicMsg = configparser.ConfigParser()
-    basicMsg.read(root)
+    basic_msg = configparser.ConfigParser()
+    basic_msg.read(root)
 
     code = None
     try:
-        code = basicMsg.get('msg', 'code')
-    except:
+        code = basic_msg.get('msg', 'code')
+    except Exception as check_exception:
+        print(check_exception)
         pass
 
     if Common.CheckCodeLocal(code):
@@ -67,31 +67,17 @@ def beforeRun():
     return result
 
 
-def CheckCallBack():
-    conn = sqlite3.connect('MYDATA.db')
-    now = datetime.now().strftime('%Y/%m/%d')
-    time_str = Common.format_time(now, True)
-
-    sql_str = 'SELECT callbackTime,phone,username,carId,id FROM CallBack WHERE state=\'0\' AND callbackTime <= \'{}\' ORDER BY createdTime DESC '.format(
-        time_str)
-    cursor = conn.execute(sql_str)
-    datas = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return datas
-
-
 # 回访设置
-def CallBack(ui):
-    result_data = check_return_visit_info()
+def return_visit():
+    result_data = get_return_visit_info()
     for data in result_data:
-        msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(data[0][:10], data[2],
-                                                                                                data[1], data[3])
-        ui = CallBack_Ui_MainWindow(msg, data[4], data[1], data[3], data[2])
+        msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>" \
+            .format(data[0][:10], data[2], data[1], data[3])
+        ui = ReturnVisitSetting(msg, record_id=data[4], car_phone=data[1], car_id=data[3], car_user=data[2])
         ui.exec_()
 
 
-def runView():
+def run():
     translator = QTranslator()
     translator.load("qt_zh_CN.qm")
     app = QApplication(sys.argv)
@@ -101,7 +87,7 @@ def runView():
     check = True
     if check:
         # 判断注册码是否正确
-        if beforeRun():
+        if pre_check():
             # 链接服务器
             if Common.config.connect:
                 try:
@@ -115,10 +101,12 @@ def runView():
                                 myClient.send("heartbeat heartbeat".encode())
                             else:
                                 config.heartbeatCheck = True
-                        except:
+                        except Exception as run_exception:
+                            print(run_exception)
                             try:
                                 config.scheduler.shutdown()
-                            except:
+                            except Exception as shutdown_exception:
+                                print(shutdown_exception)
                                 pass
 
                     def scheduler_start(scheduler):
@@ -146,7 +134,7 @@ def runView():
         else:
             ui = Reg_Ui_MainWindow()
         Common.skin_change('View/main/qss/white.qss')
-        CallBack(ui)
+        return_visit()
         ui.show()
         sys.exit(app.exec_())
 
@@ -161,26 +149,28 @@ def runView():
         sys.exit(app.exec_())
 
 
-def IsOpen(port=15775, ip='127.0.0.1'):
+def is_open(port=15775, ip='127.0.0.1'):
     c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         c.connect((ip, port))
         c.shutdown(2)
         c.close()
         return True
-    except:
+    except Exception as socket_exception:
+        print(socket_exception)
         return False
 
 
-def TryUse():
+def try_use():
     # now = datetime.now()
     url = 'http://119.23.39.238:8500/store/api/time'
     try:
         req = requests.get(url)
-    except:
+    except Exception as try_use_exception:
+        print(try_use_exception)
         return "online"
-    jsonData = json.loads(req.text)
-    now = datetime.strptime(jsonData.get("data"), "%Y-%m-%d %H:%M:%S")
+    json_data = json.loads(req.text)
+    now = datetime.strptime(json_data.get("data"), "%Y-%m-%d %H:%M:%S")
 
     if os.path.isfile('secret.conf'):
         fp = open('secret.conf', 'rb')
@@ -189,9 +179,9 @@ def TryUse():
             return False
         else:
             record = record.decode()
-            recordTime = datetime.strptime(record, "%Y-%m-%d %H:%M:%S")
+            record_time = datetime.strptime(record, "%Y-%m-%d %H:%M:%S")
 
-            if now > (recordTime + timedelta(days=30)):
+            if now > (record_time + timedelta(days=30)):
                 return False
             else:
                 return True
@@ -201,10 +191,10 @@ def TryUse():
 
 if __name__ == '__main__':
 
-    if not IsOpen():
+    if not is_open():
         try:
             CreateSqlite.CreateAllDb()
-            runView()
+            run()
         except Exception as e:
             print(e)
             pass

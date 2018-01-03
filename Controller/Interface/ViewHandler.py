@@ -35,7 +35,8 @@ from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import *
 
 from Common.Common import SocketServer, cncurrency, format_time
-from Common.StaticFunc import GetOrderId, get_now
+from Common.StaticFunc import GetOrderId
+from Common.time_utils import get_now
 from Common.config import domain, savePath, menuSavePath, connect as myconnect
 from Controller import DbHandler
 

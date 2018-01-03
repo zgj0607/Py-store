@@ -1,4 +1,4 @@
-from Common.StaticFunc import get_now
+from Common.time_utils import get_now
 from database.db_connection import execute
 
 service_table_name = 'service'

@@ -5,7 +5,8 @@ from datetime import datetime
 import xlrd
 import xlwt
 
-from Common.StaticFunc import get_now, set_style
+from Common.StaticFunc import set_style
+from Common.time_utils import get_now
 from Common.config import menuSavePath
 from View.types import attribute, attribute_state
 from database.dao.service.service_handler import get_all_second_level_service, get_all_first_level_service, \

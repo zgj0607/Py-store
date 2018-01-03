@@ -8,7 +8,7 @@
 
 from PyQt5 import QtWidgets
 from View.inventory.ui.ui_inventory_serch import Ui_inventoryForm
-from View.stock.history_compare_dialog import Diglog_historystock
+from View.buy.history_compare_dialog import Diglog_historystock
 
 
 class inventory_serchQueryForm_stock(QtWidgets.QWidget, Ui_inventoryForm):

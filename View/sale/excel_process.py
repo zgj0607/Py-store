@@ -9,7 +9,8 @@ import xlwt
 from PyQt5.QtWidgets import QProgressDialog
 
 from Common.Common import SocketServer
-from Common.StaticFunc import GetOrderId, get_now, format_time
+from Common.StaticFunc import GetOrderId
+from Common.time_utils import get_now, format_time
 from Common.config import savePath
 from Controller import DbHandler
 from Controller.Interface.ViewHandler import set_style, MakeTempMsg

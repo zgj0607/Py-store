@@ -7,13 +7,15 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QIcon
+import configparser
+import json
 import sqlite3
 from datetime import datetime
-import configparser
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
+
 from Common.StaticFunc import GetOrderId
-import json
 from Controller import DbHandler
 
 

@@ -31,6 +31,8 @@ class Ui_sub_serviceoperationdataForm(object):
         self.tableWidget.setHorizontalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(6, item)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.verticalHeader().setVisible(False)
         self.horizontalLayoutWidget = QtWidgets.QWidget(sub_serviceoperationdataForm)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 10, 731, 80))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")

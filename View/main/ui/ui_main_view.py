@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         font.setFamily("Songti SC")
         self.stock.setFont(font)
         self.stock.setSeparatorsCollapsible(False)
-        self.stock.setObjectName("stock")
+        self.stock.setObjectName("buy")
         self.stock_add = QtWidgets.QMenu(self.stock)
         self.stock_add.setObjectName("stock_add")
         self.inventory = QtWidgets.QMenu(self.menuBar)

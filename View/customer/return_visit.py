@@ -4,6 +4,7 @@ from Controller import DbHandler
 from View.customer.ui.ui_return_visit import Ui_ReturnVisit as UiReturnVisit
 from View.customer.return_visit_setting import ReturnVisitSetting
 from View.utils.table_utils import get_table_current_index_info
+from database.dao.customer import customer_handler
 
 try:
     _from_utf8 = QtCore.QString.fromUtf8
@@ -76,7 +77,7 @@ class ReturnVisit(QtWidgets.QWidget, UiReturnVisit):
         self.return_visit_table.setColumnWidth(0, 200)
 
         # 获取信息
-        callback = db_help.GetCallBack()
+        callback = customer_handler.get_return_visit_info()
 
         if callback:
             # 插入信息
