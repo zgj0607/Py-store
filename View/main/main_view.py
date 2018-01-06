@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from Common.Common import ClientClose
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
-from View.inventory.inventory_money import inventory_moneyForm_stock
-from View.inventory.inventory_serch import inventory_serchQueryForm_stock
-from View.inventory.inventory_unsalable_waring import inventory_unsalable_warninForm
+from View.stock.stock_money import inventory_moneyForm_stock
+from View.stock.stock_search import inventory_serchQueryForm_stock
+from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
 from View.main.ui.ui_main_view import Ui_MainWindow
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
@@ -17,7 +17,7 @@ from View.operation.operation_total_data import operationtotaldataForm
 from View.buy.buy_monitor_query import stockmonitorQueryForm_stock
 from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
 from View.supplier.supplier_arrears import supplierarrearsForm_stock
-from View.buy.write_off_query import write_offForm_stock
+from View.buy.write_off_query import WriteOff
 from View.types.service import Service
 from View.users.staff import Staff
 from View.users.store_and_password import StoreAndPassword
@@ -186,7 +186,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StockQuery()
 
             elif obj_name == 'write_off_add':
-                tab_widget = write_offForm_stock()
+                tab_widget = WriteOff()
 
             elif obj_name == 'history_stock':
                 tab_widget = HistoryStock()

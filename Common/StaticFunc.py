@@ -21,6 +21,8 @@ import random
 import uuid
 
 import xlwt
+from PyQt5.QtGui import QDoubleValidator, QIntValidator
+from PyQt5.QtWidgets import QLineEdit
 
 
 class ErrorCode:
@@ -166,3 +168,10 @@ def set_style(name, height, bold=False, center=False, upDown=False):
     return style
 
 
+def set_validator(edit: QLineEdit, type: str):
+    validator = None
+    if type == 'int':
+        validator = QIntValidator()
+    elif type == 'float':
+        validator = QDoubleValidator()
+    edit.setValidator(validator)

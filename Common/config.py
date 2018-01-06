@@ -102,3 +102,5 @@ connect = False
 heartbeatCheck = True
 
 scheduler = BlockingScheduler()
+
+login_user_info = []

@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QFileDialog
 
 from View.sale.excel_process import ExcelProcess
 from View.sale.ui.ui_sale_detail import Ui_SaleDetail as SaleDetail
+from View.utils import table_utils
 
 
 class SaleBase(QtWidgets.QWidget, SaleDetail):
@@ -16,6 +17,14 @@ class SaleBase(QtWidgets.QWidget, SaleDetail):
         self.setWindowIcon(my_icon)
         self._signal_slot_init()
 
+        self.table_title = (
+            '订单号', '消费时间', '消费门店', '车牌号', '车主姓名', '联系电话', '车型', '操作人员', '消费项目', '数量', '单价', '小计', '总价', '单位', '备注')
+
+        self._init_table()
+
+    def _init_table(self):
+        table_utils.set_table_content(self.sales_details_result_table, [], self.table_title)
+
     def _signal_slot_init(self):
         self.details_import_button.clicked.connect(self._sale_detail_import)
         self.details_export_button.clicked.connect(self._sale_detail_export)
@@ -23,7 +32,7 @@ class SaleBase(QtWidgets.QWidget, SaleDetail):
     def _sale_detail_import(self):
         file_dialog = QFileDialog()
         file_name, file_type = QtWidgets.QFileDialog.getOpenFileName(file_dialog, "选取文件", "C:/",
-                                                                   "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
+                                                                     "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
         if file_name:
             try:
                 excel_handler = ExcelProcess()

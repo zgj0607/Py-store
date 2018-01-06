@@ -133,7 +133,7 @@ def run():
                 pass
         else:
             ui = Reg_Ui_MainWindow()
-        Common.skin_change('View/main/qss/white.qss')
+        Common.skin_change('qss/white.qss')
         return_visit()
         ui.show()
         sys.exit(app.exec_())

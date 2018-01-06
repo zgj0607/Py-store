@@ -6,65 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>708</height>
+    <width>953</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>销负信息</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>40</y>
-     <width>971</width>
-     <height>661</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>971</width>
-     <height>0</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>971</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <column>
-    <property name="text">
-     <string>序号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>销售日期</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品品牌</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品型号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>销售数量</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>单位</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QPushButton" name="writeOffButton">
    <property name="geometry">
     <rect>
@@ -77,6 +25,25 @@
    <property name="text">
     <string>销负</string>
    </property>
+  </widget>
+  <widget class="QTableView" name="write_off_table">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>50</y>
+     <width>951</width>
+     <height>550</height>
+    </rect>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
   </widget>
  </widget>
  <resources/>

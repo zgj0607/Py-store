@@ -66,7 +66,7 @@ class Ui_MainWindow(object):
         self.stock_add = QtWidgets.QMenu(self.stock)
         self.stock_add.setObjectName("stock_add")
         self.inventory = QtWidgets.QMenu(self.menuBar)
-        self.inventory.setObjectName("inventory")
+        self.inventory.setObjectName("stock")
         self.operation = QtWidgets.QMenu(self.menuBar)
         self.operation.setObjectName("operation")
         self.return_visit = QtWidgets.QMenu(self.menuBar)

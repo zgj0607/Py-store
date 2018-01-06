@@ -6,6 +6,10 @@ def get_now():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
+def get_date_number():
+    return datetime.now().strftime('%Y%m%d')
+
+
 def format_time(time_str, today=False):
     time_list = time_str.split('/')
     # XP上的时间是以-分割的

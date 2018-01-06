@@ -38,6 +38,11 @@ def set_table_content(table: QTableView, record, table_title=()):
     for row_index, data in enumerate(record):
         for column_index in range(column_len):
             model.setItem(row_index, column_index, QStandardItem(str(data[column_index])))
+            model.item(row_index, column_index).setTextAlignment(Qt.AlignCenter)
+    if record:
+        table.resizeColumnsToContents()
+    else:
+        table.horizontalHeader().setStretchLastSection(True)
 
 
 def set_table_content_with_merge(table: QTableView, record, table_title=(), merge_column_index=0):
