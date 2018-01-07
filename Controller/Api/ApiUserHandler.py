@@ -23,7 +23,8 @@ from tornado.concurrent import run_on_executor
 
 from Common.Common import SocketServer
 from Common.MyExecption import ApiException
-from Common.StaticFunc import ErrorCode, Set_return_dicts, get_now
+from Common.StaticFunc import ErrorCode, Set_return_dicts
+from Common.time_utils import get_now
 from Controller.Api.BaseHandler import Base_Handler
 
 

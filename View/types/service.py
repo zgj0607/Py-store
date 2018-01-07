@@ -69,7 +69,7 @@ class Service(QtWidgets.QWidget, UiService):
             for data in check_list:
                 item = QStandardItem(str(data))
                 model.setItem(i, 0, item)
-                model.item(i, 0).setForeground(QBrush(QColor(255, 255, 255)))
+                # model.item(i, 0).setForeground(QBrush(QColor(255, 255, 255)))
                 model.item(i, 0).setTextAlignment(Qt.AlignCenter)
                 i += 1
 
@@ -88,11 +88,11 @@ class Service(QtWidgets.QWidget, UiService):
         if file_name:
             try:
                 import_service(file_name, self.must_attribute)
-                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "导入成功")
+                QtWidgets.QMessageBox.information(self.import_service, "提示", "导入成功")
                 self._refresh_all_table()
             except Exception as e:
                 print(e)
-                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件错误")
+                QtWidgets.QMessageBox.information(self.im, "提示", "文件错误")
 
     def _add_first_service(self):
         service = FirstLevelServiceInfo('新增一级服务项目')
@@ -102,7 +102,7 @@ class Service(QtWidgets.QWidget, UiService):
     def _update_first_service(self):
         service_id = get_table_current_index_info(self.first_service_table, 0)
         if not service_id:
-            QtWidgets.QMessageBox.information(self, "提示", "请选择一级服务项目")
+            QtWidgets.QMessageBox.information(self.update_first_service, "提示", "请选择一级服务项目")
             return
         service_name = get_table_current_index_info(self.first_service_table, 1)
         service = FirstLevelServiceInfo('修改一级服务项目', service_id=service_id, service_name=service_name)
@@ -123,9 +123,9 @@ class Service(QtWidgets.QWidget, UiService):
                     QtWidgets.QMessageBox.information(self, "提示", "删除成功！")
                     self._refresh_all_table()
                 else:
-                    QtWidgets.QMessageBox.information(self, "提示", "该一级服务项目下存在二级服务项目，不能删除！")
+                    QtWidgets.QMessageBox.information(self.remove_first_service, "提示", "该一级服务项目下存在二级服务项目，不能删除！")
         else:
-            QtWidgets.QMessageBox.information(self, "提示", "请选择一级服务项目")
+            QtWidgets.QMessageBox.information(self.remove_first_service, "提示", "请选择一级服务项目")
 
     def _add_second_service(self):
         father_id = get_table_current_index_info(self.first_service_table, 0)
@@ -151,17 +151,17 @@ class Service(QtWidgets.QWidget, UiService):
     def _remove_second_service(self):
         service_id = get_table_current_index_info(self.second_service_table, 2)
         if service_id:
-            service_name = get_table_current_index_info(self.first_service_table, 3)
-            reply = QtWidgets.QMessageBox.question(self.remove_first_service, 'Message',
+            service_name = get_table_current_index_info(self.second_service_table, 3)
+            reply = QtWidgets.QMessageBox.question(self.remove_second_service, 'Message',
                                                    "是否删除此服务项目：" + service_name + "？",
                                                    QtWidgets.QMessageBox.Yes,
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 delete_service(service_id)
-                QtWidgets.QMessageBox.information(self.menu1Add, "提示", "删除成功！")
+                QtWidgets.QMessageBox.information(self.remove_second_service, "提示", "删除成功！")
                 self._refresh_second_service()
         else:
-            QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择二级服务项目")
+            QtWidgets.QMessageBox.information(self.remove_second_service, "提示", "请选择二级服务项目")
 
     def _get_check_list(self):
         attribute = get_table_current_index_info(self.second_service_table, 4).split(',')

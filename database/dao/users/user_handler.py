@@ -1,6 +1,4 @@
-from _datetime import datetime
-
-from Common.StaticFunc import get_now
+from Common.time_utils import get_now
 from database.db_common_handler import delete_by_int_column, get_all_record, execute
 
 staff_table_name = "worker"
@@ -72,3 +70,11 @@ def get_super_user_pwd():
     sql_text = "select pwd from {} where username = 'admin'".format(sys_user_table_name)
     pwd = execute(sql_text)[0][0]
     return pwd
+
+
+def get_user_info_by_username(username: str):
+    sql_text = '''SELECT ID, USERNAME, PWD FROM {} WHERE USERNAME=\'{}\''''.format(sys_user_table_name, username)
+
+    result = execute(sql_text)
+
+    return result

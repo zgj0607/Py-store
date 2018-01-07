@@ -23,7 +23,7 @@ from datetime import datetime
 # 消费记录表
 def CreateXiaofei():
     conn = sqlite3.connect('MYDATA.db')
-    conn.execute('''CREATE TABLE XiaoFei
+    conn.execute('''CREATE TABLE Sales
            (id VARCHAR(35) PRIMARY KEY,
            userId INTEGER NOT NULL ,
            code VARCHAR(100) NOT NULL,
@@ -44,11 +44,11 @@ def CreateXiaofei():
 
     conn.execute('''
           CREATE INDEX userId
-              ON XiaoFei (userId);
+              ON Sales (userId);
           ''')
     conn.execute('''
           CREATE INDEX createdTime
-              ON XiaoFei (createdTime);
+              ON Sales (createdTime);
           ''')
     conn.close()
 

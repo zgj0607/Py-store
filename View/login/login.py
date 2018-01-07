@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import threading
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
-import threading
-from Controller.Interface import login_handler
-# from View.view import Ui_MainWindow
-from View.main.main_view import MainView as Ui_MainWindow
-from Common.StaticFunc import md5
-from Common.Common import ClientClose
-from View.login.ui.ui_login import Ui_MainWindow as UiLogin
 
 import Common.config as config
+from Common.Common import ClientClose
+from Common.StaticFunc import md5
+from View.login.ui.ui_login import Ui_MainWindow as UiLogin
+from View.main.main_view import MainView as Ui_MainWindow
+from database.dao.users import user_handler
 from server.socket import run_socket
 from server.web import run_tornado
 
@@ -44,6 +44,8 @@ class Login(QtWidgets.QMainWindow, UiLogin):
 
         self.login.clicked.connect(self.submit)
 
+        self.username.setFocus()
+
     def keyPressEvent(self, key_event):
         if key_event.key() == QtCore.Qt.Key_Enter or key_event.key() == QtCore.Qt.Key_Return:
             self.submit()
@@ -60,37 +62,46 @@ class Login(QtWidgets.QMainWindow, UiLogin):
 
             # 获取保存的用户账号密码
             if username != self.supper_username:
-                original_password = login_handler.get_password(username)
-
-            pwd = None
-            if original_password or test:
-                if username == self.supper_username:
-                    pwd = self.super_password
-
-                if test or original_password == pwd:
-                    self.uc = False
-                    QtWidgets.QMessageBox.information(self.login, "提示", "验证成功")
-                    self.close()
-                    level = 1
-                    if username in [self.admin_username, self.supper_username] or test:
-                        level = 0
-                    try:
-                        config.ui = Ui_MainWindow(level)
-
-                        web_thread = threading.Thread(target=run_tornado, args=[config.ui])
-                        web_thread.start()
-
-                        run_socket()
-
-                        config.ui.show()
-
-                    except Exception as e:
-                        import traceback
-                        print(e)
-                        print('traceback.print_exc():{}'.format(traceback.print_exc()))
-                        print('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+                user_info = user_handler.get_user_info_by_username(username)
+                if not user_info:
+                    QtWidgets.QMessageBox.information(self.login, "提示", "无此用户")
                 else:
-                    QtWidgets.QMessageBox.information(self.pushButton, "提示", "密码输出错误")
+                    pwd = None
+                    if original_password or test:
+                        if username == self.supper_username:
+                            pwd = self.super_password
+                        else:
+                            pwd = user_info[0][2]
+
+                        if test or original_password == pwd:
+                            if test:
+                                config.login_user_info = [1, 'admin']
+                            else:
+                                config.login_user_info = user_info[0]
+
+                            self.uc = False
+                            QtWidgets.QMessageBox.information(self.login, "提示", "验证成功")
+                            self.close()
+                            level = 1
+                            if username in [self.admin_username, self.supper_username] or test:
+                                level = 0
+                            try:
+                                config.ui = Ui_MainWindow(level)
+
+                                web_thread = threading.Thread(target=run_tornado, args=[config.ui])
+                                web_thread.start()
+
+                                run_socket()
+
+                                config.ui.show()
+
+                            except Exception as e:
+                                import traceback
+                                print(e)
+                                print('traceback.print_exc():{}'.format(traceback.print_exc()))
+                                print('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+                        else:
+                            QtWidgets.QMessageBox.information(self.pushButton, "提示", "密码输出错误")
             else:
                 QtWidgets.QMessageBox.information(self.pushButton, "提示", "无此用户")
         else:
