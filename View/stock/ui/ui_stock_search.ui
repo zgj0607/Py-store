@@ -54,6 +54,9 @@
            <height>26</height>
           </size>
          </property>
+         <property name="displayFormat">
+          <string>yyyy-MM-dd</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -184,6 +187,9 @@
            <width>135</width>
            <height>26</height>
           </size>
+         </property>
+         <property name="displayFormat">
+          <string>yyyy-MM-dd</string>
          </property>
         </widget>
        </item>

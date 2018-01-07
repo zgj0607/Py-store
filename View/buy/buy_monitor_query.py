@@ -20,15 +20,12 @@ class BuyInfoMonitor(QtWidgets.QWidget, Ui_BuyInfoMonitor):
         self.start_time_str = self.start_date.date().toString('yyyyMMdd')
         self.end_time_str = self.end_date.date().toString('yyyyMMdd')
         self._init_signal_and_slot()
-
     def _init_signal_and_slot(self):
         self.pushButton.clicked.connect(self.search_summary_buy_info)
         self.summary_table.clicked['QModelIndex'].connect(self._refresh_detail_table)
 
     def _init_table(self):
         self._refresh_table()
-        self.summary_table.setColumnHidden(0, True)
-        self.summary_table.setColumnHidden(1, True)
 
     def _refresh_table(self):
         self._refresh_summary_table(record)
@@ -36,6 +33,8 @@ class BuyInfoMonitor(QtWidgets.QWidget, Ui_BuyInfoMonitor):
 
     def _refresh_summary_table(self, record):
         table_utils.set_table_content(self.summary_table, record, self.summary_table_title)
+        self.summary_table.setColumnHidden(0, True)
+        self.summary_table.setColumnHidden(1, True)
 
     def _init_detail_table(self, record):
         table_utils.set_table_content(self.detail_table, record, self.detail_table_title)
@@ -55,3 +54,5 @@ class BuyInfoMonitor(QtWidgets.QWidget, Ui_BuyInfoMonitor):
         record = buy_handler.get_buy_info_by_time(self.start_time_str, self.end_time_str)
 
         table_utils.set_table_content_with_merge(self.summary_table, record, self.summary_table_title, 2)
+        self.summary_table.setColumnHidden(0, True)
+        self.summary_table.setColumnHidden(1, True)

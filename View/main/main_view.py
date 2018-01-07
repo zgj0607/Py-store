@@ -192,7 +192,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
             elif obj_name == 'stock_search':
                 tab_widget = StockSearch()
-
+                
             elif obj_name == 'stock_unsalable_warning':
                 tab_widget = inventory_unsalable_warninForm()
 
