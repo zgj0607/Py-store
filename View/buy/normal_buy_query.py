@@ -178,6 +178,9 @@ class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
 
             payment_handler.add_payment_detail(payment)
 
+        # 更新原进货未付款信息
+        buy_handler.update_paid_info(buy_id, now_unpaid, now_paid)
+
     def _add_return_payment_detail(self, return_id, total):
         payment = Payment()
         payment.buy_id(return_id)

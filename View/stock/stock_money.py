@@ -1,26 +1,19 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'normal_stock.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtWidgets
-from View.stock.ui.ui_stock_money import Ui_inventorymoneyForm
+
+from View.stock.ui.ui_stock_money import Ui_StockMoney
+from View.utils import table_utils
+from database.dao.stock import stock_handler
 
 
-
-class inventory_moneyForm_stock(QtWidgets.QWidget, Ui_inventorymoneyForm):
+class StockMoney(QtWidgets.QWidget, Ui_StockMoney):
     def __init__(self):
-        super(inventory_moneyForm_stock, self).__init__()
+        super(StockMoney, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('库存金额')
-    def _retranslateUi(self):
-        print('123')
+        self.table_title = ('一级分类', '二级分类', '库存数量', '库存金额')
 
+        self._init_table()
 
-
-
-
-
+    def _init_table(self):
+        record = stock_handler.get_stock_money()
+        table_utils.set_table_content_with_merge(self.tableView, record, self.table_title, 0)

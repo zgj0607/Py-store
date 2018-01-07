@@ -7,7 +7,7 @@ def get_now():
 
 
 def get_date_number():
-    return datetime.now().strftime('%Y%m%d')
+    return datetime.now().strftime('%Y-%m-%d')
 
 
 def format_time(time_str, today=False):

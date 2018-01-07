@@ -271,3 +271,16 @@ def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
     result = execute(sql_text)
 
     return result
+
+
+def update_paid_info(buy_id, unpaid: float, paid: float, notes=''):
+    sql_text = '''
+                UPDATE buy_info
+                   SET paid = {:.2f},
+                       unpaid = {:.2f},
+                       notes = '{}'
+                 WHERE id = {}''' \
+        .format(paid, unpaid, notes, buy_id)
+    result = execute(sql_text)
+
+    return result

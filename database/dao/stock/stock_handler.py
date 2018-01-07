@@ -112,7 +112,7 @@ def get_stock_buy_info(stock: Stock, start_date: str, end_date: str):
                  WHERE s.id = sd.sale_id
                    AND sd.stock_id = si.id'''
     if start_date != end_date:
-        sql_text += ''' AND s.buy_date BETWEEN '{}' AND '{}\''''.format(start_date, end_date)
+        sql_text += ''' AND s.sale_date BETWEEN '{}' AND '{}\''''.format(start_date, end_date)
 
     if stock.second_service_id():
         sql_text += ''' AND si.second_service_id = {}'''.format(stock.second_service_id())
@@ -128,5 +128,24 @@ def get_stock_buy_info(stock: Stock, start_date: str, end_date: str):
                        BRAND_NAME,
                        MODEL_NAME,
                        BALANCE '''
+    result = execute(sql_text)
+    return result
+
+
+def get_stock_money():
+    sql_text = '''
+                SELECT
+                       si.first_service_name,
+                       si.second_service_name,
+                       sum(CASE WHEN si.balance > 0
+                                THEN si.balance
+                                ELSE 0
+                                END) AS balance,
+                       sum(CASE WHEN si.balance > 0
+                                THEN si.total_cost
+                                ELSE si.total_cost
+                                END) AS cost
+                  FROM stock_info si
+                 GROUP BY si.first_service_name, si.second_service_name'''
     result = execute(sql_text)
     return result

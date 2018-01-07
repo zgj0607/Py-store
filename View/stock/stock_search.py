@@ -97,8 +97,8 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
             self._refresh_second_srv(int(father_id))
 
     def search(self):
-        start_date = self.start_date.date().toString('yyyyMMdd')
-        end_date = self.end_date.date().toString('yyyyMMdd')
+        start_date = self.start_date.date().toString('yyyy-MM-dd')
+        end_date = self.end_date.date().toString('yyyy-MM-dd')
         brand_id = self.brand_combo.currentData()
         model_id = self.model_combo.currentData()
 
@@ -120,10 +120,10 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
         if not model.rowCount() or not model.columnCount():
             QMessageBox.warning(self.exportButton, "提示", '无库存明细，无法导出！')
             return
-        suggest_file_name = '''库存明细-{}.xlsx'''.format(datetime.now().strftime('%Y%m%d'))
+        suggest_file_name = '''库存明细-{}.xls'''.format(datetime.now().strftime('%Y%m%d'))
         file_path, ok = QFileDialog.getSaveFileName(self.exportButton, '请选择保存位置', suggest_file_name,
                                                     "All Files (*);;Excel (*.xlsx)")
 
         if ok and file_path:
             excel_utils.export_to_file(file_path, self.table_title, '库存明细', model)
-            QMessageBox.information(self.exportButton, "提示", '导出成功，文件保存在: '+file_path)
+            QMessageBox.information(self.exportButton, "提示", '导出成功，文件保存在: ' + file_path)

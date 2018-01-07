@@ -2,22 +2,22 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
 from Common.Common import ClientClose
-from View.customer.return_visit import ReturnVisit
-from View.device.device import Device
-from View.stock.stock_money import inventory_moneyForm_stock
-from View.stock.stock_search import StockSearch
-from View.stock.stock_unsalable_waring import inventory_unsalable_warningForm
-from View.main.ui.ui_main_view import Ui_MainWindow
-from View.sale.all_sale import AllSale
-from View.sale.local_sale import LocalSale
-from View.operation.performance import Performance
+from View.buy.buy_monitor_query import BuyInfoMonitor
 from View.buy.history_buy_query import HistoryStock
 from View.buy.normal_buy_query import StockQuery
-from View.operation.operation_total_data import operationtotaldataForm
-from View.buy.buy_monitor_query import BuyInfoMonitor
-from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
-from View.supplier.supplier_arrears import supplierarrearsForm_stock
 from View.buy.write_off_query import WriteOff
+from View.customer.return_visit import ReturnVisit
+from View.device.device import Device
+from View.main.ui.ui_main_view import Ui_MainWindow
+from View.operation.operation_total_data import operationtotaldataForm
+from View.operation.performance import Performance
+from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
+from View.sale.all_sale import AllSale
+from View.sale.local_sale import LocalSale
+from View.stock.stock_money import StockMoney
+from View.stock.stock_search import StockSearch
+from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
+from View.supplier.supplier_arrears import SupplierArrears
 from View.types.service import Service
 from View.users.staff import Staff
 from View.users.store_and_password import StoreAndPassword
@@ -62,7 +62,6 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # 供应商管理
         self.supplier_arrears.triggered.connect(self._supplier_arrears_show)
-        self.supplier_payment.triggered.connect(self._supplier_payment_show)
 
         # 经营分析
         self.performance.triggered.connect(self._performance_show)
@@ -72,7 +71,8 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         # 系统管理
         self.store_user.triggered.connect(self._store_user_show)
         self.system_user.triggered.connect(self._system_user_show)
-        self.services_add.triggered.connect(self._service_show)
+        self.service_manage.triggered.connect(self._service_show)
+        self.attribute_setting.triggered.connect(self._service_show)
         self.setting_device.triggered.connect(self._setting_device_show)
         self.setting_password.triggered.connect(self._setting_password_show)
 
@@ -86,7 +86,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 普通进货录入
     def _normal_stock_add_show(self):
-        self._signal.emit('normal_stock_add')
+        self._signal.emit('normal_buy_add')
 
     # 销负进货录入
     def _write_off_add_show(self):
@@ -94,23 +94,23 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 历史进货信息
     def _history_stock_show(self):
-        self._signal.emit('history_stock')
+        self._signal.emit('history_buy')
 
     # 进货监控
     def _stock_monitor_show(self):
-        self._signal.emit('stock_monitor')
+        self._signal.emit('buy_monitor')
 
     # 库存查询
     def _inventory_search_show(self):
-        self._signal.emit('inventory_search_show')
+        self._signal.emit('stock_search')
 
     # 滞销预警
     def _inventory_unsalable_pre_warning_show(self):
-        self._signal.emit('inventory_unsalable_pre_warning')
+        self._signal.emit('stock_unsalable_warning')
 
     # 库存金额
     def _inventory_money_show(self):
-        self._signal.emit('inventory_money')
+        self._signal.emit('stock_money')
 
     # 库存校准
     def _inventory_calibration_show(self):
@@ -123,10 +123,6 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
     # 欠款明细
     def _supplier_arrears_show(self):
         self._signal.emit('supplier_arrears')
-
-    # 付款录入
-    def _supplier_payment_show(self):
-        self._signal.emit('supplier_payment')
 
     # 业绩报表
     def _performance_show(self):
@@ -182,29 +178,29 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             elif obj_name == 'return_visit':
                 tab_widget = ReturnVisit()
 
-            elif obj_name == 'normal_stock_add':
+            elif obj_name == 'normal_buy_add':
                 tab_widget = StockQuery()
 
             elif obj_name == 'write_off_add':
                 tab_widget = WriteOff()
 
-            elif obj_name == 'history_stock':
+            elif obj_name == 'history_buy':
                 tab_widget = HistoryStock()
 
-            elif obj_name == 'stock_monitor':
+            elif obj_name == 'buy_monitor':
                 tab_widget = BuyInfoMonitor()
 
-            elif obj_name == 'inventory_search_show':
+            elif obj_name == 'stock_search':
                 tab_widget = StockSearch()
+                
+            elif obj_name == 'stock_unsalable_warning':
+                tab_widget = inventory_unsalable_warninForm()
 
-            elif obj_name == 'inventory_unsalable_pre_warning':
-                tab_widget = inventory_unsalable_warningForm()
-
-            elif obj_name == 'inventory_money':
-                tab_widget = inventory_moneyForm_stock()
+            elif obj_name == 'stock_money':
+                tab_widget = StockMoney()
 
             elif obj_name == 'supplier_arrears':
-                tab_widget = supplierarrearsForm_stock()
+                tab_widget = SupplierArrears()
 
             elif obj_name == 'sub_service_operation_data':
                 tab_widget = sub_serviceoperationdataForm()

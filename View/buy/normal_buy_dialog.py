@@ -231,7 +231,7 @@ class StockInputDialog(QtWidgets.QDialog, Ui_Dialog):
         buy_info = BuyInfo()
 
         buy_date = self.buy_time.date()
-        buy_date = buy_date.toString('yyyyMMdd')
+        buy_date = buy_date.toString('yyyy-MM-dd')
         buy_info.buy_date(buy_date)
 
         buy_info.stock_id(stock_id)
