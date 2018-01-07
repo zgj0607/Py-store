@@ -11,13 +11,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_inventoryunsalablewarningForm(object):
     def setupUi(self, inventoryunsalablewarningForm):
         inventoryunsalablewarningForm.setObjectName("inventoryunsalablewarningForm")
-        inventoryunsalablewarningForm.resize(880, 720)
+        inventoryunsalablewarningForm.resize(953, 601)
+        self.verticalLayout = QtWidgets.QVBoxLayout(inventoryunsalablewarningForm)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.exportButton = QtWidgets.QPushButton(inventoryunsalablewarningForm)
-        self.exportButton.setGeometry(QtCore.QRect(10, 20, 113, 32))
         self.exportButton.setObjectName("exportButton")
+        self.horizontalLayout.addWidget(self.exportButton)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.verticalLayout.addLayout(self.horizontalLayout)
         self.inventorywaringtableView = QtWidgets.QTableView(inventoryunsalablewarningForm)
-        self.inventorywaringtableView.setGeometry(QtCore.QRect(10, 60, 871, 621))
         self.inventorywaringtableView.setObjectName("inventorywaringtableView")
+        self.verticalLayout.addWidget(self.inventorywaringtableView)
 
         self.retranslateUi(inventoryunsalablewarningForm)
         QtCore.QMetaObject.connectSlotsByName(inventoryunsalablewarningForm)

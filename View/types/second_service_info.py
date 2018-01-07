@@ -10,6 +10,7 @@
 from collections import OrderedDict
 
 from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtCore import Qt
 
 from View.types.ui.ui_second_service_info import Ui_MainWindow as UiSecondServiceInfo
 from database.dao.service.service_handler import add_second_level_service, update_service
@@ -40,7 +41,7 @@ class SecondServiceInfo(QtWidgets.QDialog, UiSecondServiceInfo):
             item = QtGui.QStandardItem(name)
 
             if name in self.check_name:
-                item.setCheckState(2)
+                item.setCheckState(Qt.Checked)
             else:
                 item.setCheckState(False)
 
@@ -62,9 +63,9 @@ class SecondServiceInfo(QtWidgets.QDialog, UiSecondServiceInfo):
     def _update(self):
         name = self.service_name.text()
         if '-' in name:
-            QtWidgets.QMessageBox.information(self, "提示", "名字输入有误，请勿添加\"-\"符号")
+            QtWidgets.QMessageBox.information(self.submit, "提示", "名字输入有误，请勿添加\"-\"符号")
         elif name == "":
-            QtWidgets.QMessageBox.information(self, "提示", "请输入名称")
+            QtWidgets.QMessageBox.information(self.submit, "提示", "请输入名称")
         else:
             self.attribute_state = ""
             self.attribute = ""
@@ -79,8 +80,7 @@ class SecondServiceInfo(QtWidgets.QDialog, UiSecondServiceInfo):
             else:
                 add_second_level_service(name, father_id=self.father_id, attribute=self.attribute,
                                          attribute_state=self.attribute_state)
-            w = self
-            QtWidgets.QMessageBox.information(w, "提示", "提交成功")
+            QtWidgets.QMessageBox.information(self.submit, "提示", "提交成功")
             self.close()
 
     def get_second_service_attributes(self):

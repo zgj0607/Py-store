@@ -16,8 +16,9 @@ from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.stock.stock_money import StockMoney
 from View.stock.stock_search import StockSearch
-from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
+from View.stock.stock_unsalable_waring import StockUnsalableWarning
 from View.supplier.supplier_arrears import SupplierArrears
+from View.types.attribute_dialog import AttributeDialog
 from View.types.service import Service
 from View.users.staff import Staff
 from View.users.store_and_password import StoreAndPassword
@@ -72,7 +73,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.store_user.triggered.connect(self._store_user_show)
         self.system_user.triggered.connect(self._system_user_show)
         self.service_manage.triggered.connect(self._service_show)
-        self.attribute_setting.triggered.connect(self._service_show)
+        self.attribute_setting.triggered.connect(self._attribute_show)
         self.setting_device.triggered.connect(self._setting_device_show)
         self.setting_password.triggered.connect(self._setting_password_show)
 
@@ -146,7 +147,10 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 服务项目管理
     def _service_show(self):
-        self._signal.emit('service')
+        self._signal.emit('service_manage')
+
+    def _attribute_show(self):
+        self._signal.emit('attribute_manage')
 
     # 设备管理
     def _setting_device_show(self):
@@ -194,7 +198,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StockSearch()
                 
             elif obj_name == 'stock_unsalable_warning':
-                tab_widget = inventory_unsalable_warninForm()
+                tab_widget = StockUnsalableWarning()
 
             elif obj_name == 'stock_money':
                 tab_widget = StockMoney()
@@ -217,8 +221,11 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             elif obj_name == 'system_user':
                 tab_widget = SystemUser()
 
-            elif obj_name == 'service':
+            elif obj_name == 'service_manage':
                 tab_widget = Service()
+
+            elif obj_name == 'attribute_manage':
+                tab_widget = AttributeDialog()
 
             elif obj_name == 'setting_device':
                 tab_widget = Device()

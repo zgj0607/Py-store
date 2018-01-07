@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QComboBox
+from PyQt5.QtWidgets import QDialog
 
 from Common import Common
 from Common.time_utils import get_now
@@ -9,7 +9,7 @@ from domain.stock import Stock
 
 
 class AddStock(QDialog, UiAddStock):
-    def __init__(self, brand_combo: QComboBox):
+    def __init__(self):
         super(AddStock, self).__init__()
         self.setupUi(self)
 
@@ -58,7 +58,7 @@ class AddStock(QDialog, UiAddStock):
         second_service = self.second_service_combo_box
         stock.second_service_name(second_service.currentText()).second_service_id(second_service.currentData())
 
-        name = brand.currentText()+'-'+model.currentText()
+        name = brand.currentText() + '-' + model.currentText()
         stock.name(name)
         stock.unit(self.unit.text())
         stock.create_op(Common.config.login_user_info[0])
