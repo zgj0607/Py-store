@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'normal_stock.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
 import traceback
 from decimal import Decimal
 
@@ -261,7 +254,7 @@ class WriteOffDialog(QtWidgets.QDialog, Ui_writeOffDialog):
         model_name = self.model.text()
         if model_name != self.stock.model_name():
             model = model_handler.get_model_by_name(model_name, self.stock.brand_id())
-            if brand:
+            if model:
                 return False
             else:
                 model_handler.update_model(self.stock.model_id(), model_name)

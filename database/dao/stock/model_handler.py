@@ -6,7 +6,7 @@ model_table_name = 'model'
 
 
 def get_all_model():
-    sql_text = '''SELECT ID, MODEL_NAME FROM {} WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME'''.format(model_table_name)
+    sql_text = '''SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME'''
     result = execute(sql_text)
 
     return result
