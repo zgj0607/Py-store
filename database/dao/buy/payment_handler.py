@@ -32,3 +32,15 @@ def add_payment_detail(payment):
 
     return result
 
+
+def get_all_arrears_info():
+    sql_text = '''
+                SELECT buy_id, suppler_id, suppler_name, sum(unpaid)
+                  FROM buy_info bi, supplier sp
+                 WHERE sp.id = bi.supplier_id
+                   AND bi.unpaid > 0
+                GROUP BY  buy_id, suppler_id, suppler_name
+                 ORDER BY supplier_name'''
+    result = execute(sql_text)
+
+    return result

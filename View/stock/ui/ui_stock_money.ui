@@ -1,48 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>inventorymoneyForm</class>
- <widget class="QWidget" name="inventorymoneyForm">
+ <class>StockMoney</class>
+ <widget class="QWidget" name="StockMoney">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>880</width>
-    <height>720</height>
+    <width>953</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>851</width>
-     <height>601</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>一级分类</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>二级分类</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>库存数量</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>库存金额</string>
-    </property>
-   </column>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableView" name="tableView">
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

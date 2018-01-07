@@ -98,8 +98,8 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
             self._refresh_second_srv(int(father_id))
 
     def search(self):
-        start_date = self.start_date.date().toString('yyyyMMdd')
-        end_date = self.end_date.date().toString('yyyyMMdd')
+        start_date = self.start_date.date().toString('yyyy-MM-dd')
+        end_date = self.end_date.date().toString('yyyy-MM-dd')
         brand_id = self.brand_combo.currentData()
         model_id = self.model_combo.currentData()
 

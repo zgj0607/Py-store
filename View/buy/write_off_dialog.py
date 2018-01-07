@@ -165,7 +165,7 @@ class WriteOffDialog(QtWidgets.QDialog, Ui_writeOffDialog):
     def _add_buy_info(self):
         buy_info = BuyInfo()
 
-        buy_date = self.buy_date.date().toString('yyyyMMdd')
+        buy_date = self.buy_date.date().toString('yyyy-MM-dd')
         buy_info.buy_date(buy_date)
 
         buy_info.stock_id(self.stock.id())

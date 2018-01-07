@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from Common.Common import ClientClose
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
-from View.stock.stock_money import inventory_moneyForm_stock
+from View.stock.stock_money import StockMoney
 from View.stock.stock_search import StockSearch
 from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
 from View.main.ui.ui_main_view import Ui_MainWindow
@@ -16,7 +16,7 @@ from View.buy.normal_buy_query import StockQuery
 from View.operation.operation_total_data import operationtotaldataForm
 from View.buy.buy_monitor_query import BuyInfoMonitor
 from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
-from View.supplier.supplier_arrears import supplierarrearsForm_stock
+from View.supplier.supplier_arrears import SupplierArrears
 from View.buy.write_off_query import WriteOff
 from View.types.service import Service
 from View.users.staff import Staff
@@ -201,10 +201,10 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = inventory_unsalable_warninForm()
 
             elif obj_name == 'inventory_money':
-                tab_widget = inventory_moneyForm_stock()
+                tab_widget = StockMoney()
 
             elif obj_name == 'supplier_arrears':
-                tab_widget = supplierarrearsForm_stock()
+                tab_widget = SupplierArrears()
 
             elif obj_name == 'sub_service_operation_data':
                 tab_widget = sub_serviceoperationdataForm()
