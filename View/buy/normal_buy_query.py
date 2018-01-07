@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'normal_stock.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from decimal import Decimal
 
 from PyQt5 import QtWidgets
@@ -34,7 +26,7 @@ class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
         self.buy_info_table.horizontalHeader().setDefaultAlignment(Qt.AlignCenter)
 
         self.table_title = (
-            "ID", '进货日期', '商品型号', '商品品牌', '进货数量', '单位', '进货单价', '单品小计', '供应商ID',
+            "ID", '进货日期', '商品品牌', '商品型号', '进货数量', '单位', '进货单价', '单品小计', '供应商ID',
             '供应商', '所属项目', '付款金额', '未付金额', '进货类型', '关联进货ID', '库存ID')
 
         self._init_buy_info_table()
@@ -121,7 +113,6 @@ class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
 
     def _add_buy_info(self, rela_buy_id, return_number) -> int:
         unit_price = Decimal(table_utils.get_table_current_index_info(self.buy_info_table, 6))
-        unit = table_utils.get_table_current_index_info(self.buy_info_table, 5)
         supplier_id = int(table_utils.get_table_current_index_info(self.buy_info_table, 8))
         stock_id = int(table_utils.get_table_current_index_info(self.buy_info_table, 15))
         total = Decimal(return_number) * unit_price

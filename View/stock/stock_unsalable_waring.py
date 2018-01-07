@@ -8,7 +8,7 @@
 
 from PyQt5 import QtWidgets
 from View.stock.ui.ui_stock_unsalable_warning import Ui_inventoryunsalablewarningForm
-from View.buy.history_compare_dialog import Diglog_historystock
+from View.stock.history_compare_dialog import Diglog_historystock
 
 
 class inventory_unsalable_warninForm(QtWidgets.QWidget, Ui_inventoryunsalablewarningForm):

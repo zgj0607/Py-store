@@ -5,7 +5,7 @@ from Common.Common import ClientClose
 from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
 from View.stock.stock_money import inventory_moneyForm_stock
-from View.stock.stock_search import inventory_serchQueryForm_stock
+from View.stock.stock_search import StockSearch
 from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
 from View.main.ui.ui_main_view import Ui_MainWindow
 from View.sale.all_sale import AllSale
@@ -14,7 +14,7 @@ from View.operation.performance import Performance
 from View.buy.history_buy_query import HistoryStock
 from View.buy.normal_buy_query import StockQuery
 from View.operation.operation_total_data import operationtotaldataForm
-from View.buy.buy_monitor_query import stockmonitorQueryForm_stock
+from View.buy.buy_monitor_query import BuyInfoMonitor
 from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
 from View.supplier.supplier_arrears import supplierarrearsForm_stock
 from View.buy.write_off_query import WriteOff
@@ -192,10 +192,10 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = HistoryStock()
 
             elif obj_name == 'stock_monitor':
-                tab_widget = stockmonitorQueryForm_stock()
+                tab_widget = BuyInfoMonitor()
 
             elif obj_name == 'inventory_search_show':
-                tab_widget = inventory_serchQueryForm_stock()
+                tab_widget = StockSearch()
 
             elif obj_name == 'inventory_unsalable_pre_warning':
                 tab_widget = inventory_unsalable_warninForm()
