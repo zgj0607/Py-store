@@ -6,7 +6,7 @@ from View.customer.return_visit import ReturnVisit
 from View.device.device import Device
 from View.stock.stock_money import inventory_moneyForm_stock
 from View.stock.stock_search import StockSearch
-from View.stock.stock_unsalable_waring import inventory_unsalable_warninForm
+from View.stock.stock_unsalable_waring import inventory_unsalable_warningForm
 from View.main.ui.ui_main_view import Ui_MainWindow
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
@@ -198,7 +198,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StockSearch()
 
             elif obj_name == 'inventory_unsalable_pre_warning':
-                tab_widget = inventory_unsalable_warninForm()
+                tab_widget = inventory_unsalable_warningForm()
 
             elif obj_name == 'inventory_money':
                 tab_widget = inventory_moneyForm_stock()

@@ -13,41 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>851</width>
-     <height>601</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>序号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品品牌</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>商品型号</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>库存数量</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>最长库龄</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QPushButton" name="exportButton">
    <property name="geometry">
     <rect>
@@ -59,6 +24,16 @@
    </property>
    <property name="text">
     <string>导出</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="inventorywaringtableView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>871</width>
+     <height>621</height>
+    </rect>
    </property>
   </widget>
  </widget>
