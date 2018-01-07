@@ -18,6 +18,13 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>供应商欠款汇总</string>
        </property>
@@ -39,12 +46,29 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="summary_table"/>
+    <widget class="QTableView" name="summary_table">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>供应商欠款明细</string>
        </property>
@@ -67,41 +91,31 @@
    </item>
    <item>
     <widget class="QTableWidget" name="detail_table">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <property name="sortingEnabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column>
-      <property name="text">
-       <string>序号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>供应商</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>欠款金额</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>操作</string>
-      </property>
-     </column>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>已选合计金额：</string>
        </property>
@@ -109,22 +123,29 @@
      </item>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
-        <string>2100000</string>
+        <string>￥</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="single_button">
-       <property name="text">
-        <string>单个付款</string>
+      <widget class="QLabel" name="summary_need_pay">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="bulk_button">
        <property name="text">
-        <string>批量付款</string>
+        <string>0.00</string>
        </property>
       </widget>
      </item>
@@ -140,6 +161,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="single_button">
+       <property name="text">
+        <string>单个付款</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bulk_button">
+       <property name="text">
+        <string>批量付款</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

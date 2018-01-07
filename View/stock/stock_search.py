@@ -121,10 +121,10 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
         if not model.rowCount() or not model.columnCount():
             QMessageBox.warning(self.exportButton, "提示", '无库存明细，无法导出！')
             return
-        suggest_file_name = '''库存明细-{}.xlsx'''.format(datetime.now().strftime('%Y%m%d'))
+        suggest_file_name = '''库存明细-{}.xls'''.format(datetime.now().strftime('%Y%m%d'))
         file_path, ok = QFileDialog.getSaveFileName(self.exportButton, '请选择保存位置', suggest_file_name,
                                                     "All Files (*);;Excel (*.xlsx)")
 
         if ok and file_path:
             excel_utils.export_to_file(file_path, self.table_title, '库存明细', model)
-            QMessageBox.information(self.exportButton, "提示", '导出成功，文件保存在: '+file_path)
+            QMessageBox.information(self.exportButton, "提示", '导出成功，文件保存在: ' + file_path)

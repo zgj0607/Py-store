@@ -111,7 +111,6 @@
      <string>供应商管理</string>
     </property>
     <addaction name="supplier_arrears"/>
-    <addaction name="supplier_payment"/>
    </widget>
    <widget class="QMenu" name="setting">
     <property name="title">
@@ -124,8 +123,15 @@
      <addaction name="store_user"/>
      <addaction name="system_user"/>
     </widget>
+    <widget class="QMenu" name="menu">
+     <property name="title">
+      <string>服务项目管理</string>
+     </property>
+     <addaction name="service_manage"/>
+     <addaction name="attribute_setting"/>
+    </widget>
     <addaction name="setting_user"/>
-    <addaction name="services_add"/>
+    <addaction name="menu"/>
     <addaction name="setting_device"/>
     <addaction name="setting_password"/>
    </widget>
@@ -228,11 +234,6 @@
     <string>历史进货</string>
    </property>
   </action>
-  <action name="services_add">
-   <property name="text">
-    <string>服务项目管理</string>
-   </property>
-  </action>
   <action name="store_user">
    <property name="text">
     <string>门店人员</string>
@@ -306,6 +307,16 @@
   <action name="operation_total_data">
    <property name="text">
     <string>总体经营数据</string>
+   </property>
+  </action>
+  <action name="service_manage">
+   <property name="text">
+    <string>服务管理</string>
+   </property>
+  </action>
+  <action name="attribute_setting">
+   <property name="text">
+    <string>属性管理</string>
    </property>
   </action>
  </widget>

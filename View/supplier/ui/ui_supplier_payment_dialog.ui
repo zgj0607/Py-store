@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>supplierpaymentDialog</class>
- <widget class="QDialog" name="supplierpaymentDialog">
+ <class>SupplierArrearPayOffDialog</class>
+ <widget class="QDialog" name="SupplierArrearPayOffDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>298</height>
+    <width>277</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,85 +16,233 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>10</y>
-     <width>251</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_2">
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>付款至</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_2"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_9">
-      <property name="text">
-       <string>付款金额</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_3"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>付款方式</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_4"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>备注</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEdit_5"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="payButton">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>220</y>
-     <width>113</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>确定付款</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="closeButton">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>220</y>
-     <width>113</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>取消</string>
-   </property>
-  </widget>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>付款至</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="pay_to">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>已付金额</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="paid">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>本次支付</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="pay">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly|Qt::ImhPreferNumbers</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>付款方式</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="payment_method">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>26</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>备注</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="notes">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QPushButton" name="payButton">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>确定付款</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>剩余未付</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="unpaid">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="need_pay">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>未付金额</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
+ <tabstops>
+  <tabstop>pay_to</tabstop>
+  <tabstop>paid</tabstop>
+  <tabstop>need_pay</tabstop>
+  <tabstop>pay</tabstop>
+  <tabstop>unpaid</tabstop>
+  <tabstop>payment_method</tabstop>
+  <tabstop>notes</tabstop>
+  <tabstop>payButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
