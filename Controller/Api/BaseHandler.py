@@ -64,6 +64,7 @@ class Base_Handler(web.RequestHandler):
                 for data in value:
                     data = data.decode()
                 result[name] = value
+        print("入参：", result)
 
         return result
 

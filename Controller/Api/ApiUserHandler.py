@@ -115,7 +115,7 @@ class ApiUser_Handler(Base_Handler):
                         raise ApiException(ErrorCode.ParameterMiss)
 
                     if self.connect:
-                        allOrderMoney = 0
+                        allOrderMoney = 0.0
                         result = SocketServer("userorder {} {} {}".format(self.storeId, carId, carPhone))
                         if result:
                             orderNumber = len(result)
@@ -126,28 +126,35 @@ class ApiUser_Handler(Base_Handler):
 
                     else:
                         result, orderNumber, allOrderMoney = self.GetOrder(carId, carPhone)
-
                     if result == 'restart':
                         raise ApiException(ErrorCode.ReStartPC)
                         # result = []
                     else:
-                        result.sort(key=lambda obj: obj.get('createdTime'), reverse=True)
-
-                    for data in result:
-                        msg = data.get("msg")
-                        for msgData in msg:
-                            temp = {}
-                            attribute = msgData.get("attribute")
-                            for k, v in attribute.items():
-                                if v != "" and v != "-":
-                                    temp[k] = v
-                            msgData['attribute'] = temp
+                        print('sort')
+                        try:
+                            result.sort(key=lambda obj: obj.get('createdTime'), reverse=True)
+                        except Exception as sortE:
+                            print(sortE)
+                    try:
+                        for data in result:
+                            print(data)
+                            msg = data.get("msg")
+                            for msgData in msg:
+                                temp = {}
+                                attribute = msgData.get("attribute")
+                                for k, v in attribute.items():
+                                    if v != "" and v != "-":
+                                        temp[k] = v
+                                msgData['attribute'] = temp
+                    except Exception as forException:
+                        print(forException)
 
                     sendMsg = {
                         'orderMsg': result,
                         'orderNumber': orderNumber,
                         'allOrderMoney': allOrderMoney
                     }
+                    print(sendMsg)
                     return Set_return_dicts(sendMsg)
 
                 else:
@@ -159,11 +166,11 @@ class ApiUser_Handler(Base_Handler):
                                     forUser=e.error_result['forUser'])
 
     def GetOrder(self, carId, carPhone):
-        allOrderMoney = 0
+        allOrderMoney = 0.0
         orderNumber = 0
         result = self.dbhelp.GetXiaoFeiByKey('carId', carId)
         xiaoFeiList = defaultdict(list)
-
+        print(carId)
         for data in result:
             attribute = OrderedDict(json.loads(data[8]))
             pcSign = data[11]
@@ -171,7 +178,7 @@ class ApiUser_Handler(Base_Handler):
                 price = float(attribute.pop("总价", 0))
             except:
                 price = 0
-
+            print(price)
             allOrderMoney += price
             orderNo = data[1]
             orderCheckId = data[10]
@@ -197,12 +204,16 @@ class ApiUser_Handler(Base_Handler):
                 temp["totalPrice"] = price + temp.get("totalPrice")
                 temp["msg"].append(msg)
                 xiaoFeiList[orderNo] = temp
-
+        print('out loop')
+        print(xiaoFeiList.items())
         result = list()
         for k, v in xiaoFeiList.items():
             result.append(v)
             orderNumber += 1
-
+            print(k, v)
+        print(result)
+        print(orderNumber)
+        print(allOrderMoney)
         return result, orderNumber, allOrderMoney
 
     def GetFind(self, key, value):

@@ -30,6 +30,8 @@ import requests
 from Common.config import domain
 import logging
 
+
+
 class ApiOrder_Handler(Base_Handler):
     def __init__(self,application,request,**kwargs):
         super(ApiOrder_Handler,self).__init__(application,request,**kwargs)
@@ -47,7 +49,6 @@ class ApiOrder_Handler(Base_Handler):
 
     def GetPreviewHtml(self,getData,getHeight=False):
         mustSet = ['数量','单价','小计','总价','单位','备注']
-
         if getData.get("createdTime"):
             today = getData.get("createdTime")
         else:
@@ -70,20 +71,21 @@ class ApiOrder_Handler(Base_Handler):
         root = 'config.ini'
         basicMsg = configparser.ConfigParser()
         basicMsg.read(root)
-
+        print(basicMsg)
         try:
             if not self.connect:
-                raise
+                raise ApiException(ErrorCode.ErrorRequest)
             code = basicMsg.get("msg",'code')
             url = domain+"store/api/detail?code={}".format(code)
             req = requests.get(url=url)
             resultData = json.loads(req.text)
-        except:
+        except Exception as exception:
+            print(exception)
             fp = open("pc.conf",'rb')
+
             pcData = fp.readline().decode()
             fp.close()
             pcData = pcData.split(',')
-
             if len(pcData) < 4:
                pcData = [pcData[0],"","",""]
 
@@ -114,7 +116,7 @@ class ApiOrder_Handler(Base_Handler):
                 fontSize = int(data)
             except:
                 fontSize = 7
-
+        print("header")
         header = """<html>
                     <style>
                         table{
@@ -159,7 +161,7 @@ class ApiOrder_Handler(Base_Handler):
             raise ApiException(ErrorCode.PrinterError)
 
         tdWidth = 19
-        # self.logger.info('begin body')
+        print('begin body')
         body = """
             <body >
                 <div style="width:100%;text-align:center">
@@ -336,7 +338,7 @@ class ApiOrder_Handler(Base_Handler):
 
                    getData["orderNo"] = orderNo
                    getData["createdTime"] = today
-
+                   print(keyWord)
                    try:
                    # if True:
                        carUser = getData.get("carUser")
@@ -405,9 +407,9 @@ class ApiOrder_Handler(Base_Handler):
                    return Set_return_dicts({"orderNo":orderNo})
 
                 elif keyWord == 'preview':
-                    # self.logger.info('============begin-printer==============')
+                    print('preview')
                     html = self.GetPreviewHtml(getData)
-                    # self.logger.info('============end-printer==============')
+                    print(html)
                     return Set_return_dicts(html)
 
                 else:

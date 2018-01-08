@@ -17,6 +17,8 @@ from PyQt5.QtGui import QIcon
 
 from Common.StaticFunc import GetOrderId
 from Controller import DbHandler
+from View.utils import db_transaction_util
+from database.db_connection import execute
 
 
 class CallBack_Ui_MainWindow(QtWidgets.QDialog):
@@ -152,12 +154,12 @@ class CallBack_Ui_MainWindow(QtWidgets.QDialog):
 
             self.dbhelp.InsertXiaoFei(saveData)
 
-            conn = sqlite3.connect('MYDATA.db')
+
             search = "id={}".format(self.id)
 
             updateData = "state=\'{}\'".format("1")
             sqlStr = "UPDATE CallBack SET {} WHERE {}".format(updateData, search)
-            conn.execute(sqlStr)
+            execute(sqlStr)
             conn.commit()
 
             if self.checkBox.isChecked():
@@ -186,8 +188,6 @@ class CallBack_Ui_MainWindow(QtWidgets.QDialog):
                 value = "\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\'".format(timeStr, carPhone, carId, carUser, today,
                                                                            '0')
                 self.dbhelp.InsertData(dbname, key, value)
-
-            conn.close()
             self.close()
 
     def SetTime(self):

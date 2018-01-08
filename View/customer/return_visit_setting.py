@@ -32,9 +32,9 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
             order_no = sale_handler.get_order_no(today)
             get_data["orderNo"] = order_no
             get_data["createdTime"] = today
-            get_data["carUser"] = self.carUser
-            get_data["carId"] = self.carId
-            get_data["carPhone"] = self.carPhone
+            get_data["carUser"] = self.car_user
+            get_data["carId"] = self.car_id
+            get_data["carPhone"] = self.car_phone
 
             car_user = get_data.get("carUser", '-')
             user_id = get_data.get("userId", '-')
@@ -77,7 +77,7 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
             # 如果填写了二次回访时间，则写入一条待回访数据
             if self.do_set_next_date.isChecked():
                 # 回访设置
-                time_str = self.dateEdit.text()
+                time_str = self.next_date.text()
                 time_list = time_str.split('/')
                 # XP上的时间是以-分割的
                 if len(time_list) < 3:
@@ -98,7 +98,6 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
                 time_str = time_str[:-1]
                 customer_handler.add_return_visit_data(time_str, car_phone, car_id, car_user, today)
 
-            conn.close()
             self.close()
 
     def set_time(self):
