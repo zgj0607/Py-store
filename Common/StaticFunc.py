@@ -20,7 +20,6 @@ import hashlib
 import random
 import uuid
 
-import xlwt
 from PyQt5.QtGui import QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import QLineEdit
 
@@ -109,7 +108,7 @@ class ErrorCode:
 # 设置返回值
 # forUser是显示给用户看的文字，forWorker是显示提供给后台程序员看的字段
 # ret代表成功或者失败，data代表返回值，result代表错误代码
-def Set_return_dicts(data=None, forUser='', code=200, ret=True, forWorker=''):
+def set_return_dicts(data=None, forUser='', code=200, ret=True, forWorker=''):
     if data == None:
         ret = False
         # logger.error('API: FORUSER:{}  CODE:{}  FORWORKER:{} '.format(forUser.encode(),code,forWorker.encode()))
@@ -145,27 +144,6 @@ def md5(string):
     m = hashlib.md5()
     m.update(string.encode())
     return m.hexdigest()
-
-
-def set_style(name, height, bold=False, center=False, upDown=False):
-    style = xlwt.XFStyle()  # 初始化样式
-
-    font = xlwt.Font()  # 为样式创建字体
-    font.name = name  # 'Times New Roman'
-    font.bold = bold
-    font.color_index = 4
-    font.height = height
-    style.font = font
-    alignment = xlwt.Alignment()
-    # 左右居中
-    if center:
-        alignment.horz = xlwt.Alignment.HORZ_CENTER
-    # 上下居中
-    if upDown:
-        alignment.vert = xlwt.Alignment.VERT_CENTER
-
-    style.alignment = alignment
-    return style
 
 
 def set_validator(edit: QLineEdit, type: str):

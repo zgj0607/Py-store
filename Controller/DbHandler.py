@@ -224,12 +224,6 @@ class DB_Handler():
             try:
                 myList = [word, key, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), deviceName, ip]
                 config.ui.signal.emit(myList)
-                # sqlStr = "SELECT id,state FROM Device WHERE ip='{}'".format(ip)
-                # cursor = self.conn.execute(sqlStr)
-                # data = cursor.fetchone()
-                # cursor.close()
-                # self.conn.close()
-                # if data[1] == "1":
                 result = 2
             except:
                 pass

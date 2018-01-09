@@ -5,9 +5,9 @@ from View.utils.table_utils import set_table_content, get_table_current_index_in
 from database.dao.device.device_handler import get_all_device, update_device_state
 
 
-class Device(QtWidgets.QWidget, UiDevice):
+class DeviceInfo(QtWidgets.QWidget, UiDevice):
     def __init__(self):
-        super(Device, self).__init__()
+        super(DeviceInfo, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('设备管理')
         self.table_title = ('ID', '创建时间', '设备名称', '设备IP', '设备状态')

@@ -18,7 +18,7 @@ from View.users.admin import Admin_Ui_MainWindow
 from View.users.change_password import ChangeAdmin_Ui_MainWindow
 from PyQt5 import QtWidgets, QtCore, QtGui
 from Common.Common import ClientClose
-from View.userConnect import Ui_MainWindow_UserConnect
+from View.device.userConnect import PadConnect
 import requests
 import traceback
 from View.main.callback import CallBack_Ui_MainWindow
@@ -1410,7 +1410,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         ip = myList[4]
         if deviceName not in self.deviceName:
             self.deviceName.append(deviceName)
-            self.tempUi = Ui_MainWindow_UserConnect(word, key, today, deviceName, ip, ViewHandler.Insert())
+            self.tempUi = PadConnect(word, key, today, deviceName, ip, ViewHandler.Insert())
             self.tempUi.exec_()
             self.deviceName.remove(deviceName)
             SheBeiTableSet(self.shebeiTable)

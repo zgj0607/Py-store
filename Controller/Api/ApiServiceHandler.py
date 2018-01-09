@@ -16,14 +16,14 @@ __mtime__ = '1/5/2017'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from Controller.Api.BaseHandler import Base_Handler
-from Common.StaticFunc import ErrorCode,Set_return_dicts
+from Controller.Api.BaseHandler import BaseHandler
+from Common.StaticFunc import ErrorCode,set_return_dicts
 from Common.MyExecption import ApiException
 import configparser
 from tornado.concurrent import run_on_executor
 from datetime import datetime
 
-class ApiService_Handler(Base_Handler):
+class ApiService_Handler(BaseHandler):
     def __init__(self,application,request,**kwargs):
         super(ApiService_Handler,self).__init__(application,request,**kwargs)
         self.func = self.ApiService
@@ -40,7 +40,7 @@ class ApiService_Handler(Base_Handler):
                            "oneMenuId":data[0],
                            "name":data[1]
                        })
-                   return Set_return_dicts(sendData)
+                   return set_return_dicts(sendData)
 
                 elif keyWord == "two":
                    id = getData.get("oneMenuId")
@@ -59,13 +59,13 @@ class ApiService_Handler(Base_Handler):
                            "name" : data[1],
                            "attribute" : attributeDict,
                        })
-                   return Set_return_dicts(sendData)
+                   return set_return_dicts(sendData)
 
                 else:
                    raise ApiException(ErrorCode.ErrorRequest)
 
         except ApiException as e:
-            return Set_return_dicts(forWorker=e.error_result['forWorker'],
+            return set_return_dicts(forWorker=e.error_result['forWorker'],
                                     code=e.error_result['errorCode'],
                                     forUser=e.error_result['forUser'])
 

@@ -16,8 +16,8 @@ __mtime__ = '1/5/2017'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from Controller.Api.BaseHandler import Base_Handler
-from Common.StaticFunc import ErrorCode,Set_return_dicts
+from Controller.Api.BaseHandler import BaseHandler
+from Common.StaticFunc import ErrorCode,set_return_dicts
 from Common.MyExecption import ApiException
 import configparser
 from tornado.concurrent import run_on_executor
@@ -26,7 +26,7 @@ import requests
 from Common.config import domain
 import json
 
-class ApiWorker_Handler(Base_Handler):
+class ApiWorker_Handler(BaseHandler):
     def __init__(self,application,request,**kwargs):
         super(ApiWorker_Handler,self).__init__(application,request,**kwargs)
         self.func = self.ApiWorker
@@ -89,10 +89,10 @@ class ApiWorker_Handler(Base_Handler):
                    else:
                        raise ApiException(ErrorCode.CodeError)
 
-                   return Set_return_dicts(result)
+                   return set_return_dicts(result)
 
                 elif keyWord == "ip":
-                   return Set_return_dicts(True)
+                   return set_return_dicts(True)
 
                 else:
                    raise ApiException(ErrorCode.ErrorRequest)
@@ -106,12 +106,12 @@ class ApiWorker_Handler(Base_Handler):
                            "workerId" : data[0],
                            "workerName" : data[1]
                        })
-                   return Set_return_dicts(workerList)
+                   return set_return_dicts(workerList)
                 else:
                    raise ApiException(ErrorCode.ErrorRequest)
 
         except ApiException as e:
-            return Set_return_dicts(forWorker=e.error_result['forWorker'],
+            return set_return_dicts(forWorker=e.error_result['forWorker'],
                                     code=e.error_result['errorCode'],
                                     forUser=e.error_result['forUser'])
 

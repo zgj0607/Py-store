@@ -18,8 +18,10 @@ __mtime__ = '12/11/2016'
 """
 from Common.StaticFunc import ErrorCode
 
+
 class ApiException(Exception):
     '''全局错误码exception，搭配ErrorCode使用'''
+
     @staticmethod
     def get_forWorker(errorCode):
         return ErrorCode.ERROR_MESSAGE.get(errorCode, 2000)['forWorker']
@@ -33,7 +35,7 @@ class ApiException(Exception):
         return {
             "forWorker": ApiException.get_forWorker(errorCode),
             "errorCode": str(errorCode),
-            'forUser' : ApiException.get_forUser(errorCode)
+            'forUser': ApiException.get_forUser(errorCode)
         }
 
     @property

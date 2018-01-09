@@ -13,7 +13,7 @@ from Common.StaticFunc import GetOrderId
 from Common.time_utils import get_now, format_time
 from Common.config import savePath
 from Controller import DbHandler
-from Controller.Interface.ViewHandler import set_style, MakeTempMsg
+from View.utils.excel_utils import MakeTempMsg, set_style
 
 
 class ExcelProcess:

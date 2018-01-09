@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
 from Common.Common import ClientClose
@@ -7,7 +8,8 @@ from View.buy.history_buy_query import HistoryStock
 from View.buy.normal_buy_query import StockQuery
 from View.buy.write_off_query import WriteOff
 from View.customer.return_visit import ReturnVisit
-from View.device.device import Device
+from View.device.device_info import DeviceInfo
+from View.device.userConnect import PadConnect
 from View.main.ui.ui_main_view import Ui_MainWindow
 from View.operation.operation_total_data import operationtotaldataForm
 from View.operation.performance import Performance
@@ -21,24 +23,34 @@ from View.supplier.supplier_arrears import SupplierArrears
 from View.types.attribute_dialog import AttributeDialog
 from View.types.service import Service
 from View.users.staff import Staff
-from View.users.store_and_password import StoreAndPassword
 from View.users.system_user import SystemUser
+from domain.device import Device
 
 
 class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
-    _signal = QtCore.pyqtSignal(str)
+    # 打开Tab页的信号
+    _tab_signal = QtCore.pyqtSignal(str)
+
+    # Pad连接请求的信号
+    pad_connect_signal = QtCore.pyqtSignal(Device)
+    _confirm_result = False
 
     def __init__(self, level):
         super(MainView, self).__init__()
         self.setupUi(self)
 
+        icon = QIcon('img/logo.png')
+        self.setWindowIcon(icon)
+
         self.init_menu_action()
 
-        self._signal.connect(self._tab_show)
+        self._tab_signal.connect(self._tab_show)
+        self.pad_connect_signal.connect(self._confirm_pad_connect)
         self.tabWidget.tabCloseRequested.connect(self.close_tab)
 
         self.tab_name = {}
-        self.tab_index = {}
+
+        self.confirm_dialog = None
 
     # 初始化所有菜单动作
     def init_menu_action(self):
@@ -79,86 +91,86 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 本店销售明细
     def _local_sale_show(self):
-        self._signal.emit('local_sale')
+        self._tab_signal.emit('local_sale')
 
     # 全店销售明细
     def _all_sale_show(self):
-        self._signal.emit('all_sale')
+        self._tab_signal.emit('all_sale')
 
     # 普通进货录入
     def _normal_stock_add_show(self):
-        self._signal.emit('normal_buy_add')
+        self._tab_signal.emit('normal_buy_add')
 
     # 销负进货录入
     def _write_off_add_show(self):
-        self._signal.emit('write_off_add')
+        self._tab_signal.emit('write_off_add')
 
     # 历史进货信息
     def _history_stock_show(self):
-        self._signal.emit('history_buy')
+        self._tab_signal.emit('history_buy')
 
     # 进货监控
     def _stock_monitor_show(self):
-        self._signal.emit('buy_monitor')
+        self._tab_signal.emit('buy_monitor')
 
     # 库存查询
     def _inventory_search_show(self):
-        self._signal.emit('stock_search')
+        self._tab_signal.emit('stock_search')
 
     # 滞销预警
     def _inventory_unsalable_pre_warning_show(self):
-        self._signal.emit('stock_unsalable_warning')
+        self._tab_signal.emit('stock_unsalable_warning')
 
     # 库存金额
     def _inventory_money_show(self):
-        self._signal.emit('stock_money')
+        self._tab_signal.emit('stock_money')
 
     # 库存校准
     def _inventory_calibration_show(self):
-        self._signal.emit('inventory_calibration')
+        self._tab_signal.emit('inventory_calibration')
 
     # 客户回访
     def _return_visit_show(self):
-        self._signal.emit('return_visit')
+        self._tab_signal.emit('return_visit')
 
     # 欠款明细
     def _supplier_arrears_show(self):
-        self._signal.emit('supplier_arrears')
+        self._tab_signal.emit('supplier_arrears')
 
     # 业绩报表
     def _performance_show(self):
-        self._signal.emit('performance')
+        self._tab_signal.emit('performance')
 
     # 二级项目经营明细
     def _sub_service_operation_data_show(self):
-        self._signal.emit('sub_service_operation_data')
+        self._tab_signal.emit('sub_service_operation_data')
 
     # 总体经营数据
     def _operation_total_data_show(self):
-        self._signal.emit('operation_total_data')
+        self._tab_signal.emit('operation_total_data')
 
     # 店面人员
     def _store_user_show(self):
-        self._signal.emit('store_user')
+        self._tab_signal.emit('store_user')
 
     # 管理员管理
     def _system_user_show(self):
-        self._signal.emit('system_user')
+        self._tab_signal.emit('system_user')
 
     # 服务项目管理
     def _service_show(self):
-        self._signal.emit('service_manage')
+        self._tab_signal.emit('service_manage')
 
     def _attribute_show(self):
-        self._signal.emit('attribute_manage')
+        self._tab_signal.emit('attribute_manage')
 
     # 设备管理
     def _setting_device_show(self):
-        self._signal.emit('setting_device')
+        self._tab_signal.emit('setting_device')
 
     # 密码管理
     def _setting_password_show(self):
-        self._signal.emit('setting_password')
+        self._tab_signal.emit('setting_password')
 
     # 统一处理Tab页的显示
     def _tab_show(self, obj_name):
@@ -196,7 +208,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
             elif obj_name == 'stock_search':
                 tab_widget = StockSearch()
-                
+
             elif obj_name == 'stock_unsalable_warning':
                 tab_widget = StockUnsalableWarning()
 
@@ -228,20 +240,31 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = AttributeDialog()
 
             elif obj_name == 'setting_device':
-                tab_widget = Device()
+                tab_widget = DeviceInfo()
 
             elif obj_name == 'setting_password':
-                tab_widget = StoreAndPassword()
+                tab_widget = None
+            else:
+                tab_widget = None
 
-            self._add_tab(tab_widget, tab_id)
-            self._add_tab_info_dict(obj_name, tab_widget)
+            if tab_widget:
+                self._add_tab(tab_widget)
+                self._add_tab_info_dict(obj_name, tab_widget)
+                self.tabWidget.setCurrentWidget(tab_widget)
+            else:
+                QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
+                return
 
-        self.tabWidget.setCurrentWidget(tab_widget)
+    # 处理未注册Ip的PAD连接请求
+    def _confirm_pad_connect(self, device: Device):
+
+        self.confirm_dialog = PadConnect(device)
+        self.confirm_dialog.exec()
+        print(self._confirm_result)
 
     # 统一处理Tab页的新增
-    def _add_tab(self, tab_widget: QWidget, tab_id: int):
+    def _add_tab(self, tab_widget: QWidget):
         self.tabWidget.addTab(tab_widget, tab_widget.windowTitle())
-        # self.tabWidget.setTabIcon(tab_id, self.tab_icon)
 
     # 统一处理Tab页的所有字典信息
     def _add_tab_info_dict(self, obj_name: str, tab_widget: QWidget):

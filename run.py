@@ -32,7 +32,7 @@ from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import *
 from apscheduler.triggers.cron import CronTrigger
 
-import CreateSqlite
+import init_database
 from Common import Common
 from Common import config
 from Common.config import BUFSIZ
@@ -193,7 +193,7 @@ if __name__ == '__main__':
 
     if not is_open():
         try:
-            CreateSqlite.CreateAllDb()
+            init_database.create_all_table()
             run()
         except Exception as e:
             print(e)
