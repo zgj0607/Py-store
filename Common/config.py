@@ -19,8 +19,9 @@ __mtime__ = '2017/2/10'
 """
 import configparser
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
+
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def initializationConfig():
@@ -85,7 +86,9 @@ else:
 # webHOST='119.23.66.37'  #新服务器
 webHOST = '119.23.39.238'  # 门店服务器
 
+# 记录主窗口的引用，实现线程间的共享调用
 ui = None
+
 BUFSIZ = 1024
 # 这个是长连接端口，用于终端长链接服务器通讯
 ADDR = (HOST, PORT)

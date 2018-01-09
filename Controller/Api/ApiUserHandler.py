@@ -23,12 +23,12 @@ from tornado.concurrent import run_on_executor
 
 from Common.Common import SocketServer
 from Common.MyExecption import ApiException
-from Common.StaticFunc import ErrorCode, Set_return_dicts
+from Common.StaticFunc import ErrorCode, set_return_dicts
 from Common.time_utils import get_now
-from Controller.Api.BaseHandler import Base_Handler
+from Controller.Api.BaseHandler import BaseHandler
 
 
-class ApiUser_Handler(Base_Handler):
+class ApiUser_Handler(BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ApiUser_Handler, self).__init__(application, request, **kwargs)
         self.func = self.ApiUser
@@ -64,7 +64,7 @@ class ApiUser_Handler(Base_Handler):
                         except:
                             raise ApiException(ErrorCode.UserMore)
 
-                    return Set_return_dicts({"userId": userId})
+                    return set_return_dicts({"userId": userId})
 
                 else:
                     raise ApiException(ErrorCode.ErrorRequest)
@@ -105,7 +105,7 @@ class ApiUser_Handler(Base_Handler):
                                 result.append(data)
                                 keyTemp.append(key)
 
-                    return Set_return_dicts(result)
+                    return set_return_dicts(result)
 
                 elif keyWord == 'order':
                     carId = getData.get("carId", "")
@@ -115,7 +115,7 @@ class ApiUser_Handler(Base_Handler):
                         raise ApiException(ErrorCode.ParameterMiss)
 
                     if self.connect:
-                        allOrderMoney = 0
+                        allOrderMoney = 0.0
                         result = SocketServer("userorder {} {} {}".format(self.storeId, carId, carPhone))
                         if result:
                             orderNumber = len(result)
@@ -126,44 +126,51 @@ class ApiUser_Handler(Base_Handler):
 
                     else:
                         result, orderNumber, allOrderMoney = self.GetOrder(carId, carPhone)
-
                     if result == 'restart':
                         raise ApiException(ErrorCode.ReStartPC)
                         # result = []
                     else:
-                        result.sort(key=lambda obj: obj.get('createdTime'), reverse=True)
-
-                    for data in result:
-                        msg = data.get("msg")
-                        for msgData in msg:
-                            temp = {}
-                            attribute = msgData.get("attribute")
-                            for k, v in attribute.items():
-                                if v != "" and v != "-":
-                                    temp[k] = v
-                            msgData['attribute'] = temp
+                        print('sort')
+                        try:
+                            result.sort(key=lambda obj: obj.get('createdTime'), reverse=True)
+                        except Exception as sortE:
+                            print(sortE)
+                    try:
+                        for data in result:
+                            print(data)
+                            msg = data.get("msg")
+                            for msgData in msg:
+                                temp = {}
+                                attribute = msgData.get("attribute")
+                                for k, v in attribute.items():
+                                    if v != "" and v != "-":
+                                        temp[k] = v
+                                msgData['attribute'] = temp
+                    except Exception as forException:
+                        print(forException)
 
                     sendMsg = {
                         'orderMsg': result,
                         'orderNumber': orderNumber,
                         'allOrderMoney': allOrderMoney
                     }
-                    return Set_return_dicts(sendMsg)
+                    print(sendMsg)
+                    return set_return_dicts(sendMsg)
 
                 else:
                     raise ApiException(ErrorCode.ErrorRequest)
 
         except ApiException as e:
-            return Set_return_dicts(forWorker=e.error_result['forWorker'],
+            return set_return_dicts(forWorker=e.error_result['forWorker'],
                                     code=e.error_result['errorCode'],
                                     forUser=e.error_result['forUser'])
 
     def GetOrder(self, carId, carPhone):
-        allOrderMoney = 0
+        allOrderMoney = 0.0
         orderNumber = 0
         result = self.dbhelp.GetXiaoFeiByKey('carId', carId)
         xiaoFeiList = defaultdict(list)
-
+        print(carId)
         for data in result:
             attribute = OrderedDict(json.loads(data[8]))
             pcSign = data[11]
@@ -171,7 +178,7 @@ class ApiUser_Handler(Base_Handler):
                 price = float(attribute.pop("总价", 0))
             except:
                 price = 0
-
+            print(price)
             allOrderMoney += price
             orderNo = data[1]
             orderCheckId = data[10]
@@ -197,12 +204,16 @@ class ApiUser_Handler(Base_Handler):
                 temp["totalPrice"] = price + temp.get("totalPrice")
                 temp["msg"].append(msg)
                 xiaoFeiList[orderNo] = temp
-
+        print('out loop')
+        print(xiaoFeiList.items())
         result = list()
         for k, v in xiaoFeiList.items():
             result.append(v)
             orderNumber += 1
-
+            print(k, v)
+        print(result)
+        print(orderNumber)
+        print(allOrderMoney)
         return result, orderNumber, allOrderMoney
 
     def GetFind(self, key, value):

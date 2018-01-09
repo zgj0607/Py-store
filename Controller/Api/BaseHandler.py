@@ -17,23 +17,27 @@ __mtime__ = '2017/2/14'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-import time
 import json
-
-import tornado
-from tornado import web, gen, ioloop
-from Controller.DbHandler import DB_Handler
-from Common.MyExecption import ApiException
-from Common.StaticFunc import ErrorCode, Set_return_dicts
-import Common.config as config
-from Common.Common import GetStoreId
+import time
 # 这个并发库在python3自带在python2需要安装sudo pip install futures
 from concurrent.futures import ThreadPoolExecutor
 
+import tornado
+from tornado import web, gen, ioloop
 
-class Base_Handler(web.RequestHandler):
+import Common.config as config
+from Common import Common, time_utils
+from Common.Common import GetStoreId
+from Common.MyExecption import ApiException
+from Common.StaticFunc import ErrorCode, set_return_dicts
+from Controller.DbHandler import DB_Handler
+from database.dao.device import device_handler
+from domain.device import Device
+
+
+class BaseHandler(web.RequestHandler):
     def __init__(self, application, request, **kwargs):
-        super(Base_Handler, self).__init__(application, request, **kwargs)
+        super(BaseHandler, self).__init__(application, request, **kwargs)
         self.executor = ThreadPoolExecutor(10)
         self.__keyWord = None
         self.func = None
@@ -64,6 +68,7 @@ class Base_Handler(web.RequestHandler):
                 for data in value:
                     data = data.decode()
                 result[name] = value
+        print("入参：", result)
 
         return result
 
@@ -76,39 +81,37 @@ class Base_Handler(web.RequestHandler):
             if args != ():
                 self.__keyWord = args[0]
 
-            get_Data = self.get_all_argument()
-            # print ('get:',get_Data)
+            get_data = self.get_all_argument()
             if len(args) > 1:
-                get_Data['args'] = list(args)
-                get_Data['args'].remove(self.__keyWord)
+                get_data['args'] = list(args)
+                get_data['args'].remove(self.__keyWord)
 
-            checkSheBei = self.dbhelp.CheckSheBei(self.spbill_create_ip, self.deviceName)
-            if checkSheBei == False:
+            check_result = self.check_device()
+            if not check_result:
                 raise ApiException(ErrorCode.UserStateError)
-            elif checkSheBei == 2:
+            elif check_result == 2:
                 raise ApiException(ErrorCode.UserStateWaitError)
 
             if self.__keyWord:
-                # result = self.func(self.__keyWord,get_Data)
-                result = yield self.func(self.__keyWord, get_Data)
+                result = yield self.func(self.__keyWord, get_data)
             else:
-                result = yield self.func(get_Data)
+                result = yield self.func(get_data)
                 #  result = self.func(get_Data)
 
-            TransmissionResult = json.dumps(result)
-            # print ('get_send:{}'.format(TransmissionResult))
+            transmission_result = json.dumps(result)
 
-            self.write(TransmissionResult)
+            self.write(transmission_result)
             self.finish()
 
         except ApiException as e:
-            self.write(json.dumps(Set_return_dicts(forWorker=e.error_result['forWorker'],
+            self.write(json.dumps(set_return_dicts(forWorker=e.error_result['forWorker'],
                                                    code=e.error_result['errorCode'],
                                                    forUser=e.error_result['forUser'])))
             self.finish()
 
-        except:
-            self.write(json.dumps(Set_return_dicts(forWorker='不合法的参数',
+        except Exception as commException:
+            print(commException)
+            self.write(json.dumps(set_return_dicts(forWorker='不合法的参数',
                                                    code=ErrorCode.ParameterError,
                                                    forUser='请求超时')))
 
@@ -125,35 +128,49 @@ class Base_Handler(web.RequestHandler):
 
             # json传输
             try:
-                get_Data = json.loads(self.request.body.decode())
-            except:
+                get_data = json.loads(self.request.body.decode())
+            except Exception as outer:
+                print(outer)
                 try:
-                    get_Data = self.get_all_argument()
-                except:
+                    get_data = self.get_all_argument()
+                except Exception as inner:
+                    print(inner)
                     raise ApiException(ErrorCode.JsonError)
             # print ('post:',get_Data)
 
-            checkSheBei = self.dbhelp.CheckSheBei(self.spbill_create_ip, self.deviceName)
-            if checkSheBei == False:
+            check_result = self.check_device()
+            if not check_result:
                 raise ApiException(ErrorCode.UserStateError)
-            elif checkSheBei == 2:
+            elif check_result == 2:
                 raise ApiException(ErrorCode.UserStateWaitError)
 
             if self.__keyWord:
-                result = yield self.func(self.__keyWord, get_Data)
-                # result = self.func(self.__keyWord,get_Data)
+                result = yield self.func(self.__keyWord, get_data)
             else:
-                result = yield self.func(get_Data)
-                # result = self.func(get_Data)
+                result = yield self.func(get_data)
 
-            TransmissionResult = json.dumps(result)
-            # print ('post_send{}'.format(TransmissionResult))
-            self.write(TransmissionResult.encode('utf-8'))
+            transmission_result = json.dumps(result)
+            self.write(transmission_result.encode('utf-8'))
             self.finish()
 
         except ApiException as e:
-            self.write(json.dumps(Set_return_dicts(forWorker=e.error_result['forWorker'],
+            self.write(json.dumps(set_return_dicts(forWorker=e.error_result['forWorker'],
                                                    code=e.error_result['errorCode'],
                                                    forUser=e.error_result['forUser'])))
 
             self.finish()
+
+    def check_device(self):
+        device = Device()
+        device.ip(self.spbill_create_ip)
+        device.create_time(time_utils.get_now())
+        device.name(self.deviceName)
+
+        data = device_handler.get_device_info_by_ip(self.spbill_create_ip)
+        if not data:
+            Common.config.ui.pad_connect_signal.emit(device)
+            check_result = 2
+        else:
+            check_result = (data[1] == Device.enable())
+
+        return check_result

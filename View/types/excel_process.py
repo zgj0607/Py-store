@@ -1,14 +1,13 @@
 import os
 from collections import defaultdict
-from datetime import datetime
 
 import xlrd
 import xlwt
 
-from Common.StaticFunc import set_style
-from Common.time_utils import get_now
 from Common.config import menuSavePath
+from Common.time_utils import get_now
 from View.types import attribute, attribute_state
+from View.utils.excel_utils import set_style
 from database.dao.service.service_handler import get_all_second_level_service, get_all_first_level_service, \
     add_first_level_service, add_second_level_service
 

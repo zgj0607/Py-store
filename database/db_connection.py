@@ -38,7 +38,7 @@ def release_connection(conn):
     cursor = None
 
 
-def execute(sql_text: str):
+def execute(sql_text: str, fetch_one=False):
     conn = get_connection()
     cur = get_cursor()
 
@@ -48,7 +48,11 @@ def execute(sql_text: str):
     if sql_text.upper().lstrip().lstrip('\s').startswith('INSERT'):
         result = cur.lastrowid
     else:
-        result = cur.fetchall()
+        if fetch_one:
+            result = cur.fetchone()
+        else:
+            result = cur.fetchall()
+
 
     print("执行结果数据：", result)
 

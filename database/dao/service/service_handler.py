@@ -1,5 +1,6 @@
 from Common.time_utils import get_now
 from database.db_connection import execute
+from domain.service_item import ServiceItem
 
 service_table_name = 'service'
 
@@ -85,3 +86,31 @@ def get_second_service_count_by_father(father_id):
     count = execute(sql_text)
 
     return count
+
+
+def get_attribute_by_service(service_id: int):
+    sql_text = '''
+                SELECT attribute_id, attribute_name
+                  FROM service_item
+                 WHERE service_id = {}''' \
+        .format(service_id)
+    result = execute(sql_text)
+    return result
+
+
+def add_service_attribute(item: ServiceItem):
+    sql_text = '''
+                INSERT INTO service_item(service_id,attribute_id,attribute_name, create_time, create_op)
+                VALUES ({},{},'{}','{}',{})''' \
+        .format(item.service_id(), item.attribute_id(), item.attribute_name(), item.create_time(), item.create_op())
+
+    return execute(sql_text)
+
+
+def delete_servive_attribute(service_id: int, attribute_id: int):
+    sql_text = '''
+                DELETE FROM service_item
+                   WHERE service_id = {}
+                     AND attribute_id = {}''' \
+        .format(service_id, attribute_id)
+    return execute(sql_text)

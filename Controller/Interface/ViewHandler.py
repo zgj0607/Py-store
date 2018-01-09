@@ -18,9 +18,7 @@ __mtime__ = '2017/2/13'
             ┗┻┛  ┗┻┛
 """
 import configparser
-import hashlib
 import json
-import os
 import re
 from collections import OrderedDict
 from collections import defaultdict
@@ -28,304 +26,20 @@ from datetime import datetime
 
 import requests
 import xlrd
-import xlwt
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import *
 
-from Common.Common import SocketServer, cncurrency, format_time
-from Common.StaticFunc import GetOrderId
+from Common.Common import cncurrency
+from Common.MyExecption import ApiException
+from Common.StaticFunc import GetOrderId, ErrorCode
+from Common.config import domain, connect as myconnect
 from Common.time_utils import get_now
-from Common.config import domain, savePath, menuSavePath, connect as myconnect
 from Controller import DbHandler
 
 dbhelp = DbHandler.DB_Handler()
 selectOrderNo = None
-
-
-def GetTwoMenu(id):
-    data = dbhelp.GetOneById("TwoMenu", id)
-    if data:
-        return data
-    else:
-        return []
-
-
-def GetOneMenu(id):
-    data = dbhelp.GetOneById("OneMenu", id)
-    if data:
-        return data
-    else:
-        return []
-
-
-def RemoveById(id, dbname):
-    search = "id={}".format(id)
-    dbhelp.DeleteData(dbname, search)
-
-
-def UpdateById(id, dbname, updateData):
-    search = "id={}".format(id)
-    dbhelp.UpdateData(dbname, updateData, search)
-
-
-# 获取表单选中行的信息
-def GetTableMsg(table, num):
-    row = table.currentIndex().row()
-    model = table.model()
-    index = model.index(row, num)
-    return model.data(index)
-
-
-# 获取表单中某单元格的信息
-def GetCellMsg(table, row, num):
-    model = table.model()
-    index = model.index(row, num)
-    return model.data(index)
-
-
-def UpdatePwd(newPwd, oldPwd):
-    oldPwd += "udontknowwhy"
-    m = hashlib.md5()
-    m.update(oldPwd.encode())
-    oldPwd = m.hexdigest()
-    data = dbhelp.GetAdminByUsername("admin")
-    pwd = data[1]
-    if oldPwd != pwd:
-        return False
-    newPwd = newPwd + "udontknowwhy"
-    m = hashlib.md5()
-    m.update(newPwd.encode())
-    newPwd = m.hexdigest()
-    search = "id={}".format(data[0])
-    updateData = "pwd=\'{}\'".format(newPwd)
-    dbhelp.UpdateData("Admin", updateData, search)
-    return True
-
-
-def UpdatePcName(pcSign, pcAddress, pcPhone, code):
-    url = domain + 'store/api/update'
-    data = {
-        "pcAddress": pcAddress,
-        "pcSign": pcSign,
-        "pcPhone": pcPhone,
-        "code": code
-    }
-    req = requests.post(url, data=data)
-    req = json.loads(req.text)
-    if req.get("code") == 200:
-        return True
-    else:
-        return False
-
-
-def set_style(name, height, bold=False, center=False, upDown=False):
-    style = xlwt.XFStyle()  # 初始化样式
-
-    font = xlwt.Font()  # 为样式创建字体
-    font.name = name  # 'Times New Roman'
-    font.bold = bold
-    font.color_index = 4
-    font.height = height
-    style.font = font
-    alignment = xlwt.Alignment()
-    # 左右居中
-    if center:
-        alignment.horz = xlwt.Alignment.HORZ_CENTER
-    # 上下居中
-    if upDown:
-        alignment.vert = xlwt.Alignment.VERT_CENTER
-
-    style.alignment = alignment
-    return style
-
-
-def CreateXls(startTime, endTime, remote=False):
-    returnStr = True
-    now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    fileName = now + ".xls"
-    # 设置内容标题
-    # titleList = ['订单号',u'消费时间','消费门店',u"车牌号",u"车主姓名",u"联系电话",u"车型",u"操作人员",
-    #              u"消费项目",u"品牌",u"型号",u"花纹",u"数量",u"单价",u"小计",u"工时费",
-    #              u"更换里程",u"备注",u"总价"]
-    # tableLen = len(titleList)
-
-    # 获取消费信息
-    xiaoFei = []
-    if remote:
-        # 获取远程信息
-        root = 'config.ini'
-        basicMsg = configparser.ConfigParser()
-        basicMsg.read(root)
-        code = basicMsg.get('msg', 'code')
-        keyWord = "xiaofei {} {} {}".format(code, startTime, endTime)
-        # python3传递的是bytes，所以要编码
-        try:
-            xiaoFei = SocketServer(keyWord)
-        except:
-            returnStr = False
-    else:
-        xiaoFei = dbhelp.GetXiaoFeiTable(startTime, endTime, Table=False)
-
-    # 填入数据
-    if xiaoFei:
-        # 插入信息
-        xiaoFei.sort(key=lambda obj: obj[2], reverse=True)
-        orderCheckId = None
-        hebing = list()
-        tempMsg = dict()
-        temp = list()
-        # 设置表头
-        titleList = ["检索ID", '订单号', u'消费时间', "消费门店", u"车牌号", u"车主姓名", u"联系电话", u"车型", u"操作人员",
-                     u"消费项目"]
-
-        tableLen = len(titleList)
-        hearder = ['数量', '单价', '小计', '总价', '单位', '备注']
-        for data in xiaoFei:
-            try:
-                attribute = json.loads(data[10])
-                for k, v in attribute.items():
-                    if k not in hearder:
-                        hearder.append(k)
-            except:
-                continue
-        titleList = titleList + hearder
-        allTableLen = len(titleList)
-
-        wb = xlwt.Workbook()
-        ws = wb.add_sheet('消费列表', cell_overwrite_ok=True)
-        title = set_style('Arial', 250, True, True)
-        default = set_style('SimSun', 180, True, True, True)
-        top = set_style('Times New Roman', 350, True, True)
-        # 前两个参数表示需要合并的行范围，后两个参数表示需要合并的列范围
-        # 合并单元格作为大标题，水平居中即可
-        startTime = format_time(startTime)[:10]
-        endTime = format_time(endTime)[:10]
-        ws.write_merge(0, 0, 0, allTableLen - 1, '门店系统:{}至{}'.format(startTime, endTime), top)
-
-        # 设置标题
-        for i in range(allTableLen):
-            # 设置单元格宽度
-            ws.col(i).width = 265 * 20
-            # 插入标题
-            ws.write(1, i, titleList[i], title)
-
-        # 从第二行开始插
-        row = 2
-
-        for data in xiaoFei:
-            if orderCheckId:
-                # 如果记录的订单号与当前数据的订单号不同，则进行录入并修改记录订单号
-                if orderCheckId != data[0]:
-                    orderCheckId = data[0]
-
-                    # 因为订单号变了所以之前的缓存清空，换成这个订单号的索引
-                    temp = [row]
-                else:
-                    # 若已经缓存了2个索引则代表此订单号有>2个商品，所以更新第二个索引保留第一个索引
-                    if len(temp) >= 2:
-                        temp[1] = row
-                    else:
-                        temp.append(row)
-            else:
-                # 若第一次进来，此时订单号是None，进行录入
-                orderCheckId = data[0]
-                temp.append(row)
-
-            # 插入信息
-            for j in range(tableLen):
-                ws.write(row, j, data[j], default)
-                if j == tableLen - 1:
-                    # 最后一个的时候遍历填入数据
-                    try:
-                        j += 1
-                        attribute = json.loads(data[j])
-                        for k in hearder:
-                            ws.write(row, j, attribute.get(k, ""), default)
-                            j += 1
-                    except:
-                        continue
-            row += 1
-            # 如果已经缓存了2个数字，则代表有重复的订单号，所以此时进行记录并合并
-            if len(temp) >= 2:
-                tempMsg[temp[0]] = MakeTempMsg(data)
-                hebing.append(temp)
-
-        if len(temp) >= 2:
-            hebing.append(temp)
-            tempMsg[temp[0]] = MakeTempMsg(data)
-        for hb in hebing:
-            ws.write_merge(hb[0], hb[1], 0, 0, tempMsg[hb[0]].get("checkOrderId"), default)
-            ws.write_merge(hb[0], hb[1], 1, 1, tempMsg[hb[0]].get("orderNo"), default)
-            ws.write_merge(hb[0], hb[1], 2, 2, tempMsg[hb[0]].get("createdTime"), default)
-            ws.write_merge(hb[0], hb[1], 3, 3, tempMsg[hb[0]].get("pcSign"), default)
-            ws.write_merge(hb[0], hb[1], 4, 4, tempMsg[hb[0]].get("carId"), default)
-            ws.write_merge(hb[0], hb[1], 5, 5, tempMsg[hb[0]].get("carUser"), default)
-            ws.write_merge(hb[0], hb[1], 6, 6, tempMsg[hb[0]].get("carPhone"), default)
-            ws.write_merge(hb[0], hb[1], 7, 7, tempMsg[hb[0]].get("carModel"), default)
-            ws.write_merge(hb[0], hb[1], 8, 8, tempMsg[hb[0]].get("workerName"), default)
-
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
-        wb.save(savePath + fileName)
-
-        return fileName
-    else:
-        return False
-
-
-def CreateMenuExcel():
-    now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    fileName = now + ".xls"
-    titleList = ["一级菜单", "二级菜单"]
-    allTableLen = len(titleList)
-
-    # 整理参数
-    menu1s = dbhelp.getOneMenu()
-    menu2s = defaultdict(list)
-    for menu in menu1s:
-        menu2s[menu[0]] = dbhelp.getTwoMenu(menu[0])
-    if menu1s and menu2s:
-        wb = xlwt.Workbook()
-        ws = wb.add_sheet('菜单列表', cell_overwrite_ok=True)
-
-        for i in range(allTableLen):
-            # 设置单元格宽度
-            ws.col(i).width = 265 * 20
-            # 插入标题
-            ws.write(0, i, titleList[i], set_style('Arial', 250, True, True))
-
-        row = 1
-        for menu in menu1s:
-            menu2 = menu2s[menu[0]]
-            for data in menu2:
-                # 插入信息
-                ws.write(row, 0, menu[1], set_style('SimSun', 180, True, True, True))
-                ws.write(row, 1, data[1], set_style('SimSun', 180, True, True, True))
-                row += 1
-
-        if not os.path.exists(menuSavePath):
-            os.mkdir(menuSavePath)
-        wb.save(menuSavePath + fileName)
-        return fileName
-    else:
-        return False
-
-
-def MakeTempMsg(data):
-    tempMsg = {
-        "checkOrderId": data[0],
-        "orderNo": data[1],
-        "createdTime": data[2],
-        "pcSign": data[3],
-        "carId": data[4],
-        "carUser": data[5],
-        "carPhone": data[6],
-        "carModel": data[7],
-        "workerName": data[8],
-    }
-    return tempMsg
 
 
 def DoPrinter(mainWin, orderNo):
@@ -339,7 +53,8 @@ def DoPrinter(mainWin, orderNo):
         preview.exec_()
         return True
 
-    except:
+    except Exception as print_exception:
+        print(print_exception)
         return False
 
 
@@ -349,7 +64,7 @@ def printHtml(printer):
     basicMsg.read(root)
     try:
         if not myconnect:
-            raise
+            raise ApiException(ErrorCode.ErrorRequest)
         code = basicMsg.get("msg", 'code')
         url = domain + "store/api/detail?code={}".format(code)
         req = requests.get(url=url)

@@ -21,6 +21,7 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
         self.table_title = ('一级分类', '二级分类', '品牌', '商品型号', '库存数量', '销量')
         self._init_ui()
         self._init_signal_and_slot()
+
     def _init_ui(self):
         table_utils.set_table_content(self.tableView, (), self.table_title)
         time_now = time_utils.get_now()
