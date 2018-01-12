@@ -37,6 +37,8 @@ from Common.StaticFunc import GetOrderId, ErrorCode
 from Common.config import domain, connect as myconnect
 from Common.time_utils import get_now
 from Controller import DbHandler
+from database.dao.customer.customer_handler import check_customer
+from database.dao.sale.sale_handler import get_sale_info_by_one_key
 
 dbhelp = DbHandler.DB_Handler()
 selectOrderNo = None
@@ -47,7 +49,7 @@ def DoPrinter(mainWin, orderNo):
         printer = QPrinter(QPrinter.HighResolution)
         # /* 打印预览 */
         preview = QPrintPreviewDialog(printer, mainWin)
-        preview.paintRequested.connect(printHtml)
+        preview.paintRequested.connect(print_html)
         global selectOrderNo
         selectOrderNo = orderNo
         preview.exec_()
@@ -58,7 +60,7 @@ def DoPrinter(mainWin, orderNo):
         return False
 
 
-def printHtml(printer):
+def print_html(printer):
     root = 'config.ini'
     basicMsg = configparser.ConfigParser()
     basicMsg.read(root)
@@ -98,7 +100,7 @@ def printHtml(printer):
         storeName = resultData.get("data").get("pcSign", "")
         pcAddress = resultData.get("data").get("pcAddress", "")
         pcPhone = resultData.get("data").get("pcPhone", "")
-    result = dbhelp.GetXiaoFeiByKey("orderCheckId", selectOrderNo)
+    result = get_sale_info_by_one_key("orderCheckId", selectOrderNo)
 
     fp = open("printer.txt", 'rb')
     data = fp.readline().decode().replace("\n", "").replace("\r", "").replace("\ufeff", "")
@@ -386,7 +388,7 @@ def ImportExcel(fileName, self):
                             orderCheckId = temp[0][0]
                         else:
                             orderCheckId = row_data[0]
-                        checkOrder = dbhelp.GetXiaoFeiByKey("orderCheckId", orderCheckId)
+                        checkOrder = get_sale_info_by_one_key("orderCheckId", orderCheckId)
                         # 有此订单的就不保存了
                         if not checkOrder:
                             if temp:
@@ -442,7 +444,7 @@ def ImportExcel(fileName, self):
                                         continue
                                     attribute[title[ki]] = row_data[ki]
 
-                            user = dbhelp.CheckUser(userSave.get("carPhone"), userSave.get("carId"))
+                            user = check_customer(userSave.get("carPhone"), userSave.get("carId"))
                             if not user:
                                 # 没有此用户则添加
                                 key = "userName,carPhone,carModel,carId,createdTime"
@@ -522,7 +524,7 @@ def ImportExcel(fileName, self):
                     userSave['carModel'] = carModel if carModel != '-' else ""
 
                     if orderNo != "-":
-                        checkOrder = dbhelp.GetXiaoFeiByKey("orderNo", orderNo)
+                        checkOrder = get_sale_info_by_one_key("orderNo", orderNo)
                         if checkOrder:
                             break
 
@@ -560,7 +562,7 @@ def ImportExcel(fileName, self):
 
                 if userSave.get("carId") and userSave.get("carPhone"):
                     # 当有用户信息的时候判断是否需要自动添加
-                    user = dbhelp.CheckUser(userSave.get("carPhone"), userSave.get("carId"))
+                    user = check_customer(userSave.get("carPhone"), userSave.get("carId"))
                     if not user:
                         # 没有此用户则添加
                         key = "userName,carPhone,carModel,carId,createdTime"

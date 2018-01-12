@@ -21,111 +21,116 @@ from collections import OrderedDict, defaultdict
 
 from tornado.concurrent import run_on_executor
 
+from Common import time_utils
 from Common.Common import SocketServer
 from Common.MyExecption import ApiException
 from Common.StaticFunc import ErrorCode, set_return_dicts
-from Common.time_utils import get_now
 from Controller.Api.BaseHandler import BaseHandler
+from database.dao.customer import customer_handler
+from database.dao.customer.customer_handler import get_like_customer_by_key
+from database.dao.sale import sale_handler
+from domain.customer import Customer
 
 
-class ApiUser_Handler(BaseHandler):
+class ApiUserHandler(BaseHandler):
     def __init__(self, application, request, **kwargs):
-        super(ApiUser_Handler, self).__init__(application, request, **kwargs)
-        self.func = self.ApiUser
+        super(ApiUserHandler, self).__init__(application, request, **kwargs)
+        self.func = self.user
 
     @run_on_executor
-    def ApiUser(self, keyWord, getData):
+    def user(self, keyword, get_data):
         try:
             if self.request.method == 'POST':
-                if keyWord == "add":
+                if keyword == "add":
                     try:
-                        userName = getData.pop("username")
-                        carPhone = getData.pop("carPhone")
-                        carModel = getData.pop("carModel")
-                        carId = getData.pop("carId")
-                    except:
+                        username = get_data.pop("username")
+                        phone = get_data.pop("carPhone")
+                        car_model = get_data.pop("carModel")
+                        car_id = get_data.pop("carId")
+                    except Exception as e:
+                        print(e)
                         raise ApiException(ErrorCode.ParameterMiss)
 
-                    key = "userName,carPhone,carModel,carId,createdTime"
-                    value = "'{}','{}','{}','{}','{}'".format(userName, carPhone, carModel, carId, get_now())
-                    tempUser = self.dbhelp.GetUserByKey("carId", carId)
-                    if tempUser:
-                        updateData = "userName=\'{}\',carPhone=\'{}\',carModel=\'{}\'".format(userName, carPhone,
-                                                                                              carModel)
-                        search = "carId=\'{}\'".format(carId)
+                    customer = Customer()
+                    customer.username(username)
+                    customer.car_model(car_model)
+                    customer.phone(phone)
+                    customer.car_id(car_id)
+                    customer.create_time(time_utils.get_now())
+
+                    temp_user = customer_handler.get_customer_by_key("carId", car_id)
+                    if temp_user:
                         try:
-                            self.dbhelp.UpdateData("User", updateData, search)
-                        except:
+                            customer_handler.update_customer_by_car_id(customer)
+                        except Exception as update_exception:
+                            print(update_exception)
                             raise ApiException(ErrorCode.ParameterError)
-                        userId = tempUser[0][0]
+                        customer_id = temp_user[0][0]
                     else:
                         try:
-                            userId = self.dbhelp.InsertData("User", key, value)
-                        except:
+                            customer_id = customer_handler.add_customer(customer)
+                        except Exception as insert_exception:
+                            print(insert_exception)
                             raise ApiException(ErrorCode.UserMore)
 
-                    return set_return_dicts({"userId": userId})
+                    return set_return_dicts({"userId": customer_id})
 
                 else:
                     raise ApiException(ErrorCode.ErrorRequest)
 
             elif self.request.method == "GET":
-                # basicMsg = configparser.ConfigParser()
-                # root = 'config.ini'
-                # basicMsg.read(root)
-                # code = basicMsg.get('msg','code')
+
                 if not self.storeId:
                     raise ApiException(ErrorCode.PCError)
 
-                if keyWord == "find":
-                    key = getData.get("key", "")
+                if keyword == "find":
+                    key = get_data.get("key", "")
                     if key not in ["carPhone", "carId"]:
                         raise ApiException(ErrorCode.ParameterError)
 
-                    value = getData.get("value", "")
+                    value = get_data.get("value", "")
 
                     if self.connect:
                         temp = SocketServer("user {} {} {}".format(self.storeId, key, value))
                         if not temp:
-                            temp = self.GetFind(key, value)
+                            temp = self.find_customer(key, value)
 
                     else:
-                        temp = self.GetFind(key, value)
+                        temp = self.find_customer(key, value)
                     result = []
-                    keyTemp = []
+                    key_temp = []
                     if temp == 'restart':
                         raise ApiException(ErrorCode.ReStartPC)
-                        # result = []
                     else:
                         for data in temp:
                             key = data.get("phone") + data.get("carId") + data.get("carModel") + data.get("userName")
-                            if key in keyTemp:
+                            if key in key_temp:
                                 pass
                             else:
                                 result.append(data)
-                                keyTemp.append(key)
+                                key_temp.append(key)
 
                     return set_return_dicts(result)
 
-                elif keyWord == 'order':
-                    carId = getData.get("carId", "")
-                    carPhone = getData.get("carPhone", "")
+                elif keyword == 'order':
+                    car_id = get_data.get("carId", "")
+                    phone = get_data.get("carPhone", "")
 
-                    if not carId:
+                    if not car_id:
                         raise ApiException(ErrorCode.ParameterMiss)
 
                     if self.connect:
-                        allOrderMoney = 0.0
-                        result = SocketServer("userorder {} {} {}".format(self.storeId, carId, carPhone))
+                        all_order_money = 0.0
+                        result = SocketServer("userorder {} {} {}".format(self.storeId, car_id, phone))
                         if result:
-                            orderNumber = len(result)
+                            order_number = len(result)
                             for data in result:
-                                allOrderMoney += data.get("totalPrice")
+                                all_order_money += data.get("totalPrice")
                         else:
-                            result, orderNumber, allOrderMoney = self.GetOrder(carId, carPhone)
+                            result, order_number, all_order_money = self.get_order(car_id)
 
                     else:
-                        result, orderNumber, allOrderMoney = self.GetOrder(carId, carPhone)
+                        result, order_number, all_order_money = self.get_order(car_id)
                     if result == 'restart':
                         raise ApiException(ErrorCode.ReStartPC)
                         # result = []
@@ -139,23 +144,23 @@ class ApiUser_Handler(BaseHandler):
                         for data in result:
                             print(data)
                             msg = data.get("msg")
-                            for msgData in msg:
+                            for msg_data in msg:
                                 temp = {}
-                                attribute = msgData.get("attribute")
+                                attribute = msg_data.get("attribute")
                                 for k, v in attribute.items():
                                     if v != "" and v != "-":
                                         temp[k] = v
-                                msgData['attribute'] = temp
+                                msg_data['attribute'] = temp
                     except Exception as forException:
                         print(forException)
 
-                    sendMsg = {
+                    send_msg = {
                         'orderMsg': result,
-                        'orderNumber': orderNumber,
-                        'allOrderMoney': allOrderMoney
+                        'orderNumber': order_number,
+                        'allOrderMoney': all_order_money
                     }
-                    print(sendMsg)
-                    return set_return_dicts(sendMsg)
+                    print(send_msg)
+                    return set_return_dicts(send_msg)
 
                 else:
                     raise ApiException(ErrorCode.ErrorRequest)
@@ -165,59 +170,62 @@ class ApiUser_Handler(BaseHandler):
                                     code=e.error_result['errorCode'],
                                     forUser=e.error_result['forUser'])
 
-    def GetOrder(self, carId, carPhone):
-        allOrderMoney = 0.0
-        orderNumber = 0
-        result = self.dbhelp.GetXiaoFeiByKey('carId', carId)
-        xiaoFeiList = defaultdict(list)
-        print(carId)
+    @staticmethod
+    def get_order(car_id):
+        all_order_money = 0.0
+        order_number = 0
+        result = sale_handler.get_sale_info_by_one_key('carId', car_id)
+        sale_info_list = defaultdict(list)
+        print(car_id)
         for data in result:
             attribute = OrderedDict(json.loads(data[8]))
-            pcSign = data[11]
+            pc_sign = data[11]
             try:
                 price = float(attribute.pop("总价", 0))
-            except:
+            except Exception as e:
+                print(e)
                 price = 0
             print(price)
-            allOrderMoney += price
-            orderNo = data[1]
-            orderCheckId = data[10]
+            all_order_money += price
+            order_no = data[1]
+            order_check_id = data[10]
             msg = {
                 "project": data[7],
                 "price": price,
                 'attribute': attribute,
             }
-            if orderNo not in xiaoFeiList.keys():
+            if order_no not in sale_info_list.keys():
                 # 如果没有保存此项则新建
                 temp = {
                     "createdTime": data[0],
                     "msg": [msg],
-                    "orderNo": orderNo,
-                    "orderCheckId": orderCheckId,
-                    'pcSign': pcSign,
+                    "orderNo": order_no,
+                    "orderCheckId": order_check_id,
+                    'pcSign': pc_sign,
                 }
                 temp["totalPrice"] = price
 
-                xiaoFeiList[orderNo] = temp
+                sale_info_list[order_no] = temp
             else:
-                temp = xiaoFeiList[orderNo]
+                temp = sale_info_list[order_no]
                 temp["totalPrice"] = price + temp.get("totalPrice")
                 temp["msg"].append(msg)
-                xiaoFeiList[orderNo] = temp
+                sale_info_list[order_no] = temp
         print('out loop')
-        print(xiaoFeiList.items())
+        print(sale_info_list.items())
         result = list()
-        for k, v in xiaoFeiList.items():
+        for k, v in sale_info_list.items():
             result.append(v)
-            orderNumber += 1
+            order_number += 1
             print(k, v)
         print(result)
-        print(orderNumber)
-        print(allOrderMoney)
-        return result, orderNumber, allOrderMoney
+        print(order_number)
+        print(all_order_money)
+        return result, order_number, all_order_money
 
-    def GetFind(self, key, value):
-        result = self.dbhelp.GetLikeUserByKey(key, value)
+    @staticmethod
+    def find_customer(key, value):
+        result = get_like_customer_by_key(key, value)
         temp = list()
         for data in result:
             # userName,carModel,carPhone,carId

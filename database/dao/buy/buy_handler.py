@@ -21,7 +21,6 @@ def get_all_buy_info():
                       bi.paid,
                       bi.unpaid,
                       di.value_desc,
-                      (CASE WHEN bi.rela_buy_id=0 THEN '-' ELSE rela_buy_id END) AS rela_buy,
                       bi.stock_id                
                  FROM buy_info bi, stock_info si, supplier sl, service sr, dictionary di
                 WHERE bi.stock_id = si.id
@@ -49,7 +48,6 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                                 UNPAID,
                                 PAID,
                                 TOTAL,
-                                rela_buy_id,
                                 BUY_TYPE,
                                 NOTES
                                )
@@ -65,12 +63,11 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                       {:.2f},
                       {:.2f},
                       {},
-                      {},
                       '{}'                                       
               )''' \
         .format(buy_info.stock_id(), buy_info.supplier_id(),
                 buy_info.unit_price(), buy_info.number(), buy_info.buy_date(), buy_info.create_time(),
-                buy_info.create_op(), buy_info.unpaid(), buy_info.paid(), buy_info.total(), buy_info.rela_buy_id(),
+                buy_info.create_op(), buy_info.unpaid(), buy_info.paid(), buy_info.total(),
                 buy_info.buy_type(), buy_info.notes())
     new_buy_id = execute(sql_text)
 
@@ -257,7 +254,6 @@ def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
                       bi.paid,
                       bi.unpaid,
                       di.value_desc,
-                      (CASE WHEN bi.rela_buy_id=0 THEN '-' ELSE rela_buy_id END) AS rela_buy,
                       bi.stock_id     
                       FROM buy_info bi, stock_info si, dictionary di, supplier sl
                      WHERE si.second_service_id = {}

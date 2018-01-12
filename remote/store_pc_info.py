@@ -44,3 +44,33 @@ def get_store_info():
     result = json.loads(req.text)
     print(result)
     return result
+
+
+# 验证注册码
+def check_register_code(pc_code, code):
+    result = False
+    data = {'code': code, 'pcCode': pc_code}
+    req = requests.post(config.domain + "store/api/check", data)
+    req_text = req.text
+    try:
+        req_text = json.loads(req_text)
+        if req_text.get("data"):
+            result = req_text.get("data")
+    except Exception as e:
+        print(e)
+        result = req_text
+
+    return result
+
+
+def get_store_detail():
+    url = domain + "store/api/detail?code={}".format(code)
+    try:
+        req = requests.get(url)
+        json_data = req.text
+        data = json.loads(json_data)
+    except Exception as e:
+        print(e)
+        data = None
+
+    return data

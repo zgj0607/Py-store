@@ -6,6 +6,8 @@ import requests
 import time
 
 from Common.config import BUFSIZ, domain
+from database.dao.customer.customer_handler import get_like_customer_by_key
+from database.dao.sale.sale_handler import get_sale_info_by_one_key
 from .MySocket import myClient
 from Controller.DbHandler import DB_Handler as DbHelp
 
@@ -41,7 +43,7 @@ def server_handle(client):
                 key = dataWord[1]
                 value = dataWord[2]
                 # 模糊获取用户信息
-                result = DbHelp.GetLikeUserByKey(key, value)
+                result = get_like_customer_by_key(value)
                 userList = list()
                 for data in result:
                     # userName,carModel,carPhone,carId
@@ -62,7 +64,7 @@ def server_handle(client):
                 carId = dataWord[1]
                 carPhone = dataWord[2]
                 # result = dbhelp.GetXiaoFeiByTwoKey(carId,carPhone)
-                result = DbHelp.GetXiaoFeiByKey('carId', carId)
+                result = get_sale_info_by_one_key(carId)
                 xiaoFeiList = defaultdict(list)
 
                 for data in result:
@@ -106,7 +108,7 @@ def server_handle(client):
 
             elif heard == "orderdetail":
                 checkOrderId = dataWord[1]
-                result = DbHelp.GetXiaoFeiByKey("orderCheckId", checkOrderId, True)
+                result = get_sale_info_by_one_key(checkOrderId, True)
                 resultList = list()
 
                 resultDict = {}

@@ -7,6 +7,8 @@ class Payment(object):
     __create_time = ''
     __create_op = 0
     __refund_type = 1
+    __supplier_id = 0
+    __note = ''
 
     def id(self, pay_id=0):
         if pay_id:
@@ -63,6 +65,20 @@ class Payment(object):
             return self
 
         return self.__refund_type
+
+    def supplier_id(self, supplier_id=None):
+        if supplier_id:
+            self.__supplier_id = supplier_id
+            return self
+
+        return self.__supplier_id
+
+    def note(self, note=None):
+        if note:
+            self.__note = note
+            return self
+
+        return self.__note
 
     @staticmethod
     def get_payment_method():

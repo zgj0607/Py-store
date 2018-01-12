@@ -27,7 +27,7 @@ class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
 
         self.table_title = (
             "ID", '进货日期', '商品品牌', '商品型号', '进货数量', '单位', '进货单价', '单品小计', '供应商ID',
-            '供应商', '所属项目', '付款金额', '未付金额', '进货类型', '关联进货ID', '库存ID')
+            '供应商', '所属项目', '付款金额', '未付金额', '进货类型', '库存ID')
 
         self._init_buy_info_table()
 
@@ -40,7 +40,7 @@ class StockQuery(QtWidgets.QWidget, Ui_stockQueryForm):
         # 隐藏ID列
         buy_info_table.setColumnHidden(0, True)
         buy_info_table.setColumnHidden(8, True)
-        buy_info_table.setColumnHidden(15, True)
+        buy_info_table.setColumnHidden(14, True)
 
     # 新增进货录入信息
     def add_buy_info(self):

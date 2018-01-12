@@ -108,7 +108,7 @@
    </widget>
    <widget class="QMenu" name="supplier">
     <property name="title">
-     <string>供应商管理</string>
+     <string>供应商对账</string>
     </property>
     <addaction name="supplier_arrears"/>
    </widget>

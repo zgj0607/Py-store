@@ -4,15 +4,17 @@ from collections import defaultdict
 import xlrd
 import xlwt
 
+from Common import time_utils, config
 from Common.config import menuSavePath
 from Common.time_utils import get_now
-from View.types import attribute, attribute_state
 from View.utils.excel_utils import set_style
+from database.dao.service import attribute_handler, service_handler
 from database.dao.service.service_handler import get_all_second_level_service, get_all_first_level_service, \
     add_first_level_service, add_second_level_service
+from domain.service_item import ServiceItem
 
 
-def import_service(file_name, must_set):
+def import_service(file_name):
     bk = xlrd.open_workbook(file_name)
     sh = bk.sheet_by_name("菜单列表")
     rows = sh.nrows
@@ -51,7 +53,8 @@ def import_service(file_name, must_set):
 
         # 循环增加二级服务项目
         for second_service_name in first_service_from_file_dict[first_service_name_from_file]:
-            add_second_level_service(second_service_name, first_service_add_id, attribute, attribute_state)
+            second_service_id = add_second_level_service(second_service_name, first_service_add_id)
+            add_all_required_attribute(second_service_id)
 
 
 def export_services():
@@ -86,3 +89,14 @@ def export_services():
         return file_name
     else:
         return False
+
+
+def add_all_required_attribute(service_id):
+    required_attributes = attribute_handler.get_all_attributes()
+    item = ServiceItem()
+    item.create_time(time_utils.get_now())
+    item.create_op(config.login_user_info[0])
+    for attr in required_attributes:
+        item.attribute_name(attr[1])
+        item.attribute_id(attr[0])
+        service_handler.add_service_attribute(item)

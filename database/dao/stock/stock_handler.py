@@ -149,3 +149,26 @@ def get_stock_money():
                  GROUP BY si.first_service_name, si.second_service_name'''
     result = execute(sql_text)
     return result
+
+
+def get_count_by_service(service_id):
+    sql_text = 'select count(1) from stock_info where second_service_id = {}'.format(service_id)
+    execute(sql_text, True)
+
+
+def update_first_service_name(service_id, service_name):
+    sql_text = '''
+                UPDATE STOCK_INFO
+                   SET first_service_name = '{}'
+                 WHERE first_service_id = {}''' \
+        .format(service_name, service_id)
+    execute(sql_text)
+
+
+def update_second_service_name(service_id, service_name):
+    sql_text = '''
+                UPDATE STOCK_INFO
+                   SET second_service_name = '{}'
+                 WHERE second_service_id = {}''' \
+        .format(service_name, service_id)
+    execute(sql_text)

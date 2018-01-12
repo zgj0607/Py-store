@@ -13,7 +13,7 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(414, 528)
         self.formLayoutWidget = QtWidgets.QWidget(Dialog)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(80, 20, 236, 487))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(50, 10, 281, 487))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.formLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
