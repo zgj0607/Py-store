@@ -211,16 +211,11 @@ class ApiUserHandler(BaseHandler):
                 temp["totalPrice"] = price + temp.get("totalPrice")
                 temp["msg"].append(msg)
                 sale_info_list[order_no] = temp
-        print('out loop')
-        print(sale_info_list.items())
         result = list()
         for k, v in sale_info_list.items():
             result.append(v)
             order_number += 1
-            print(k, v)
         print(result)
-        print(order_number)
-        print(all_order_money)
         return result, order_number, all_order_money
 
     @staticmethod

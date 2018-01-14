@@ -123,7 +123,14 @@ def get_sale_info_by_one_key(key, value, remote=False):
                            attribute,
                            pcId,
                            orderCheckId,
-                           pcSign
+                           pcSign,
+                           unit_price,
+                           unit,
+                           number,
+                           subtotal,
+                           total,
+                           note,
+                           id
                       FROM Sales
                      WHERE {}='{}'
                        AND userId != ''
@@ -142,7 +149,14 @@ def get_sale_info_by_one_key(key, value, remote=False):
                            attribute,
                            pcId,
                            orderCheckId,
-                           pcSign
+                           pcSign,
+                           unit_price,
+                           unit,
+                           number,
+                           subtotal,
+                           total,
+                           note,
+                           id
                       FROM Sales
                      WHERE {}='{}'
                     ORDER BY createdTime DESC''' \
@@ -174,3 +188,64 @@ def get_sale_order_no(today):
 
     order_no = "{}{}{}{}".format(year, month, day, number)
     return order_no
+
+
+# 插入消费信息
+def add_sale_info(save_data):
+    sqlStr = '''INSERT INTO Sales(id,
+                                  orderNo,
+                                  carId,
+                                  pcId,
+                                  workerId,
+                                  userId,
+                                  workerName,
+                                  code,
+                                  carUser,
+                                  attribute,
+                                  pcSign,
+                                  carPhone,
+                                  carModel,
+                                  project,
+                                  createdTime,
+                                  orderCheckId,
+                                  unit,
+                                  unit_price,
+                                  number,
+                                  subtotal,
+                                  total,
+                                  note,
+                                  service_id)
+                VALUES ('{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        '{}',
+                        {:.2f},
+                         {},
+                        {:.2f},
+                        {:.2f},
+                        '{}',
+                         {}
+                        )''' \
+        .format(save_data.get('id'), save_data.get('orderNo', ""), save_data.get('carId', ""),
+                save_data.get('pcId', ""), save_data.get('workerId', ""), save_data.get('userId', ""),
+                save_data.get('workerName', ""), save_data.get('code', ""), save_data.get('carUser', ""),
+                save_data.get('attribute', ""), save_data.get('pcSign', ""), save_data.get('carPhone', ""),
+                save_data.get('carModel', ""), save_data.get('project', ""), save_data.get('createdTime', ""),
+                save_data.get('orderCheckId', ""), save_data.get('unit', ''), save_data.get('unit_price', 0.0),
+                save_data.get('number', 0), save_data.get('subtotal', 0.0), save_data.get('total', 0.0),
+                save_data.get('note', ''), save_data.get('serviceId', 0),
+                )
+    return execute(sqlStr)

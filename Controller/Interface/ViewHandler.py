@@ -33,7 +33,7 @@ from PyQt5.QtWidgets import *
 
 from Common.Common import cncurrency
 from Common.MyExecption import ApiException
-from Common.StaticFunc import GetOrderId, ErrorCode
+from Common.StaticFunc import get_order_id, ErrorCode
 from Common.config import domain, connect as myconnect
 from Common.time_utils import get_now
 from Controller import DbHandler
@@ -420,8 +420,8 @@ def ImportExcel(fileName, self):
                                                 attribute[title[ki]] = msg[ki]
 
                                         saveData['attribute'] = json.dumps(attribute)
-                                        saveData['id'] = GetOrderId()
-                                        dbhelp.InsertXiaoFei(saveData)
+                                        saveData['id'] = get_order_id()
+                                        dbhelp.add_sale_info(saveData)
 
                                     row_data = allMsg
                             attribute = {}
@@ -459,8 +459,8 @@ def ImportExcel(fileName, self):
                                     pass
 
                             saveData['attribute'] = json.dumps(attribute)
-                            saveData['id'] = GetOrderId()
-                            dbhelp.InsertXiaoFei(saveData)
+                            saveData['id'] = get_order_id()
+                            dbhelp.add_sale_info(saveData)
 
                         # 清空缓存
                         temp = list()
@@ -503,7 +503,7 @@ def ImportExcel(fileName, self):
                     break
                 progressDialog.setValue(p)
                 p += 1
-                orderCheckId = GetOrderId()
+                orderCheckId = get_order_id()
                 # 对同一个订单进行录入
                 userSave = {}
                 for tempDict in v:
@@ -539,7 +539,7 @@ def ImportExcel(fileName, self):
                         "workerName": workerName,
                         "project": project,
                         "orderCheckId": orderCheckId,
-                        "id": GetOrderId(),
+                        "id": get_order_id(),
                     }
                     tempAttribute = tempDict
 
@@ -558,7 +558,7 @@ def ImportExcel(fileName, self):
                     except:
                         pass
                     saveData["attribute"] = json.dumps(attribute)
-                    dbhelp.InsertXiaoFei(saveData)
+                    dbhelp.add_sale_info(saveData)
 
                 if userSave.get("carId") and userSave.get("carPhone"):
                     # 当有用户信息的时候判断是否需要自动添加

@@ -121,3 +121,18 @@ def get_count_by_attribute(attribute_id):
                 SELECT COUNT(1) FROM service_item where attribute_id = {}''' \
         .format(attribute_id)
     return execute(sql_text, True)
+
+
+def get_service_id_by_name(name: str, father_id=-1):
+    sql_text = '''select id, name 
+                    from service
+                    where name = '{}\'
+                '''.format(name)
+    if father_id and father_id != -1:
+        sql_text += ''' and father = {}'''.format(father_id)
+        sql_text += ''' and level = 2'''
+    else:
+        sql_text += ''' and father = -1'''
+        sql_text += ''' and level = 1'''
+
+    return execute(sql_text, True)

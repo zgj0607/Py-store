@@ -123,7 +123,7 @@ def set_return_dicts(data=None, forUser='', code=200, ret=True, forWorker=''):
 
 
 # 生成订单号：日期+当日订单序号+随机数
-def GetOrderId():
+def get_order_id():
     return str(uuid.uuid1()).replace("-", '')
 
 

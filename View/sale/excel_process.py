@@ -9,12 +9,13 @@ import xlwt
 from PyQt5.QtWidgets import QProgressDialog
 
 from Common.Common import SocketServer
-from Common.StaticFunc import GetOrderId
+from Common.StaticFunc import get_order_id
 from Common.time_utils import get_now, format_time
 from Common.config import savePath
 from Controller import DbHandler
 from View.utils.excel_utils import MakeTempMsg, set_style
 from database.dao.customer.customer_handler import check_customer
+from database.dao.sale import sale_handler
 from database.dao.sale.sale_handler import get_sale_info_by_one_key
 
 
@@ -111,8 +112,8 @@ class ExcelProcess:
                                                     attribute[title[ki]] = msg[ki]
 
                                             save_data['attribute'] = json.dumps(attribute)
-                                            save_data['id'] = GetOrderId()
-                                            self.database_handler.InsertXiaoFei(save_data)
+                                            save_data['id'] = get_order_id()
+                                            sale_handler.add_sale_info(save_data)
 
                                         row_data = all_msg
                                 attribute = {}
@@ -151,8 +152,8 @@ class ExcelProcess:
                                         pass
 
                                 save_data['attribute'] = json.dumps(attribute)
-                                save_data['id'] = GetOrderId()
-                                self.database_handler.InsertXiaoFei(save_data)
+                                save_data['id'] = get_order_id()
+                                sale_handler.add_sale_info(save_data)
 
                             # 清空缓存
                             temp = list()
@@ -190,7 +191,7 @@ class ExcelProcess:
                         break
                     progress_dialog.setValue(p)
                     p += 1
-                    order_check_id = GetOrderId()
+                    order_check_id = get_order_id()
                     # 对同一个订单进行录入
                     user_save = {}
                     for tempDict in v:
@@ -226,7 +227,7 @@ class ExcelProcess:
                             "workerName": worker_name,
                             "project": project,
                             "orderCheckId": order_check_id,
-                            "id": GetOrderId(),
+                            "id": get_order_id(),
                         }
                         temp_attribute = tempDict
 
@@ -245,7 +246,7 @@ class ExcelProcess:
                             print(e)
                             pass
                         save_data["attribute"] = json.dumps(attribute)
-                        self.database_handler.InsertXiaoFei(save_data)
+                        sale_handler.add_sale_info(save_data)
 
                     if user_save.get("carId") and user_save.get("carPhone"):
                         # 当有用户信息的时候判断是否需要自动添加
