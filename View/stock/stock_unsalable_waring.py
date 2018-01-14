@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from View.stock.ui.ui_stock_unsalable_warning import Ui_inventoryunsalablewarningForm
 from View.utils import excel_utils
 from View.utils.table_utils import set_table_content
-from database.dao.stock import inventory_unsalable_warning_handler
+from database.dao.stock import stock_unsalable_warning_handler
 
 
 class StockUnsalableWarning(QtWidgets.QWidget, Ui_inventoryunsalablewarningForm):
@@ -25,7 +25,7 @@ class StockUnsalableWarning(QtWidgets.QWidget, Ui_inventoryunsalablewarningForm)
         inventorywaringtableView = self.inventorywaringtableView
 
         # 填充数据
-        set_table_content(inventorywaringtableView, inventory_unsalable_warning_handler.get_negative_on_hand(),
+        set_table_content(inventorywaringtableView, stock_unsalable_warning_handler.get_unsalable_warning(),
                           self.table_title)
 
     def export(self):

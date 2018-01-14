@@ -10,7 +10,7 @@ def delete_staff_by_id(staff_id: int):
 
 
 def get_all_staff():
-    return get_all_record(staff_table_name, 'createTime', 'ASC')
+    return get_all_record(staff_table_name, 'createdTime', 'ASC')
 
 
 def update_staff_info(name, sex, id_card_no, staff_id):

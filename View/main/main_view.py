@@ -16,13 +16,14 @@ from View.operation.performance import Performance
 from View.operation.sub_service_operation_data import SubServiceOperationData
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
+from View.service.attribute import AttributeManage
+from View.service.service import Service
 from View.stock.stock_money import StockMoney
 from View.stock.stock_search import StockSearch
 from View.stock.stock_unsalable_waring import StockUnsalableWarning
 from View.supplier.supplier_arrears import SupplierArrears
-from View.service.attribute import AttributeManage
-from View.service.service import Service
 from View.users.staff import Staff
+from View.users.store_and_password import StoreAndPassword
 from View.users.system_user import SystemUser
 from domain.device import Device
 
@@ -68,7 +69,8 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.inventory_search.triggered.connect(self._inventory_search_show)
         self.inventory_unsalable_pre_warning.triggered.connect(self._inventory_unsalable_pre_warning_show)
         self.inventory_money.triggered.connect(self._inventory_money_show)
-        self.inventory_calibration.triggered.connect(self._inventory_calibration_show)
+        self.do_stock_calibration.triggered.connect(self._inventory_calibration_show)
+        self.stock_calibration_review.triggered.connect(self._stock_calibration_review)
 
         # 客户回访
         self.return_visit.triggered.connect(self._return_visit_show)
@@ -127,7 +129,11 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 库存校准
     def _inventory_calibration_show(self):
-        self._tab_signal.emit('inventory_calibration')
+        self._tab_signal.emit('do_stock_calibration')
+
+    # 校准审核
+    def _stock_calibration_review(self):
+        self._tab_signal.emit('stock_calibration_review')
 
     # 客户回访
     def _return_visit_show(self):
@@ -215,6 +221,12 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             elif obj_name == 'stock_money':
                 tab_widget = StockMoney()
 
+            elif obj_name == 'do_stock_calibration':
+                tab_widget = None
+
+            elif obj_name == 'stock_calibration_review':
+                tab_widget = None
+
             elif obj_name == 'supplier_arrears':
                 tab_widget = SupplierArrears()
 
@@ -243,18 +255,18 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = DeviceInfo()
 
             elif obj_name == 'setting_password':
-                tab_widget = None
+                tab_widget = StoreAndPassword()
             else:
                 tab_widget = None
 
-            if tab_widget:
-                self._add_tab(tab_widget)
-                self._add_tab_info_dict(obj_name, tab_widget)
-                self.tabWidget.setCurrentWidget(tab_widget)
-                print('add_tab')
-            else:
-                QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
-                return
+        if tab_widget:
+            self._add_tab(tab_widget)
+            self._add_tab_info_dict(obj_name, tab_widget)
+            self.tabWidget.setCurrentWidget(tab_widget)
+            print('add_tab')
+        else:
+            QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
+            return
 
     # 处理未注册Ip的PAD连接请求
     def _confirm_pad_connect(self, device: Device):

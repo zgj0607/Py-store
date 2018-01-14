@@ -26,7 +26,7 @@ def export_to_file_from_db(file_name: str, title: tuple, sheet_name: str, record
     default = set_style('SimSun', 180, True, True, True)
     for row_index, row in enumerate(record):
         for col_index, data in enumerate(row):
-            sheet1.write(row + 1, col_index, str(data), default)
+            sheet1.write(row_index + 1, col_index, str(data), default)
     file.save(file_name)
 
 

@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QModelIndex, QDateTime
+from PyQt5.QtCore import QModelIndex, QDateTime, Qt
 from PyQt5.QtWidgets import QMessageBox, QCompleter
 
 from Common import time_utils, Common
@@ -50,6 +50,8 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
     def _init_ui(self):
         Payment.add_all_payment(self.payment)
         completer = QCompleter(self._get_all_supplier())
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchContains)
         self.supplier.setCompleter(completer)
         pyqt_utils.set_validator(self.price, 'float')
         pyqt_utils.set_validator(self.unpaid, 'float')
@@ -74,8 +76,8 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
         self.brand.setText(table_utils.get_table_current_index_info(self.write_off_table, 2))
         self.model.setText(table_utils.get_table_current_index_info(self.write_off_table, 3))
         self.sale_number.setText(table_utils.get_table_current_index_info(self.write_off_table, 4))
-        balance = abs(int(table_utils.get_table_current_index_info(self.write_off_table, 5)))
-        self.buy_number.setValue(balance)
+        balance = int(table_utils.get_table_current_index_info(self.write_off_table, 5))
+        self.buy_number.setValue(abs(balance))
         self.unit.setText(table_utils.get_table_current_index_info(self.write_off_table, 6))
         self.service.setText(table_utils.get_table_current_index_info(self.write_off_table, 10) + '-' +
                              table_utils.get_table_current_index_info(self.write_off_table, 12))
@@ -174,13 +176,13 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
             # 新增进货信息
             supplier_id = self._get_supplier(self.supplier.text())
             buy_id = self._add_buy_info(self.stock_id, supplier_id, price, buy_number, buy_date, unpaid, paid, total,
-                                        payment, note)
+                                        payment, note, self.balance)
 
             # 新增进货库存明细
             self._add_stock_detail(self.stock_id, buy_id, total, buy_number)
 
             # 更新销售库存明细状态
-            stock_detail_handler.update_negative_type(self.sale_id)
+            stock_detail_handler.update_negative_info(self.sale_id, total)
 
             # 更新供应商付款信息
             self._add_supplier_payment_detail(buy_id, supplier_id, paid, unpaid, payment)
@@ -197,7 +199,7 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
     def _check_required(self):
         msg = ''
 
-        if self.buy_number.value() < self.balance:
+        if self.buy_number.value() < abs(self.balance):
             msg += '进货数量必须大于等于负库存数量：' + str(self.balance) + '\n'
 
         if not self.brand.text():
@@ -287,7 +289,7 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
             supplier_handler.update_supplier_unpaid(supplier_id, unpaid)
 
     @staticmethod
-    def _add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total, payment, note):
+    def _add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total, payment, note, balance):
         buy_info = BuyInfo()
         buy_info.buy_date(buy_date)
         buy_info.stock_id(stock_id)
@@ -307,10 +309,13 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
         buy_info.total(abs(total))
 
         buy_info.note(note)
-        # 判断是进货还是退货
-        if number < 0:
-            buy_info.buy_type(BuyInfo.returned())
+        buy_info.buy_type(BuyInfo.bought())
+        # 计算剩余量
+        if balance < 0:
+            left_number = number + balance
         else:
-            buy_info.buy_type(BuyInfo.bought())
+            left_number = number
+
+        buy_info.left(left_number)
 
         return buy_handler.add_buy_info(buy_info)

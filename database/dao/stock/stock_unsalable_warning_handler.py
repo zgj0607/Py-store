@@ -1,18 +1,19 @@
 from database.db_connection import execute
 from domain.stock_detail import StockDetail
 
-def get_negative_on_hand():
+
+def get_unsalable_warning():
     sql_text = '''
-                  select
+                  SELECT
                        si.brand_name,
                        si.model_name,
-                       sum(left_number) as sum,
+                       sum(left_number) AS sum,
                        max(julianday(date('now'))-julianday(bi.buy_date))
-                from
+                FROM
                        buy_info bi,
                        stock_info si
-                where   bi.stock_id=si.id
-                  and  julianday(date('now'))-julianday(bi.buy_date)>90          
+                WHERE   bi.stock_id=si.id
+                  AND  julianday(date('now'))-julianday(bi.buy_date)>90          
                   GROUP BY  si.model_id''' \
         .format(StockDetail.by_bought())
 

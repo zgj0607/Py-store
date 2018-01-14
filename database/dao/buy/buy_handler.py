@@ -309,3 +309,30 @@ def update_paid_info(buy_id, unpaid: float, paid: float, notes=''):
     result = execute(sql_text)
 
     return result
+
+
+def get_left_gt_zero(stock_id: int):
+    sql_text = '''SELECT ID, number, left_number
+                    FROM buy_info 
+                   WHERE stock_id = {}
+                     AND left_number > 0
+                     AND buy_type = {}
+                   order by buy_date''' \
+        .format(stock_id, BuyInfo.bought())
+    return execute(sql_text)
+
+
+def update_left_info(buy_id: int, left_number: int):
+    sql_text = '''UPDATE buy_info SET left_number = {} WHERE id = {}'''.format(left_number, buy_id)
+    return execute(sql_text)
+
+
+def get_unpaid_gt_zero(stock_id: int):
+    sql_text = '''SELECT ID, unpaid, paid
+                    FROM buy_info
+                   WHERE stock_id = {}
+                     AND unpaid > 0.0 
+                     AND buy_type = {}
+                    order by buy_date''' \
+        .format(stock_id, BuyInfo.bought())
+    return execute(sql_text)

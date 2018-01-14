@@ -63,12 +63,13 @@ def update_detail_type(detail_id: int, detail_type: int):
     return execute(sql_text)
 
 
-def update_negative_type(sale_id: int):
+def update_negative_info(sale_id: int, total: float):
     sql_text = '''UPDATE stock_detail
-                         SET type = {}
+                         SET type = {},
+                             changed_money = {:.2f}
                        WHERE type = {}
                          AND changed_id = {}''' \
-        .format(StockDetail.by_write_off(), StockDetail.by_negative(), sale_id)
+        .format(StockDetail.by_write_off(), total, StockDetail.by_negative(), sale_id)
     return execute(sql_text)
 
 

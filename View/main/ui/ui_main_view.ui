@@ -162,10 +162,17 @@
     <property name="title">
      <string>库存管理</string>
     </property>
+    <widget class="QMenu" name="stock_calibration">
+     <property name="title">
+      <string>库存校准</string>
+     </property>
+     <addaction name="do_stock_calibration"/>
+     <addaction name="stock_calibration_review"/>
+    </widget>
     <addaction name="inventory_search"/>
     <addaction name="inventory_unsalable_pre_warning"/>
     <addaction name="inventory_money"/>
-    <addaction name="inventory_calibration"/>
+    <addaction name="stock_calibration"/>
    </widget>
    <widget class="QMenu" name="operation">
     <property name="title">
@@ -279,11 +286,6 @@
     <string>库存金额</string>
    </property>
   </action>
-  <action name="inventory_calibration">
-   <property name="text">
-    <string>库存校准</string>
-   </property>
-  </action>
   <action name="supplier_arrears">
    <property name="text">
     <string>欠款明细</string>
@@ -317,6 +319,16 @@
   <action name="attribute_setting">
    <property name="text">
     <string>属性管理</string>
+   </property>
+  </action>
+  <action name="do_stock_calibration">
+   <property name="text">
+    <string>校准</string>
+   </property>
+  </action>
+  <action name="stock_calibration_review">
+   <property name="text">
+    <string>校准审核</string>
    </property>
   </action>
  </widget>

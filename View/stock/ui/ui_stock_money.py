@@ -15,6 +15,7 @@ class Ui_StockMoney(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(StockMoney)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tableView = QtWidgets.QTableView(StockMoney)
+        self.tableView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableView.setObjectName("tableView")
         self.tableView.verticalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.tableView)

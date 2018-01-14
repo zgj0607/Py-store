@@ -1,6 +1,7 @@
 from Common import Common
 from Common.time_utils import get_now
 from database.db_connection import execute
+from domain.buy import BuyInfo
 
 payment_table_name = 'PAYMENT_DETAIL'
 
@@ -71,8 +72,9 @@ def get_arrears_info_buy(supplier_id: int):
                   AND bi.supplier_id = sl.id
                   AND bi.unpaid > 0.0
                   AND sl.id = {}
+                  AND bi.buy_type = {}
                 ORDER BY buy_date''' \
-        .format(supplier_id)
+        .format(supplier_id, BuyInfo.bought())
     result = execute(sql_text)
 
     return result

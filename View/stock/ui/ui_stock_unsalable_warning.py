@@ -23,6 +23,7 @@ class Ui_inventoryunsalablewarningForm(object):
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.inventorywaringtableView = QtWidgets.QTableView(inventoryunsalablewarningForm)
+        self.inventorywaringtableView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.inventorywaringtableView.setObjectName("inventorywaringtableView")
         self.verticalLayout.addWidget(self.inventorywaringtableView)
 
