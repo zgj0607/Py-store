@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setMinimumSize(QtCore.QSize(960, 630))
         self.tabWidget.setMaximumSize(QtCore.QSize(960, 630))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.tabWidget.setFont(font)
         self.tabWidget.setStyleSheet("")
         self.tabWidget.setIconSize(QtCore.QSize(16, 16))
