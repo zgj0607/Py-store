@@ -27,7 +27,7 @@ from tornado import web, gen, ioloop
 
 import Common.config as config
 from Common import Common, time_utils
-from Common.Common import GetStoreId
+from Common.Common import get_store_id
 from Common.MyExecption import ApiException
 from Common.StaticFunc import ErrorCode, set_return_dicts
 from Controller.DbHandler import DB_Handler
@@ -47,7 +47,7 @@ class BaseHandler(web.RequestHandler):
         self.deviceName = self.request.headers.get("Devicename", "")
         self.connect = config.connect
         try:
-            self.storeId = GetStoreId()
+            self.storeId = get_store_id()
         except:
             self.storeId = None
 
@@ -96,7 +96,6 @@ class BaseHandler(web.RequestHandler):
                 result = yield self.func(self.__keyWord, get_data)
             else:
                 result = yield self.func(get_data)
-                #  result = self.func(get_Data)
 
             transmission_result = json.dumps(result)
 

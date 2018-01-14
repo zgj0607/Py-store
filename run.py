@@ -61,7 +61,7 @@ def pre_check():
         print(check_exception)
         pass
 
-    if Common.CheckCodeLocal(code):
+    if Common.compare_local_code_with_remote_register(code):
         result = True
 
     return result
@@ -91,7 +91,7 @@ def run():
             # 链接服务器
             if Common.config.connect:
                 try:
-                    myClient.send("connect {}".format(Common.GetStoreId()).encode())
+                    myClient.send("connect {}".format(Common.get_store_id()).encode())
                     data, addr = myClient.recvfrom(BUFSIZ)
                     Common.linkKey = data.decode()
 

@@ -33,6 +33,9 @@ class Ui_BuyInfoMonitor(object):
         self.pushButton = QtWidgets.QPushButton(BuyInfoMonitor)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout.addWidget(self.pushButton)
+        self.export = QtWidgets.QPushButton(BuyInfoMonitor)
+        self.export.setObjectName("export")
+        self.horizontalLayout.addWidget(self.export)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -72,5 +75,6 @@ class Ui_BuyInfoMonitor(object):
         self.label_2.setText(_translate("BuyInfoMonitor", "结束时间"))
         self.end_date.setDisplayFormat(_translate("BuyInfoMonitor", "yyyyMMdd"))
         self.pushButton.setText(_translate("BuyInfoMonitor", "查询"))
+        self.export.setText(_translate("BuyInfoMonitor", "导出"))
         self.label_3.setText(_translate("BuyInfoMonitor", "进货明细"))
 

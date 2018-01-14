@@ -10,6 +10,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 
+from database.dao.customer.customer_handler import check_customer
+from database.dao.sale.sale_handler import get_sale_info_by_one_key
+
+
 class Ui_MainWindow(QtWidgets.QDialog):
     def __init__(self,word,key,today,deviceName,ip,func):
         QtWidgets.QDialog.__init__(self)
@@ -81,7 +85,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
 
                     row_data = sh.row_values(i)
                     if row_data[0] != '':
-                        checkOrder = dbhelp.GetXiaoFeiByKey("orderCheckId",row_data[0])
+                        checkOrder = get_sale_info_by_one_key("orderCheckId", row_data[0])
                         #有此订单的就不保存了
                         if not checkOrder:
                             if temp:
@@ -115,7 +119,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
                                 else:
                                     attribute[title[ki]] = row_data[ki]
 
-                            user = dbhelp.CheckUser(userSave.get("carPhone"),userSave.get("carId"))
+                            user = check_customer(userSave.get("carPhone"), userSave.get("carId"))
                             if not user:
                                 #没有此用户则添加
                                key = "userName,carPhone,carModel,carId,createdTime"
@@ -184,7 +188,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
                     userSave['carModel'] = carModel if carModel != '-' else ""
 
                     if orderNo != "-":
-                        checkOrder = dbhelp.GetXiaoFeiByKey("orderNo",orderNo)
+                        checkOrder = get_sale_info_by_one_key("orderNo", orderNo)
                         if checkOrder:
                             break
 
@@ -221,7 +225,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
 
                 if userSave.get("carId") and userSave.get("carPhone"):
                     #当有用户信息的时候判断是否需要自动添加
-                    user = dbhelp.CheckUser(userSave.get("carPhone"),userSave.get("carId"))
+                    user = check_customer(userSave.get("carPhone"), userSave.get("carId"))
                     if not user:
                         #没有此用户则添加
                         key = "userName,carPhone,carModel,carId,createdTime"

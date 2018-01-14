@@ -37,8 +37,8 @@ def format_time(time_str, today=False):
     return time_str
 
 
-def get_this_day() -> dict:
-    today = datetime.now().strftime('%Y/%m/%d')
+def get_this_day(split='/') -> dict:
+    today = datetime.now().strftime('%Y{}%m{}%d'.format(split, split))
     period = {'start_time': today,
               'end_time': today}
 

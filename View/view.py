@@ -10,8 +10,8 @@
 from PyQt5.QtGui import QIcon
 from Controller.Interface import ViewHandler
 from Controller.Interface.TableHandler import *
-from View.types.first_service_info import Menu1_Ui_MainWindow
-from View.types.second_service_info import SecondServiceInfo
+from View.service.first_service_info import Menu1_Ui_MainWindow
+from View.service.second_service_info import SecondServiceInfo
 from Common.config import domain, code
 from View.users.worker import Worker_Ui_MainWindow
 from View.users.admin import Admin_Ui_MainWindow

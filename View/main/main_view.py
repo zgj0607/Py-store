@@ -5,23 +5,23 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from Common.Common import ClientClose
 from View.buy.buy_monitor_query import BuyInfoMonitor
 from View.buy.history_buy_query import HistoryStock
-from View.buy.normal_buy_query import StockQuery
+from View.buy.normal_buy_add import NormalBuyAdd
 from View.buy.write_off_query import WriteOff
 from View.customer.return_visit import ReturnVisit
 from View.device.device_info import DeviceInfo
 from View.device.userConnect import PadConnect
 from View.main.ui.ui_main_view import Ui_MainWindow
-from View.operation.operation_total_data import operationtotaldataForm
+from View.operation.operation_total_data import OperationTotalData
 from View.operation.performance import Performance
-from View.operation.sub_service_operation_data import sub_serviceoperationdataForm
+from View.operation.sub_service_operation_data import SubServiceOperationData
 from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.stock.stock_money import StockMoney
 from View.stock.stock_search import StockSearch
 from View.stock.stock_unsalable_waring import StockUnsalableWarning
 from View.supplier.supplier_arrears import SupplierArrears
-from View.types.attribute_dialog import AttributeDialog
-from View.types.service import Service
+from View.service.attribute import AttributeManage
+from View.service.service import Service
 from View.users.staff import Staff
 from View.users.system_user import SystemUser
 from domain.device import Device
@@ -195,7 +195,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = ReturnVisit()
 
             elif obj_name == 'normal_buy_add':
-                tab_widget = StockQuery()
+                tab_widget = NormalBuyAdd()
 
             elif obj_name == 'write_off_add':
                 tab_widget = WriteOff()
@@ -219,10 +219,10 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = SupplierArrears()
 
             elif obj_name == 'sub_service_operation_data':
-                tab_widget = sub_serviceoperationdataForm()
+                tab_widget = SubServiceOperationData()
 
             elif obj_name == 'operation_total_data':
-                tab_widget = operationtotaldataForm()
+                tab_widget = OperationTotalData()
 
             elif obj_name == 'performance':
                 tab_widget = Performance()
@@ -237,7 +237,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = Service()
 
             elif obj_name == 'attribute_manage':
-                tab_widget = AttributeDialog()
+                tab_widget = AttributeManage()
 
             elif obj_name == 'setting_device':
                 tab_widget = DeviceInfo()
@@ -251,6 +251,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 self._add_tab(tab_widget)
                 self._add_tab_info_dict(obj_name, tab_widget)
                 self.tabWidget.setCurrentWidget(tab_widget)
+                print('add_tab')
             else:
                 QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
                 return

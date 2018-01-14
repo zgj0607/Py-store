@@ -24,7 +24,6 @@ import time
 from datetime import timedelta
 from socket import *
 
-import requests
 import tornado.ioloop
 from PyQt5.QtCore import QFile
 from PyQt5.QtWidgets import qApp
@@ -34,54 +33,30 @@ from Common.StaticFunc import md5
 from server.MySocket import ADDR, myClient, code, linkKey
 
 
-# 获取本地pcid
-def GetPcId():
-    fp = open("pc.conf", 'rb')
-    pcData = fp.readline().decode()
-    pcData = pcData.split(",")
-    fp.close()
-    return pcData[0]
-
-
 # 获取门店id
-def GetStoreId():
+def get_store_id():
     root = 'config.ini'
-    basicMsg = configparser.ConfigParser()
-    basicMsg.read(root)
-    storeId = basicMsg.get("msg", "storeId")
-    return storeId
+    basic_msg = configparser.ConfigParser()
+    basic_msg.read(root)
+    store_id = basic_msg.get("msg", "storeId")
+    return store_id
 
 
-# 验证注册码
-def CheckCodeRemote(pcCode, code):
-    result = False
-    data = {'code': code, 'pcCode': pcCode}
-    req = requests.post(config.domain + "store/api/check", data)
-    reqText = req.text
-    try:
-        reqText = json.loads(reqText)
-        if reqText.get("data"):
-            result = reqText.get("data")
-    except:
-        result = reqText
-
-    return result
-
-
-def GetPCcode():
+def get_pc_mac():
     try:
         import uuid
         node = uuid.getnode()
         serial_number = uuid.UUID(int=node).hex[-12:]
-    except:
+    except Exception as e:
+        print(e)
         serial_number = "读取失败"
     return serial_number.upper()
 
 
-def CheckCodeLocal(code):
+def compare_local_code_with_remote_register(remote_code):
     result = True
-    pcCode = GetPCcode()
-    if md5(pcCode)[8:-8].upper() == code:
+    pc_mac = get_pc_mac()
+    if md5(pc_mac)[8:-8].upper() == remote_code:
         result = True
     return result
 

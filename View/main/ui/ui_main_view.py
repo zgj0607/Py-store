@@ -170,7 +170,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "门店管理系统"))
         self.sales.setTitle(_translate("MainWindow", "销售明细"))
-        self.supplier.setTitle(_translate("MainWindow", "供应商管理"))
+        self.supplier.setTitle(_translate("MainWindow", "供应商对账"))
         self.setting.setTitle(_translate("MainWindow", "系统管理"))
         self.setting_user.setTitle(_translate("MainWindow", "人员管理"))
         self.menu.setTitle(_translate("MainWindow", "服务项目管理"))

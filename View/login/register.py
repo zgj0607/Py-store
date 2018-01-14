@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtGui import QIcon
 import os
 import sys
+
+import remote.store_pc_info
 from Common import Common
 from View.login.ui.ui_register import Ui_Dialog as UiRegister
 import configparser
@@ -21,7 +23,7 @@ class Register(QtWidgets.QDialog, UiRegister):
         self.copy_pc_code.clicked.connect(self.do_copy)
         self.verify_reg_code.clicked.connect(self.do_register)
 
-        serial_number = Common.GetPCcode()
+        serial_number = Common.get_pc_mac()
         self.pc_code.setPlainText(serial_number)
 
     def do_register(self):
@@ -29,7 +31,7 @@ class Register(QtWidgets.QDialog, UiRegister):
         serial_number = self.serial_number.text()
         msg = '验证成功，点击【确定】重启服务程序'
         try:
-            result = Common.CheckCodeRemote(pc_code, serial_number)
+            result = remote.store_pc_info.check_register_code(pc_code, serial_number)
             print(result)
             if result:
                 root = 'config.ini'

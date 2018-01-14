@@ -107,3 +107,70 @@ def get_order_no(today):
 
     order_no = "{}{}{}{}".format(year, month, day, number)
     return order_no
+
+
+def get_sale_info_by_one_key(key, value, remote=False):
+    if remote:
+        sql_str = '''
+                    SELECT createdTime,
+                           orderNo,
+                           carId,
+                           carUser,
+                           carPhone,
+                           carModel,
+                           workerName,
+                           project,
+                           attribute,
+                           pcId,
+                           orderCheckId,
+                           pcSign
+                      FROM Sales
+                     WHERE {}='{}'
+                       AND userId != ''
+                       AND userId IS NOT NULL
+                     ORDER BY createdTime DESC''' \
+            .format(key, value)
+    else:
+        sql_str = '''SELECT createdTime,
+                           orderNo,
+                           carId,
+                           carUser,
+                           carPhone,
+                           carModel,
+                           workerName,
+                           project,
+                           attribute,
+                           pcId,
+                           orderCheckId,
+                           pcSign
+                      FROM Sales
+                     WHERE {}='{}'
+                    ORDER BY createdTime DESC''' \
+            .format(key, value)
+    data = execute(sql_str)
+    return data
+
+
+def get_sale_order_no(today):
+    month = str(today.month)
+    day = str(today.day)
+    year = today.year
+    month = month.ljust(2, "0")
+    day = day.ljust(2, "0")
+
+    start_time = '{}-{}-{} 00:00:00'.format(year, month, day)
+    end_time = '{}-{}-{} 23:59:59'.format(year, month, day)
+
+    sql_str = '''SELECT count(1) FROM Sales WHERE createdTime BETWEEN '{}' and '{}' group by OrderNo''' \
+        .format(start_time, end_time)
+
+    data = execute(sql_str)
+    number = str(len(data) + 1)
+    # number格式为百位数，如001，002，100，120
+    if len(number) < 2:
+        number = "00" + number
+    elif len(number) < 3:
+        number = "0" + number
+
+    order_no = "{}{}{}{}".format(year, month, day, number)
+    return order_no

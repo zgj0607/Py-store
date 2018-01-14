@@ -6,7 +6,7 @@ service_table_name = 'service'
 
 
 def get_all_first_level_service():
-    sql_text = "SELECT id, name FROM {} WHERE level = 1 ORDER BY name".format(service_table_name)
+    sql_text = "SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime".format(service_table_name)
 
     return execute(sql_text)
 
@@ -24,40 +24,40 @@ def get_all_second_level_service():
                       AND two.level = 2
                     ORDER BY one.name, two.name'''
 
-    execute(sql_text)
+    return execute(sql_text)
 
 
 def add_first_level_service(service_name):
     time_now = get_now()
-    sql_text = '''INSERT INTO {}(name, createdTime, father, level) VALUES('{}','{}',{},{})''' \
-        .format(service_table_name, service_name, time_now, -1, 1)
+    sql_text = '''INSERT INTO service(name, createdTime, father, level) VALUES('{}','{}',{},{})''' \
+        .format(service_name, time_now, -1, 1)
 
     return execute(sql_text)
 
 
-def add_second_level_service(service_name, father_id, attribute, attribute_state):
+def add_second_level_service(service_name, father_id):
     time_now = get_now()
-    sql_text = '''INSERT INTO {}(name, createdTime, father, level, attribute, attributeState) 
-                VALUES('{}','{}',{},{},'{}', '{}')''' \
-        .format(service_table_name, service_name, time_now, father_id, 2, attribute, attribute_state)
+    sql_text = '''INSERT INTO service(name, createdTime, father, level) 
+                VALUES('{}','{}',{},{})''' \
+        .format(service_name, time_now, father_id, 2)
 
     return execute(sql_text)
 
 
-def update_service(service_id, service_name, father_id=-1, attribute='', attribute_state=''):
-    if father_id == -1:
-        sql_text = '''UPDATE {} SET name = '{}' where id = {}'''.format(service_table_name, service_name, service_id)
-
-    else:
-        sql_text = '''UPDATE {} SET name = '{}', attribute = '{}', attributeState = '{}' where id = {}''' \
-            .format(service_table_name, service_name, attribute, attribute_state, service_id)
+def update_service(service_id, service_name):
+    sql_text = '''UPDATE service SET name = '{}' where id = {}'''.format(service_name, service_id)
 
     execute(sql_text)
 
 
 def delete_service(service_id):
-    sql_text = '''DELETE FROM {} where id = {}'''.format(service_table_name, service_id)
+    sql_text = '''DELETE FROM service where id = {}'''.format(service_id)
 
+    execute(sql_text)
+
+
+def delete_service_all_attribute(service_id):
+    sql_text = '''DELETE FROM service_item where service_id = {}'''.format(service_id)
     execute(sql_text)
 
 
@@ -82,7 +82,7 @@ def get_second_service_count_by_father(father_id):
     if father_id == -1:
         return 0
 
-    sql_text = '''select count(1) from {} where father_id = {}'''.format(service_table_name, father_id)
+    sql_text = '''select count(1) from service where father = {}'''.format(father_id)
     count = execute(sql_text)
 
     return count
@@ -107,10 +107,17 @@ def add_service_attribute(item: ServiceItem):
     return execute(sql_text)
 
 
-def delete_servive_attribute(service_id: int, attribute_id: int):
+def delete_service_attribute(service_id: int, attribute_id: int):
     sql_text = '''
                 DELETE FROM service_item
                    WHERE service_id = {}
                      AND attribute_id = {}''' \
         .format(service_id, attribute_id)
     return execute(sql_text)
+
+
+def get_count_by_attribute(attribute_id):
+    sql_text = '''
+                SELECT COUNT(1) FROM service_item where attribute_id = {}''' \
+        .format(attribute_id)
+    return execute(sql_text, True)

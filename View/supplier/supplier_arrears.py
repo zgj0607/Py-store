@@ -86,7 +86,7 @@ class SupplierArrears(QtWidgets.QWidget, Ui_SupplierArrears):
 
         buy_info.paid(paid)
         buy_info.unpaid(unpaid)
-        buy_info.notes(self.supplier_name)
+        buy_info.note(self.supplier_name)
 
         dialog = PayOffArrearsDialog(buy_info)
         dialog.exec()

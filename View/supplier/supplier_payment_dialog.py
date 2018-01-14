@@ -23,7 +23,7 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
         self.buy_id = buy.buy_id()
 
     def _init_input_info(self, buy):
-        self.pay_to.setText(buy.notes())
+        self.pay_to.setText(buy.note())
         self.unpaid.setText('0.0')
         self.need_pay.setText(str(buy.unpaid()))
         self.paid.setText(str(buy.paid()))

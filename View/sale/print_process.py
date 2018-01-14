@@ -7,9 +7,10 @@ from PyQt5.QtCore import QSizeF, Qt
 from PyQt5.QtGui import QTextOption, QTextDocument
 from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
 
+from Common import config
 from Common.Common import cncurrency
 from Common.config import domain
-from Controller.DbHandler import DB_Handler
+from database.dao.sale.sale_handler import get_sale_info_by_one_key
 
 
 def do_print(main_windows, order_no):
@@ -17,7 +18,7 @@ def do_print(main_windows, order_no):
         printer = QPrinter(QPrinter.HighResolution)
         # /* 打印预览 */
         preview = QPrintPreviewDialog(printer, main_windows)
-        preview.paintRequested.connect(printHtml)
+        preview.paintRequested.connect(print_html)
         global selectOrderNo
         selectOrderNo = order_no
         preview.exec_()
@@ -28,7 +29,7 @@ def do_print(main_windows, order_no):
         return False
 
 
-def printHtml(printer):
+def print_html(printer):
     root = 'config.ini'
     basic_msg = configparser.ConfigParser()
     basic_msg.read(root)
@@ -42,20 +43,14 @@ def printHtml(printer):
     except Exception as e:
         print(e)
 
-        fp = open("pc.conf", 'rb')
-        pc_data = fp.readline().decode()
-        fp.close()
-        pc_data = pc_data.split(',')
-
-        if len(pc_data) < 4:
-            pc_data = [pc_data[0], "", "", ""]
+        store = config.get_local_store_info()
 
         result_data = {
             'data': {
-                "pcId": pc_data[0],
-                "pcPhone": pc_data[1],
-                "pcAddress": pc_data[2],
-                "pcSign": pc_data[3],
+                "pcId": store.id(),
+                "pcPhone": store.phone(),
+                "pcAddress": store.address(),
+                "pcSign": store.name(),
             },
             'code': 200
         }
@@ -69,7 +64,7 @@ def printHtml(printer):
         store_name = result_data.get("data").get("pcSign", "")
         pc_address = result_data.get("data").get("pcAddress", "")
         pc_phone = result_data.get("data").get("pcPhone", "")
-    result = DB_Handler.GetXiaoFeiByKey("orderCheckId", selectOrderNo)
+    result = get_sale_info_by_one_key(selectOrderNo)
 
     fp = open("printer.txt", 'rb')
     data = fp.readline().decode().replace("\n", "").replace("\r", "").replace("\ufeff", "")

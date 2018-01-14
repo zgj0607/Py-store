@@ -17,24 +17,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>选择门店</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
-     <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>起始时间</string>
+        <string>请选择时间</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDateTimeEdit" name="startdateTimeEdit">
+      <widget class="QDateTimeEdit" name="start_date">
        <property name="date">
         <date>
          <year>2018</year>
@@ -50,16 +40,16 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>结束时间</string>
+        <string>---</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDateTimeEdit" name="enddateTimeEdit">
+      <widget class="QDateTimeEdit" name="end_date">
        <property name="date">
         <date>
          <year>2018</year>
-         <month>1</month>
+         <month>12</month>
          <day>1</day>
         </date>
        </property>
@@ -69,14 +59,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="serchButton">
+      <widget class="QPushButton" name="search">
        <property name="text">
         <string>查询</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="exportButton">
+      <widget class="QPushButton" name="export">
        <property name="text">
         <string>导出</string>
        </property>

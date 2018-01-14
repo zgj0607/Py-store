@@ -10,20 +10,19 @@ def delete_staff_by_id(staff_id: int):
 
 
 def get_all_staff():
-    return get_all_record(staff_table_name, 'workername', 'ASC')
+    return get_all_record(staff_table_name, 'createTime', 'ASC')
 
 
 def update_staff_info(name, sex, id_card_no, staff_id):
-    sql_text = "update {} set workerName='{}', sex='{}', idcard='{}' where id = {}".format(staff_table_name, name, sex,
-                                                                                           id_card_no, staff_id, )
+    sql_text = '''update Worker set workerName='{}', sex='{}', idcard='{}' where id = {}''' \
+        .format(name, sex, id_card_no, staff_id)
     execute(sql_text)
 
 
 def insert_staff_info(name, sex, id_card_no):
     time_now = get_now()
-    sql_text = "INSERT INTO {}(workerName, sex, idcard, createdTime) VALUES ('{}','{}','{}','{}')".format(
-        staff_table_name, name, sex,
-        id_card_no, time_now)
+    sql_text = '''INSERT INTO Worker(workerName, sex, idcard, createdTime) VALUES ('{}','{}','{}','{}')''' \
+        .format(name, sex, id_card_no, time_now)
     execute(sql_text)
 
 
@@ -38,15 +37,21 @@ def get_all_sys_user():
     return get_all_record(sys_user_table_name, 'username', 'ASC')
 
 
+def get_all_user():
+    sql_text = 'SELECT id,username FROM Admin WHERE userName!=\'admin\' ORDER BY createdTime DESC '
+    data = execute(sql_text)
+    return data
+
+
 def insert_sys_user_info(username, password):
     time_now = get_now()
-    sql_text = "INSERT INTO {}(username, pwd, createdTime) VALUES ('{}','{}','{}')".format(sys_user_table_name,
-                                                                                           username, password, time_now)
+    sql_text = "INSERT INTO Admin(username, pwd, createdTime) VALUES ('{}','{}','{}')".format(username, password,
+                                                                                              time_now)
     execute(sql_text)
 
 
 def update_sys_user_pwd(sys_user_id, new_pwd):
-    sql_text = "update {} set pwd = '{}' where id = {}".format(sys_user_table_name, new_pwd, sys_user_id)
+    sql_text = "update Admin set pwd = '{}' where id = {}".format(new_pwd, sys_user_id)
     execute(sql_text)
 
 
@@ -62,18 +67,18 @@ def update_super_user_pwd(new_pwd, old_pwd):
 
 
 def get_super_user_id():
-    sql_text = "select id from {} where username = 'admin'".format(sys_user_table_name)
+    sql_text = "SELECT id FROM Admin WHERE username = 'admin'"
     return execute(sql_text)[0][0]
 
 
 def get_super_user_pwd():
-    sql_text = "select pwd from {} where username = 'admin'".format(sys_user_table_name)
+    sql_text = "SELECT pwd FROM Admin WHERE username = 'admin'"
     pwd = execute(sql_text)[0][0]
     return pwd
 
 
 def get_user_info_by_username(username: str):
-    sql_text = '''SELECT ID, USERNAME, PWD FROM {} WHERE USERNAME=\'{}\''''.format(sys_user_table_name, username)
+    sql_text = '''SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME=\'{}\''''.format(username)
 
     result = execute(sql_text)
 

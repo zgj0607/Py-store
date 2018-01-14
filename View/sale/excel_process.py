@@ -14,6 +14,8 @@ from Common.time_utils import get_now, format_time
 from Common.config import savePath
 from Controller import DbHandler
 from View.utils.excel_utils import MakeTempMsg, set_style
+from database.dao.customer.customer_handler import check_customer
+from database.dao.sale.sale_handler import get_sale_info_by_one_key
 
 
 class ExcelProcess:
@@ -77,7 +79,7 @@ class ExcelProcess:
                                 order_check_id = temp[0][0]
                             else:
                                 order_check_id = row_data[0]
-                            check_order = self.database_handler.GetXiaoFeiByKey("orderCheckId", order_check_id)
+                            check_order = get_sale_info_by_one_key("orderCheckId", order_check_id)
                             # 有此订单的就不保存了
                             if not check_order:
                                 if temp:
@@ -133,8 +135,8 @@ class ExcelProcess:
                                             continue
                                         attribute[title[ki]] = row_data[ki]
 
-                                user = self.database_handler.CheckUser(user_save.get("carPhone"),
-                                                                       user_save.get("carId"))
+                                user = check_customer(user_save.get("carPhone"),
+                                                      user_save.get("carId"))
                                 if not user:
                                     # 没有此用户则添加
                                     key = "userName,carPhone,carModel,carId,createdTime"
@@ -209,7 +211,7 @@ class ExcelProcess:
                         user_save['carModel'] = car_model if car_model != '-' else ""
 
                         if order_no != "-":
-                            check_order = self.database_handler.GetXiaoFeiByKey("orderNo", order_no)
+                            check_order = get_sale_info_by_one_key("orderNo", order_no)
                             if check_order:
                                 break
 
@@ -247,7 +249,7 @@ class ExcelProcess:
 
                     if user_save.get("carId") and user_save.get("carPhone"):
                         # 当有用户信息的时候判断是否需要自动添加
-                        user = self.database_handler.CheckUser(user_save.get("carPhone"), user_save.get("carId"))
+                        user = check_customer(user_save.get("carPhone"), user_save.get("carId"))
                         if not user:
                             # 没有此用户则添加
                             key = "userName,carPhone,carModel,carId,createdTime"

@@ -1,21 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-__author__ = 'Sunny'
-__mtime__ = '1/5/2017'
 
-                ┏┓     ┏┓
-              ┏┛┻━━━┛┻┓
-             ┃     ☃     ┃
-             ┃ ┳┛  ┗┳  ┃
-            ┃     ┻     ┃
-            ┗━┓     ┏━┛
-               ┃     ┗━━━┓
-              ┃  神兽保佑   ┣┓
-             ┃　永无BUG！  ┏┛
-            ┗┓┓┏━┳┓┏┛
-             ┃┫┫  ┃┫┫
-            ┗┻┛  ┗┻┛
-"""
 import configparser
 import json
 import logging
@@ -25,20 +9,22 @@ from datetime import datetime
 import requests
 from tornado.concurrent import run_on_executor
 
+from Common import config
 from Common.Common import SocketServer, cncurrency
 from Common.MyExecption import ApiException
 from Common.StaticFunc import ErrorCode, set_return_dicts, GetOrderId
 from Common.config import domain
 from Controller.Api.BaseHandler import BaseHandler
 from Controller.Interface.PrinterHandler import Printer
+from database.dao.customer import customer_handler
+from database.dao.sale import sale_handler
+from database.dao.sale.sale_handler import get_sale_info_by_one_key, get_sale_order_no
 
 
 class ApiOrder_Handler(BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ApiOrder_Handler, self).__init__(application, request, **kwargs)
         self.func = self.ApiOrder
-        # self.logger = logging.getLogger('mytest')
-        # self.logger.setLevel(logging.DEBUG)
         self.fh = logging.FileHandler('test.log')
         self.fh.setLevel(logging.DEBUG)
         # 定义handler的输出格式
@@ -48,27 +34,27 @@ class ApiOrder_Handler(BaseHandler):
         # 给logger添加handler
         # self.logger.addHandler(self.fh)
 
-    def GetPreviewHtml(self, getData, getHeight=False):
-        mustSet = ['数量', '单价', '小计', '总价', '单位', '备注']
-        if getData.get("createdTime"):
-            today = getData.get("createdTime")
+    def preview_html(self, get_data, get_height=False):
+        must_set = ['数量', '单价', '小计', '总价', '单位', '备注']
+        if get_data.get("createdTime"):
+            today = get_data.get("createdTime")
         else:
             today = datetime.now()
 
-        if getData.get("orderNo"):
-            orderNo = getData.get("orderNo")
+        if get_data.get("orderNo"):
+            order_no = get_data.get("orderNo")
         else:
-            orderNo = self.dbhelp.GetOrderNo(today)
+            order_no = sale_handler.get_sale_order_no(today)
 
-        parameter = getData.get("parameter", [])
+        parameter = get_data.get("parameter", [])
         if type(parameter) == str:
             parameter = json.loads(parameter)
 
-        carUser = getData.pop("carUser", "1")
-        carId = getData.pop("carId", "1")
-        carPhone = getData.pop("carPhone", "1")
-        pcSign = getData.pop("pcSign", "1")
-        pcId = getData.pop("pcId", "1")
+        carUser = get_data.pop("carUser", "1")
+        carId = get_data.pop("carId", "1")
+        carPhone = get_data.pop("carPhone", "1")
+        pcSign = get_data.pop("pcSign", "1")
+        pcId = get_data.pop("pcId", "1")
         root = 'config.ini'
         basicMsg = configparser.ConfigParser()
         basicMsg.read(root)
@@ -79,44 +65,30 @@ class ApiOrder_Handler(BaseHandler):
             code = basicMsg.get("msg", 'code')
             url = domain + "store/api/detail?code={}".format(code)
             req = requests.get(url=url)
-            resultData = json.loads(req.text)
+            result_data = json.loads(req.text)
         except Exception as exception:
             print(exception)
-            fp = open("pc.conf", 'rb')
+            store = config.get_local_store_info()
 
-            pcData = fp.readline().decode()
-            fp.close()
-            pcData = pcData.split(',')
-            if len(pcData) < 4:
-                pcData = [pcData[0], "", "", ""]
-
-            resultData = {
+            result_data = {
                 'data': {
-                    "pcId": pcData[0],
-                    "pcPhone": pcData[1],
-                    "pcAddress": pcData[2],
-                    "pcSign": pcData[3],
+                    "pcId": store.id(),
+                    "pcPhone": store.phone(),
+                    "pcAddress": store.address(),
+                    "pcSign": store.name(),
                 },
                 'code': 200
             }
-        if resultData.get("code") != 200:
+        if result_data.get("code") != 200:
             storeName = ""
             pcAddress = ""
             pcPhone = ""
         else:
-            storeName = resultData.get("data").get("pcSign", "")
-            pcAddress = resultData.get("data").get("pcAddress", "")
-            pcPhone = resultData.get("data").get("pcPhone", "")
+            storeName = result_data.get("data").get("pcSign", "")
+            pcAddress = result_data.get("data").get("pcAddress", "")
+            pcPhone = result_data.get("data").get("pcPhone", "")
 
-        fp = open("printer.txt", 'rb')
-        data = fp.readline().decode().replace("\n", "").replace("\r", "").replace("\ufeff", "")
-        fp.close()
-        fontSize = 7
-        if data:
-            try:
-                fontSize = int(data)
-            except:
-                fontSize = 7
+        font_size = config.get_print_font_size()
         print("header")
         header = """<html>
                     <style>
@@ -152,8 +124,8 @@ class ApiOrder_Handler(BaseHandler):
                             background-color:#ffffff
                         }
 
-                """ + "*{font-size:" + str(fontSize) + "pt;}" + ".bigWord{font-size:" + str(
-            fontSize * 1.5) + "pt;}" + "</style><head></head>"
+                """ + "*{font-size:" + str(font_size) + "pt;}" + ".bigWord{font-size:" + str(
+            font_size * 1.5) + "pt;}" + "</style><head></head>"
 
         # 总长度要减去备注和名称，因为名称长度另外设置，备注不打印
         try:
@@ -162,7 +134,7 @@ class ApiOrder_Handler(BaseHandler):
         except:
             raise ApiException(ErrorCode.PrinterError)
 
-        tdWidth = 19
+        td_width = 19
         print('begin body')
         body = """
             <body >
@@ -186,12 +158,12 @@ class ApiOrder_Handler(BaseHandler):
                     </tr>
 
             """.format(storeName=pcSign, carId=carId, createdTime=today.strftime("%Y-%m-%d %H:%M:%S"),
-                       carPhone=carPhone, orderNo=orderNo)
+                       carPhone=carPhone, orderNo=order_no)
 
         content = ""
-        xuhao = 1
-        zongjia = 0
-        pageHeight = 100
+        sequence = 1
+        total_price = 0
+        page_height = 100
         # self.logger.info('begin make attribute')
         for order in parameter:
             attribute = order.get("attribute")
@@ -207,7 +179,7 @@ class ApiOrder_Handler(BaseHandler):
                     tempKeyList.append(t)
 
             for k, v in attribute.items():
-                if k not in mustSet + ["品牌", "型号", "工时费", "更换里程"] and v != "-" and v != "" and k != "检索ID":
+                if k not in must_set + ["品牌", "型号", "工时费", "更换里程"] and v != "-" and v != "" and k != "检索ID":
                     tempKeyList.append(k)
             tempKeyList.sort()
             noMustSet = OrderedDict()
@@ -224,7 +196,7 @@ class ApiOrder_Handler(BaseHandler):
             keyList = list()
             for k, v in noMustSet.items():
                 # if k not in mustSet:
-                td += "<td colspan=\"{tdWidth}\" align=\"center\">{key}</td>".format(tdWidth=tdWidth, key=k)
+                td += "<td colspan=\"{tdWidth}\" align=\"center\">{key}</td>".format(tdWidth=td_width, key=k)
                 keyList.append(k)
                 if i >= 4:
                     i = 0
@@ -235,14 +207,14 @@ class ApiOrder_Handler(BaseHandler):
                     j += 1
                 else:
                     i += 1
-            pageHeight += int(keyListLen / 5 + 1) * 60 + baseHeight
+            page_height += int(keyListLen / 5 + 1) * 60 + baseHeight
             # 补齐
             if keyList:
                 if len(keyList) < 5:
                     num = len(keyList)
                     for i in range(5 - num):
                         keyList.append("")
-                        td += "<td colspan=\"{tdWidth}\" align=\"center\"></td>".format(tdWidth=tdWidth)
+                        td += "<td colspan=\"{tdWidth}\" align=\"center\"></td>".format(tdWidth=td_width)
                 tdList.append(td)
                 keyDict[j] = keyList
             # 序号合并列数
@@ -265,9 +237,9 @@ class ApiOrder_Handler(BaseHandler):
                         <td colspan="{tdWidth}" align="center">{xiaoji}</td>
                     </tr>
 
-            """.format(xuNum=xuNum, xuhao=xuhao, unit=attribute.get("单位", ""), number=attribute.get("数量", ""),
+            """.format(xuNum=xuNum, xuhao=sequence, unit=attribute.get("单位", ""), number=attribute.get("数量", ""),
                        unitPrice=attribute.get("单价", ""),
-                       xiaoji=attribute.get('小计', ""), tdWidth=tdWidth, project=order.get("project"))
+                       xiaoji=attribute.get('小计', ""), tdWidth=td_width, project=order.get("project"))
 
             moreContent = ""
             ii = 0
@@ -283,7 +255,7 @@ class ApiOrder_Handler(BaseHandler):
                                     <td colspan="{tdWidth}" align="center">{four}</td>
                                     <td colspan="{tdWidth}" align="center">{five}</td>
                                 </tr>
-                            """.format(tdWidth=tdWidth,
+                            """.format(tdWidth=td_width,
                                        one=attribute.get(keyDict[ii][0], "-") if keyDict[ii][0] != '' else "",
                                        two=attribute.get(keyDict[ii][1], "-") if keyDict[ii][1] != '' else "",
                                        three=attribute.get(keyDict[ii][2], "-") if keyDict[ii][2] != '' else "",
@@ -302,12 +274,12 @@ class ApiOrder_Handler(BaseHandler):
                             </tr>
                         """.format(zongjia=attribute.get('总价', ""))
             content += moreContent + zongjiaconetent + fenge
-            xuhao += 1
-            zongjia += float(attribute.get('总价', 0))
+            sequence += 1
+            total_price += float(attribute.get('总价', 0))
 
         # self.logger.info('end make attribute')
-        zongjia = str(zongjia)
-        cn = cncurrency(zongjia)
+        total_price = str(total_price)
+        cn = cncurrency(total_price)
 
         foot = """
             <tr>
@@ -323,12 +295,12 @@ class ApiOrder_Handler(BaseHandler):
             </div>
             </body>
             </html>
-        """.format(cn=cn, zongjia=zongjia, storeName=pcSign, pcPhone=pcPhone, pcAddress=pcAddress)
+        """.format(cn=cn, zongjia=total_price, storeName=pcSign, pcPhone=pcPhone, pcAddress=pcAddress)
 
         html = header + body + content + foot
         # self.logger.info('add str end')
-        if getHeight:
-            return html, pageHeight
+        if get_height:
+            return html, page_height
         else:
             return html
 
@@ -339,7 +311,7 @@ class ApiOrder_Handler(BaseHandler):
                 if keyWord == "add":
                     today = datetime.now()
 
-                    orderNo = self.dbhelp.GetOrderNo(today)
+                    orderNo = get_sale_order_no(today)
 
                     getData["orderNo"] = orderNo
                     getData["createdTime"] = today
@@ -353,7 +325,7 @@ class ApiOrder_Handler(BaseHandler):
                         carPhone = getData.get("carPhone")
                         carModel = getData.get("carModel")
                         carId = getData.get("carId")
-                        pcSign = getData.get("pcSign")
+                        pc_sign = getData.get("pcSign")
                         workerName = getData.get("workerName")
                         root = 'config.ini'
                         basicMsg = configparser.ConfigParser()
@@ -363,7 +335,7 @@ class ApiOrder_Handler(BaseHandler):
                             'createdTime': getData.get("createdTime").strftime("%Y-%m-%d %H:%M:%S"),
                             'userId': userId,
                             'pcId': pcId,
-                            'pcSign': pcSign,
+                            'pcSign': pc_sign,
                             'carId': carId,
                             'workerName': workerName,
                             'workerId': workerId,
@@ -399,6 +371,8 @@ class ApiOrder_Handler(BaseHandler):
                                                                                            carPhone, carId, carUser,
                                                                                            today, '0')
                                 self.dbhelp.InsertData(dbname, key, value)
+                                customer_handler.add_return_visit_data(data.get("callbackTime"), carPhone, carId,
+                                                                       carUser, today)
                     except:
                         raise ApiException(ErrorCode.ParameterMiss)
 
@@ -406,7 +380,7 @@ class ApiOrder_Handler(BaseHandler):
                         # if True:
                         # 打印
                         p = "defaultPrinter"  # 打印机名称
-                        html, pageHeight = self.GetPreviewHtml(getData, True)
+                        html, pageHeight = self.preview_html(getData, True)
                         Printer.printing(p, html, pageHeight)
                     except:
                         # raise ApiException(ErrorCode.PrinterError)
@@ -416,7 +390,7 @@ class ApiOrder_Handler(BaseHandler):
 
                 elif keyWord == 'preview':
                     print('preview')
-                    html = self.GetPreviewHtml(getData)
+                    html = self.preview_html(getData)
                     print(html)
                     return set_return_dicts(html)
 
@@ -435,13 +409,13 @@ class ApiOrder_Handler(BaseHandler):
                         raise ApiException(ErrorCode.ParameterMiss)
 
                     if self.connect:
-                        resultDict = SocketServer("orderdetail {} {}".format(self.storeId, checkOrderId))
+                        result_dict = SocketServer("orderdetail {} {}".format(self.storeId, checkOrderId))
 
                     else:
-                        result = self.dbhelp.GetXiaoFeiByKey("orderCheckId", checkOrderId)
+                        result = get_sale_info_by_one_key("orderCheckId", checkOrderId)
                         resultList = list()
 
-                        resultDict = {}
+                        result_dict = {}
                         if result:
                             createdTime = ''
                             carId = ''
@@ -468,15 +442,11 @@ class ApiOrder_Handler(BaseHandler):
                                     attribute['orderNo'] = orderNo
                                     resultList.append(attribute)
 
-                            fp = open("pc.conf", 'rb')
-                            pcData = fp.readline().decode()
-                            pcData = pcData.split(',')
-                            fp.close()
                             try:
-                                pcSign = pcData[3]
+                                pc_sign = config.get_store_name()
                             except:
-                                pcSign = ""
-                            resultDict = {
+                                pc_sign = ""
+                            result_dict = {
                                 "msg": resultList,
                                 "totalPrice": totalPrice,
                                 "createdTime": createdTime,
@@ -486,13 +456,13 @@ class ApiOrder_Handler(BaseHandler):
                                 "carModel": carModel,
                                 "orderNo": orderNo,
                                 "checkOrderId": checkOrderId,
-                                "pcSign": pcSign,
+                                "pcSign": pc_sign,
                             }
 
-                    if resultDict == 'restart':
+                    if result_dict == 'restart':
                         raise ApiException(ErrorCode.ReStartPC)
                         # resultDict = {}
-                    return set_return_dicts(resultDict)
+                    return set_return_dicts(result_dict)
 
 
                 else:

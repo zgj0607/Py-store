@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QTableView, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QTableView, QTableWidget, QTableWidgetItem, QLineEdit, QDateEdit, \
+    QCompleter, QItemDelegate
 
 
 def get_table_current_index_info(table, num):
@@ -50,10 +51,23 @@ def set_table_content(table: QTableView, record, table_title=()):
             model.setItem(row_index, column_index, QStandardItem(str(data[column_index])))
             model.item(row_index, column_index).setTextAlignment(Qt.AlignCenter)
 
-    # if record and column_len >= 10:
-    #     table.resizeColumnsToContents()
-    # else:
-    #     table.horizontalHeader().setStretchLastSection(True)
+
+def append_table_content(table: QTableView, record):
+    # if table_title:
+    #     add_table_header(table, table_title)
+
+    model = table.model()
+    column_len = model.columnCount()
+    row_len = model.rowCount()
+    items = []
+    for row_index, data in enumerate(record, row_len):
+        for column_index in range(column_len):
+            item = QStandardItem(str(data[column_index]))
+            # index = model.index(row_index, column_index, QModelIndex())
+            items.append(item)
+            # model.item(row_index, column_index).setTextAlignment(Qt.AlignCenter)
+        model.appendRow(items)
+        items.clear()
 
 
 def set_table_content_with_merge(table: QTableView, record, table_title=(), merge_column_index=0):
@@ -101,3 +115,22 @@ def set_table_widget_content(table: QTableWidget, record, table_title=(), need_c
         for col_index in range(table.columnCount() - col_offset):
             new_item = QTableWidgetItem(str(data[col_index]))
             table.setItem(row_index, col_index + col_offset, new_item)
+
+
+class LineEditDelegate(QItemDelegate):
+    def __init__(self, completer: QCompleter):
+        super(LineEditDelegate, self).__init__()
+        self.completer = completer
+
+    def createEditor(self, parent, option, index):
+        line_edit = QLineEdit(parent)
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
+        line_edit.setCompleter(self.completer)
+
+        return line_edit
+
+
+class DateEditDelegate(QItemDelegate):
+    def createEditor(self, parent, option, index):
+        date_edit = QDateEdit(parent)
+        return date_edit

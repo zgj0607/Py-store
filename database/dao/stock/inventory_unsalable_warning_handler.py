@@ -12,7 +12,7 @@ def get_negative_on_hand():
                        buy_info bi,
                        stock_info si
                 where  sd.type={} 
-                  and  sd.buy_id=bi.id 
+                  and  sd.changed_id=bi.id 
                   and  si.id=sd.stock_id 
                   and  julianday(date('now'))-julianday(bi.buy_date)>90
                 GROUP BY  si.model_id''' \
