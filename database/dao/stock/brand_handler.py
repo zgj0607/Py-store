@@ -11,6 +11,11 @@ def get_all_brand():
     result = execute(sql_text)
     return result
 
+def get_all_staff():
+    sql_text = '''SELECT ID, UserNAME FROM Admin ORDER BY UserNAME'''
+
+    result = execute(sql_text)
+    return result
 
 def add_brand(brand_name: str):
     sql_text = '''INSERT INTO brand(

@@ -20,6 +20,8 @@ from View.service.attribute import AttributeManage
 from View.service.service import Service
 from View.stock.stock_money import StockMoney
 from View.stock.stock_search import StockSearch
+from View.stock.stock_calibration import stock_calibration
+from View.stock.stock_calibration_review import stock_calibration_review
 from View.stock.stock_unsalable_waring import StockUnsalableWarning
 from View.supplier.supplier_arrears import SupplierArrears
 from View.users.staff import Staff
@@ -222,10 +224,10 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StockMoney()
 
             elif obj_name == 'do_stock_calibration':
-                tab_widget = None
+                tab_widget = stock_calibration()
 
             elif obj_name == 'stock_calibration_review':
-                tab_widget = None
+                tab_widget = stock_calibration_review()
 
             elif obj_name == 'supplier_arrears':
                 tab_widget = SupplierArrears()
