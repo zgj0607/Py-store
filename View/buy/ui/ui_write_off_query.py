@@ -25,7 +25,7 @@ class Ui_writeOffForm(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1400, 145))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1400, 148))
         self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(1400, 0))
         self.scrollAreaWidgetContents.setMaximumSize(QtCore.QSize(1400, 16777215))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")

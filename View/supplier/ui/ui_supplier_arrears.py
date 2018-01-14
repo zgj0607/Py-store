@@ -47,6 +47,7 @@ class Ui_SupplierArrears(object):
         self.horizontalLayout_3.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.detail_table = QtWidgets.QTableWidget(SupplierArrears)
+        self.detail_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.detail_table.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.detail_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.detail_table.setObjectName("detail_table")

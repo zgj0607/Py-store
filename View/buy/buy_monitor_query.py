@@ -46,6 +46,7 @@ class BuyInfoMonitor(QtWidgets.QWidget, Ui_BuyInfoMonitor):
         self.detail_table.setColumnHidden(0, True)
         self.detail_table.setColumnHidden(8, True)
         self.detail_table.setColumnHidden(14, True)
+        self.detail_table.resizeColumnsToContents()
 
     def _refresh_detail_table(self, index):
         second_srv_id = table_utils.get_table_current_index_info(self.summary_table, 1)
@@ -61,6 +62,7 @@ class BuyInfoMonitor(QtWidgets.QWidget, Ui_BuyInfoMonitor):
         table_utils.set_table_content_with_merge(self.summary_table, record, self.summary_table_title, 2)
         self.summary_table.setColumnHidden(0, True)
         self.summary_table.setColumnHidden(1, True)
+        self.summary_table.resizeColumnsToContents()
 
     def export_buy_info(self):
         start_time_str = self.start_date.date().toString('yyyyMMdd')

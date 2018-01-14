@@ -63,9 +63,7 @@ def append_table_content(table: QTableView, record):
     for row_index, data in enumerate(record, row_len):
         for column_index in range(column_len):
             item = QStandardItem(str(data[column_index]))
-            # index = model.index(row_index, column_index, QModelIndex())
             items.append(item)
-            # model.item(row_index, column_index).setTextAlignment(Qt.AlignCenter)
         model.appendRow(items)
         items.clear()
 

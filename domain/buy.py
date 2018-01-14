@@ -14,6 +14,7 @@ class BuyInfo(object):
     __rela_buy_id = 0
     __buy_type = 1
     __note = ''
+    __left = 0
 
     def buy_id(self, buy_id=0):
         if buy_id:
@@ -117,6 +118,13 @@ class BuyInfo(object):
             return self
 
         return self.__note
+
+    def left(self, left=0):
+        if left:
+            self.__left = left
+            return self
+
+        return self.__left
 
     @staticmethod
     def buy_types():

@@ -247,14 +247,14 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 tab_widget = None
 
-            if tab_widget:
-                self._add_tab(tab_widget)
-                self._add_tab_info_dict(obj_name, tab_widget)
-                self.tabWidget.setCurrentWidget(tab_widget)
-                print('add_tab')
-            else:
-                QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
-                return
+        if tab_widget:
+            self._add_tab(tab_widget)
+            self._add_tab_info_dict(obj_name, tab_widget)
+            self.tabWidget.setCurrentWidget(tab_widget)
+            print('add_tab')
+        else:
+            QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
+            return
 
     # 处理未注册Ip的PAD连接请求
     def _confirm_pad_connect(self, device: Device):

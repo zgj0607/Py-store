@@ -179,6 +179,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                     completer_list = self._get_all_supplier()
 
                 completer = QCompleter(completer_list)
+                completer.setFilterMode(Qt.MatchContains)
                 completer.setCaseSensitivity(Qt.CaseInsensitive)
                 editor.setCompleter(completer)
 
@@ -211,7 +212,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             unpaid_editor.setText(str(new_unpaid))
 
     def do_add(self):
-        succeeded_list = ''
+        succeeded_list = '成功添加：'
         failed_dict = OrderedDict()
         for row_index in range(1, self.line_number + 1):
             # 如果没有这个对应的序号属性，则说明已经删除，继续处理下一条记录
@@ -264,6 +265,11 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 buy_id = self._add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total,
                                             payment, note)
 
+                # 如果是退货，更新原来的进货信息中剩余量
+                if number < 0:
+                    self._update_buy_left(stock_id, number)
+                    self._update_buy_unpaid(stock_id, total)
+
                 # 新增库存明细
                 self._add_stock_detail(stock_id, buy_id, total, number)
 
@@ -277,7 +283,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 failed_dict[line_number] = e.__str__()
                 db_transaction_util.rollback()
 
-        failed_info = '未新增：'
+        failed_info = '未录入成功的行数：'
         for key in list(failed_dict.keys()):
             failed_info += '第' + key + '数据：' + failed_dict[key]
 
@@ -334,6 +340,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             buy_info.buy_type(BuyInfo.returned())
         else:
             buy_info.buy_type(BuyInfo.bought())
+            buy_info.left(number)
 
         return buy_handler.add_buy_info(buy_info)
 
@@ -463,3 +470,40 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
 
         stock_detail.update_time(time_utils.get_now()).update_op(Common.config.login_user_info[0])
         stock_detail_handler.add_stock_detail(stock_detail)
+
+    @staticmethod
+    def _update_buy_left(stock_id, number):
+        buy_of_left_gt_zero = buy_handler.get_left_gt_zero(stock_id)
+        if not buy_of_left_gt_zero:
+            return
+        number = abs(number)
+        for left_info in buy_of_left_gt_zero:
+            left_in_db = left_info[1]
+            if number >= left_in_db:
+                new_left = 0
+                number -= left_in_db
+            else:
+                new_left = left_in_db - number
+                number = 0
+            buy_handler.update_left_info(left_info[0], new_left)
+
+            if not number:
+                return
+
+    @staticmethod
+    def _update_buy_unpaid(stock_id: int, total: Decimal):
+        total = abs(total)
+
+        for unpaid_info in buy_handler.get_unpaid_gt_zero(stock_id):
+            unpaid_in_db = Decimal(unpaid_info[1])
+            if total >= unpaid_in_db:
+                new_unpaid = 0.0
+                new_paid = unpaid_in_db + Decimal(unpaid_info[2])
+                total -= unpaid_in_db
+            else:
+                new_unpaid = unpaid_in_db - total
+                new_paid = total + Decimal(unpaid_info[2])
+            buy_handler.update_paid_info(unpaid_info[0], new_unpaid, new_paid)
+
+            if not total:
+                return

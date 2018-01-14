@@ -1,7 +1,8 @@
 from database.db_connection import execute
 from domain.stock_detail import StockDetail
 
-def get_negative_on_hand():
+
+def get_unsalabe_stock_info():
     sql_text = '''
                 select 
                        si.brand_name,
@@ -11,8 +12,7 @@ def get_negative_on_hand():
                 from   stock_detail sd,
                        buy_info bi,
                        stock_info si
-                where  sd.type={} 
-                  and  sd.changed_id=bi.id 
+                where  sd.changed_id=bi.id 
                   and  si.id=sd.stock_id 
                   and  julianday(date('now'))-julianday(bi.buy_date)>90
                 GROUP BY  si.model_id''' \
