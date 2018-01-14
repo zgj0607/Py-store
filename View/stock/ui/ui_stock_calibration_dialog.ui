@@ -123,6 +123,12 @@
          <height>26</height>
         </size>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>26</height>
+        </size>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
@@ -130,6 +136,12 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
          <height>26</height>
         </size>
        </property>
@@ -194,6 +206,18 @@
      </item>
      <item row="0" column="1">
       <widget class="QDateEdit" name="dateEdit">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="displayFormat">
         <string>yyyy/MM/dd</string>
        </property>
