@@ -182,7 +182,7 @@ class WriteOff(QtWidgets.QWidget, Ui_writeOffForm):
             self._add_stock_detail(self.stock_id, buy_id, total, buy_number)
 
             # 更新销售库存明细状态
-            stock_detail_handler.update_negative_type(self.sale_id)
+            stock_detail_handler.update_negative_info(self.sale_id, total)
 
             # 更新供应商付款信息
             self._add_supplier_payment_detail(buy_id, supplier_id, paid, unpaid, payment)
