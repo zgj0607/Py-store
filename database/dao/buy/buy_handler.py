@@ -49,7 +49,7 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                                 PAID,
                                 TOTAL,
                                 BUY_TYPE,
-                                NOTES
+                                note
                                )
               VALUES (
                       {},
@@ -68,7 +68,7 @@ def add_buy_info(buy_info: BuyInfo) -> int:
         .format(buy_info.stock_id(), buy_info.supplier_id(),
                 buy_info.unit_price(), buy_info.number(), buy_info.buy_date(), buy_info.create_time(),
                 buy_info.create_op(), buy_info.unpaid(), buy_info.paid(), buy_info.total(),
-                buy_info.buy_type(), buy_info.notes())
+                buy_info.buy_type(), buy_info.note())
     new_buy_id = execute(sql_text)
 
     return new_buy_id
@@ -210,7 +210,7 @@ def get_compare_info(model_id: int):
     return result
 
 
-def get_buy_info_by_time(start_date: str, end_date: str):
+def get_buy_info_summary_by_time(start_date: str, end_date: str):
     sql_text = '''
                 SELECT
                        si.first_service_id,
@@ -238,6 +238,34 @@ def get_buy_info_by_time(start_date: str, end_date: str):
     return result
 
 
+def get_buy_info_detail_by_time(start_time: str, end_time: str):
+    sql_text = '''
+                        SELECT 
+                          bi.buy_date,                      
+                          si.brand_name,
+                          si.model_name,
+                          bi.number,
+                          si.unit,
+                          bi.unit_price,
+                          bi.total,
+                          sl.supplier_name,
+                          si.first_service_name || '-' || si.second_service_name,
+                          bi.paid,
+                          bi.unpaid,
+                          di.value_desc
+                          FROM buy_info bi, stock_info si, dictionary di, supplier sl
+                         WHERE bi.stock_id = si.id
+                           and di.key_id = bi.buy_type
+                           and di.group_name = 'buy_type'
+                           and sl.id = bi.supplier_id
+                           and bi.buy_date BETWEEN '{}' and '{}'
+                    '''.format(start_time, end_time)
+
+    result = execute(sql_text)
+
+    return result
+
+
 def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
     sql_text = '''
                     SELECT bi.id,
@@ -260,6 +288,7 @@ def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
                        and bi.stock_id = si.id
                        and bi.buy_type = {}
                        and di.key_id = bi.buy_type
+                       and di.group_name = 'buy_type'
                        and sl.id = bi.supplier_id
                        and bi.buy_date BETWEEN '{}' and '{}'
                 '''.format(second_srv_id, BuyInfo.bought(), start_time, end_time)
@@ -274,7 +303,7 @@ def update_paid_info(buy_id, unpaid: float, paid: float, notes=''):
                 UPDATE buy_info
                    SET paid = {:.2f},
                        unpaid = {:.2f},
-                       notes = '{}'
+                       note = '{}'
                  WHERE id = {}''' \
         .format(paid, unpaid, notes, buy_id)
     result = execute(sql_text)

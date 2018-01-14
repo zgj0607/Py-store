@@ -1,3 +1,6 @@
+from PyQt5.QtWidgets import QComboBox
+
+
 class Payment(object):
     __id = 0
     __buy_id = 0
@@ -105,3 +108,9 @@ class Payment(object):
         if payment_method:
             return '现金/转账'
         return 1
+
+    @staticmethod
+    def add_all_payment(combo_box: QComboBox):
+        payments = Payment.get_payment_method()
+        for key in list(payments.keys()):
+            combo_box.addItem(payments[key], key)

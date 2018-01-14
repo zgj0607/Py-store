@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from Common.Common import ClientClose
 from View.buy.buy_monitor_query import BuyInfoMonitor
 from View.buy.history_buy_query import HistoryStock
-from View.buy.normal_buy_query import StockQuery
+from View.buy.normal_buy_add import NormalBuyAdd
 from View.buy.write_off_query import WriteOff
 from View.customer.return_visit import ReturnVisit
 from View.device.device_info import DeviceInfo
@@ -195,7 +195,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = ReturnVisit()
 
             elif obj_name == 'normal_buy_add':
-                tab_widget = StockQuery()
+                tab_widget = NormalBuyAdd()
 
             elif obj_name == 'write_off_add':
                 tab_widget = WriteOff()
@@ -251,6 +251,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 self._add_tab(tab_widget)
                 self._add_tab_info_dict(obj_name, tab_widget)
                 self.tabWidget.setCurrentWidget(tab_widget)
+                print('add_tab')
             else:
                 QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
                 return

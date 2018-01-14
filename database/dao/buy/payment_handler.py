@@ -14,7 +14,9 @@ def add_payment_detail(payment):
                                 UNPAID,
                                 CREATE_TIME,
                                 CREATE_OP,
-                                refund_type
+                                refund_type,
+                                supplier_id,
+                                note
                                )
                 VALUES (
                          {},
@@ -23,10 +25,13 @@ def add_payment_detail(payment):
                         {:.2f},
                         '{}',
                          {},
-                         {}
+                         {},
+                         {},
+                        '{}'
                        )''' \
         .format(payment.buy_id(), payment.payment_method(), payment.paid(), payment.unpaid(),
-                get_now(), Common.config.login_user_info[0], payment.refund_type())
+                get_now(), Common.config.login_user_info[0], payment.refund_type(), payment.supplier_id(),
+                payment.note())
 
     result = execute(sql_text)
 
@@ -36,14 +41,12 @@ def add_payment_detail(payment):
 def get_all_arrears_info():
     sql_text = '''
                 SELECT
-                       supplier_id,
+                       id,
                        supplier_name,
-                       sum(unpaid)
-                  FROM buy_info bi,
-                       supplier sp
-                 WHERE sp.id = bi.supplier_id
-                   AND bi.unpaid > 0
-                 GROUP BY supplier_id, supplier_name
+                       sp.unpaid
+                  FROM supplier sp
+                 WHERE sp.unpaid > 0.0
+                 GROUP BY id, supplier_name
                  ORDER BY supplier_name'''
     result = execute(sql_text)
 

@@ -20,9 +20,6 @@ import hashlib
 import random
 import uuid
 
-from PyQt5.QtGui import QDoubleValidator, QIntValidator
-from PyQt5.QtWidgets import QLineEdit
-
 
 class ErrorCode:
     QueryLangFormatError = 1000  # 接口查询语言语法出错
@@ -144,12 +141,3 @@ def md5(string):
     m = hashlib.md5()
     m.update(string.encode())
     return m.hexdigest()
-
-
-def set_validator(edit: QLineEdit, type: str):
-    validator = None
-    if type == 'int':
-        validator = QIntValidator()
-    elif type == 'float':
-        validator = QDoubleValidator()
-    edit.setValidator(validator)

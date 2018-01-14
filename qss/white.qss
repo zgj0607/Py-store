@@ -595,7 +595,7 @@ QSpinBox::up-button {
         width: 18px;
         height: 12px;
         border-top-right-radius: 4px;
-        image: url(qss/White/upButton);
+        image: url(qss/White/upButton.png);
 }
 QSpinBox::up-button:!enabled {
         background: transparent;

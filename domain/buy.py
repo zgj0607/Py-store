@@ -13,7 +13,7 @@ class BuyInfo(object):
     __create_op = 0
     __rela_buy_id = 0
     __buy_type = 1
-    __notes = ''
+    __note = ''
 
     def buy_id(self, buy_id=0):
         if buy_id:
@@ -111,12 +111,12 @@ class BuyInfo(object):
 
         return self.__buy_type
 
-    def notes(self, notes=''):
-        if notes:
-            self.__notes = notes
+    def note(self, note=''):
+        if note:
+            self.__note = note
             return self
 
-        return self.__notes
+        return self.__note
 
     @staticmethod
     def buy_types():

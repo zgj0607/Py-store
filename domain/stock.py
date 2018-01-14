@@ -32,6 +32,7 @@ class Stock(object):
     def unit(self, unit=''):
         if unit:
             self.__unit = unit
+            return self
 
         return self.__unit
 
@@ -101,10 +102,11 @@ class Stock(object):
     def total_cost(self, total_cost=0.0):
         if total_cost:
             self.__total_cost = total_cost
+            return self
 
         return self.__total_cost
 
-    def create_time(self, create_time):
+    def create_time(self, create_time=''):
         if create_time:
             self.__create_time = create_time
             return self

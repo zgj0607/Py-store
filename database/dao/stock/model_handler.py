@@ -44,9 +44,9 @@ def add_model(model_name: str, brand_id):
 
 def get_model_by_name(model_name: str, brand_id: int):
     sql_text = '''SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = {} AND model_name = '{}\'''' \
-        .format(model_name, brand_id, get_now(), Common.config.login_user_info[0])
+        .format(brand_id, model_name)
 
-    result = execute(sql_text)
+    result = execute(sql_text, True)
 
     return result
 

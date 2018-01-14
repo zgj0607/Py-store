@@ -24,13 +24,13 @@ def get_all_second_level_service():
                       AND two.level = 2
                     ORDER BY one.name, two.name'''
 
-    execute(sql_text)
+    return execute(sql_text)
 
 
 def add_first_level_service(service_name):
     time_now = get_now()
     sql_text = '''INSERT INTO service(name, createdTime, father, level) VALUES('{}','{}',{},{})''' \
-        .format(service_table_name, service_name, time_now, -1, 1)
+        .format(service_name, time_now, -1, 1)
 
     return execute(sql_text)
 

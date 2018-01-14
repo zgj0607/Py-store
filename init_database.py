@@ -136,8 +136,8 @@ def create_attribute():
           delete_state INT DEFAULT 0 NOT NULL
         )
         ''')
-    execute('''CREATE UNIQUE INDEX serviceAttribute_id_uindex ON Attributes (id);''')
-    execute('''CREATE UNIQUE INDEX serviceAttribute_name_uindex ON Attributes (name)''')
+    execute('''CREATE UNIQUE INDEX serviceAttribute_id_uindex ON attributes (id);''')
+    execute('''CREATE UNIQUE INDEX serviceAttribute_name_uindex ON attributes (name)''')
 
 
 # PC设备IP管理表

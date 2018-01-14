@@ -34,7 +34,7 @@ def get_brand_by_name(brand_name: str):
     sql_text = '''SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 and brand_name ='{}\'''' \
         .format(brand_name)
 
-    result = execute(sql_text)
+    result = execute(sql_text, True)
 
     return result
 

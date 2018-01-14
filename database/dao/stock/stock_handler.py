@@ -26,7 +26,7 @@ def get_stock_by_model(model_id: int):
                 ''' \
         .format(model_id)
 
-    result = execute(sql_text)
+    result = execute(sql_text, True)
 
     return result
 
@@ -45,7 +45,9 @@ def add_stock_info(stock: Stock):
                                         second_service_id,
                                         second_service_name,
                                         balance,
-                                        total_cost
+                                        total_cost,
+                                        create_time,
+                                        create_op
                                         )
                 VALUES(
                         '{}',
@@ -59,11 +61,14 @@ def add_stock_info(stock: Stock):
                          {},
                         '{}',
                          {},
-                        {:.2f}                      
+                        {:.2f},
+                        '{}',
+                        {}                    
                 )''' \
         .format(stock.unit(), stock.first_service_name(), stock.first_service_id(), stock.model_id(),
                 stock.model_name(), stock.brand_id(), stock.brand_name(), stock.name(), stock.second_service_id(),
-                stock.second_service_name(), stock.balance(), stock.total_cost())
+                stock.second_service_name(), stock.balance(), stock.total_cost(), stock.create_time(),
+                stock.create_op())
     new_stock_id = execute(sql_text)
 
     return new_stock_id
@@ -89,6 +94,15 @@ def update_brand_name(stock_id: int, brand_name: str):
     execute(sql_text)
 
 
+def update_brand_id(stock_id: int, brand_id: int):
+    sql_text = '''
+                  UPDATE stock_info
+                     SET brand_id = {}
+                   WHERE ID = {}''' \
+        .format(brand_id, stock_id)
+    execute(sql_text)
+
+
 def update_model_name(stock_id: int, model_name: str):
     sql_text = '''
                       UPDATE stock_info
@@ -96,6 +110,15 @@ def update_model_name(stock_id: int, model_name: str):
                              model_name = '{}'
                        WHERE ID = {}''' \
         .format(model_name, model_name, stock_id)
+    execute(sql_text)
+
+
+def update_model_id(stock_id: int, model_id: int):
+    sql_text = '''
+                  UPDATE stock_info
+                     SET model_id = {}
+                   WHERE ID = {}''' \
+        .format(model_id, stock_id)
     execute(sql_text)
 
 

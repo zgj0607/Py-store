@@ -32,7 +32,7 @@ def get_operation_by_time(start_date: str, end_date: str):
                     from   Sales sal ,
                            service second_srv,
                            service first_srv,
-                          (select sum(b.buy_price) as total_buy,
+                          (select sum(b.changed_money) as total_buy,
                                   b.sale_id
                            from sales a,
                                 stock_detail b

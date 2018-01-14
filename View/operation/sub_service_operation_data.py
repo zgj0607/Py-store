@@ -39,5 +39,5 @@ class SubServiceOperationData(QtWidgets.QWidget, Ui_sub_serviceoperationdataForm
                                                     "All Files (*);;Excel (*.xls)")
 
         if ok and file_path:
-            excel_utils.export_to_file(file_path, self.table_title, '二级分类经营数据', model)
+            excel_utils.export_to_file_from_table_view(file_path, self.table_title, '二级分类经营数据', model)
             QMessageBox.information(self.export, "提示", '导出成功，文件保存在: ' + file_path)
