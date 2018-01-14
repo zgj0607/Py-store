@@ -1,12 +1,10 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMessageBox, QCompleter
-
 from View.buy.ui.ui_history_buy import Ui_HistorySock
 from View.utils import table_utils
 from database.dao.buy import buy_handler
 from database.dao.stock import brand_handler, model_handler
-
+from PyQt5.QtWidgets import QMessageBox, QCompleter
 
 class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
     def __init__(self):
@@ -93,8 +91,6 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
                 if not model_name:
                     model_name = ''
                     record = buy_handler.get_history_buy_info_by_model_name_and_brand_id(brand_id, model_name)
-                else:
-                    record = ()
 
         elif self.model_edited and not self.brand_edited:
             record = buy_handler.get_history_buy_info_by_model_name_and_brand_id(brand_id, model_name)
@@ -109,11 +105,10 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
 
     def _refresh_history_table(self, record):
         table_utils.set_table_content(self.history_table, record, self.history_table_title)
-        self.history_table.resizeColumnsToContents()
 
     def _init_compare_table(self, record):
+
         table_utils.set_table_content(self.compare_table, record, self.compare_table_title)
-        self.compare_table.resizeColumnsToContents()
 
     def _refresh_compare_table(self, index: int):
         model_id = table_utils.get_table_current_index_info(self.history_table, 0)

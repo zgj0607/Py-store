@@ -1,15 +1,14 @@
 from database.db_connection import execute
 from domain.stock_detail import StockDetail
 
-
-def get_unsalabe_stock_info():
+def get_negative_on_hand():
     sql_text = '''
-                select 
+                  select
                        si.brand_name,
                        si.model_name,
                        sum(left_number) as sum,
                        max(julianday(date('now'))-julianday(bi.buy_date))
-                from   
+                from
                        buy_info bi,
                        stock_info si
                 where   bi.stock_id=si.id
@@ -19,5 +18,3 @@ def get_unsalabe_stock_info():
 
     result = execute(sql_text)
     return result
-
-
