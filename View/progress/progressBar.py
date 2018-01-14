@@ -103,7 +103,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
 
                                    saveData['attribute'] = json.dumps(attribute)
                                    saveData['id'] = GetOrderId()
-                                   dbhelp.InsertXiaoFei(saveData)
+                                   dbhelp.add_sale_info(saveData)
 
 
                             attribute = {}
@@ -132,7 +132,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
 
                             saveData['attribute'] = json.dumps(attribute)
                             saveData['id'] = GetOrderId()
-                            dbhelp.InsertXiaoFei(saveData)
+                            dbhelp.add_sale_info(saveData)
 
                         #清空缓存
                         temp = list()
@@ -221,7 +221,7 @@ class Ui_MainWindow(QtWidgets.QDialog):
                     except:
                         pass
                     saveData["attribute"] = json.dumps(attribute)
-                    dbhelp.InsertXiaoFei(saveData)
+                    dbhelp.add_sale_info(saveData)
 
                 if userSave.get("carId") and userSave.get("carPhone"):
                     #当有用户信息的时候判断是否需要自动添加

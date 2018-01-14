@@ -12,13 +12,14 @@ from tornado.concurrent import run_on_executor
 from Common import config
 from Common.Common import SocketServer, cncurrency
 from Common.MyExecption import ApiException
-from Common.StaticFunc import ErrorCode, set_return_dicts, GetOrderId
+from Common.StaticFunc import ErrorCode, set_return_dicts, get_order_id
 from Common.config import domain
 from Controller.Api.BaseHandler import BaseHandler
 from Controller.Interface.PrinterHandler import Printer
 from database.dao.customer import customer_handler
-from database.dao.sale import sale_handler
+from database.dao.sale import sale_handler, sale_item_handler
 from database.dao.sale.sale_handler import get_sale_info_by_one_key, get_sale_order_no
+from database.dao.service import service_handler, attribute_handler
 
 
 class ApiOrder_Handler(BaseHandler):
@@ -330,7 +331,7 @@ class ApiOrder_Handler(BaseHandler):
                         root = 'config.ini'
                         basicMsg = configparser.ConfigParser()
                         basicMsg.read(root)
-                        orderCheckId = GetOrderId()
+                        orderCheckId = get_order_id()
                         saveData = {
                             'createdTime': getData.get("createdTime").strftime("%Y-%m-%d %H:%M:%S"),
                             'userId': userId,
@@ -355,13 +356,62 @@ class ApiOrder_Handler(BaseHandler):
                         page = 0
                         for data in parameter:
                             page += 1
-                            orderId = GetOrderId()
+                            order_id = get_order_id()
+
+                            services = data.get('project')
+                            services = services.split('-')
+                            first_service_name = services[0]
+                            second_service_name = services[1]
+
+                            first_service_id = service_handler.get_service_id_by_name(first_service_name)[0]
+                            second_service_id = service_handler.get_service_id_by_name(second_service_name,
+                                                                                       first_service_id)[0]
+
+                            attributes = data.get('attribute')
+                            print(attributes)
+                            try:
+                                unit = attributes.get('单位', '')
+                                unit_price = float(attributes.pop('单价', ''))
+                                number = int(attributes.get('数量', ''))
+                                subtotal = float(attributes.get('小计', ''))
+                                total = float(attributes.get('总价', ''))
+                                note = attributes.get('备注', '')
+                            except Exception as attribute_deal_error:
+                                print(attribute_deal_error)
+                                unit = ''
+                                unit_price = 0.0
+                                number = 0
+                                subtotal = 0.0
+                                total = 0.0
+                                note = ''
+
                             temp = {
                                 'project': data.get('project'),
-                                'id': orderId,
-                                'attribute': json.dumps(data.get('attribute'))
+                                'id': order_id,
+                                'attribute': json.dumps(data.get('attribute')),
+                                'serviceId': second_service_id,
+                                'unit': unit,
+                                'unit_price': unit_price,
+                                'number': number,
+                                'subtotal': subtotal,
+                                'total': total,
+                                'note': note
                             }
-                            self.dbhelp.InsertXiaoFei(dict(temp, **saveData))
+
+                            sale_id = sale_handler.add_sale_info(dict(temp, **saveData))
+                            service_attrs = service_handler.get_attribute_by_service(second_service_id)
+                            print(service_attrs)
+                            all_required_attr = attribute_handler.get_all_required_attributes()
+                            required_attr_list = []
+                            for attr in all_required_attr:
+                                required_attr_list.append(attr[1])
+
+                            for srv_attr in service_attrs:
+                                attr_name = srv_attr[1]
+                                if attr_name not in required_attr_list:
+                                    attr_id = attribute_handler.get_attr_by_name(attr_name)[0]
+                                    sale_item_handler.add_sale_item(order_id, attr_id, attributes.get(attr_name, ''))
+
                             # 回访设置
                             if data.get("callbackTime"):
                                 dbname = "CallBack"
@@ -373,7 +423,8 @@ class ApiOrder_Handler(BaseHandler):
                                 self.dbhelp.InsertData(dbname, key, value)
                                 customer_handler.add_return_visit_data(data.get("callbackTime"), carPhone, carId,
                                                                        carUser, today)
-                    except:
+                    except Exception as add_error:
+                        print(add_error)
                         raise ApiException(ErrorCode.ParameterMiss)
 
                     try:
@@ -432,7 +483,7 @@ class ApiOrder_Handler(BaseHandler):
                                 carUser = data[3]
                                 carPhone = data[4]
                                 carModel = data[5]
-                                price = float(attribute.get("总价", 0))
+                                price = data[16]
                                 pcId = data[9]
                                 orderNo = data[1]
                                 if pcId:

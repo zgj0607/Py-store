@@ -4,7 +4,7 @@ from _datetime import datetime
 
 from PyQt5 import QtWidgets
 
-from Common.StaticFunc import GetOrderId
+from Common.StaticFunc import get_order_id
 from View.customer.ui.ui_return_visit_setting import Ui_MainWindow
 from database.dao.customer import customer_handler
 from database.dao.sale import sale_handler
@@ -48,8 +48,8 @@ class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
             root = 'config.ini'
             basic_msg = configparser.ConfigParser()
             basic_msg.read(root)
-            order_check_id = GetOrderId()
-            order_id = GetOrderId()
+            order_check_id = get_order_id()
+            order_id = get_order_id()
             save_data = {
                 'createdTime': get_data.get("createdTime").strftime("%Y-%m-%d %H:%M:%S"),
                 'userId': user_id,

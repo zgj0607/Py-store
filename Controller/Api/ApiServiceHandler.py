@@ -34,33 +34,32 @@ class ApiService_Handler(BaseHandler):
         try:
             if self.request.method == "GET":
                 if keyWord == "one":
-                    resultData = service_handler.get_all_first_level_service()
-                    sendData = list()
-                    for data in resultData:
-                        sendData.append({
+                    second_services = service_handler.get_all_first_level_service()
+                    send_data = list()
+                    for data in second_services:
+                        send_data.append({
                             "oneMenuId": data[0],
                             "name": data[1]
                         })
-                    return set_return_dicts(sendData)
+                    return set_return_dicts(send_data)
 
                 elif keyWord == "two":
-                    id = getData.get("oneMenuId")
-                    resultData = self.dbhelp.getTwoMenu(id)
-                    sendData = list()
-                    for data in resultData:
-                        attribute = data[2].split(',')
-                        attributeState = data[3].split(',')
-                        attributeDict = {}
-                        for i in range(len(attribute)):
-                            if attribute[i] != "" and attributeState[i] == '1':
-                                attributeDict[attribute[i]] = attributeState[i]
+                    first_service_id = getData.get("oneMenuId")
+                    second_services = service_handler.get_second_service_by_father(first_service_id)
+                    send_data = list()
+                    for data in second_services:
+                        second_service_id = data[2]
+                        second_service_name = data[3]
+                        attribute_dict = {}
+                        for attr in service_handler.get_attribute_by_service(second_service_id):
+                            attribute_dict[attr[1]] = '1'
 
-                        sendData.append({
-                            "twoMenuId": data[0],
-                            "name": data[1],
-                            "attribute": attributeDict,
+                        send_data.append({
+                            "twoMenuId": second_service_id,
+                            "name": second_service_name,
+                            "attribute": attribute_dict,
                         })
-                    return set_return_dicts(sendData)
+                    return set_return_dicts(send_data)
 
                 else:
                     raise ApiException(ErrorCode.ErrorRequest)

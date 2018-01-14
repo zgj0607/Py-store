@@ -8,7 +8,7 @@ def get_all_attributes():
                    WHERE delete_state = 0
                      AND att.is_required = di.key_id
                      AND di.group_name = 'is_required'
-                    ORDER BY required_desc, name
+                    ORDER BY required_desc, display_order, name
                    '''
     return execute(sql_text)
 
@@ -79,3 +79,9 @@ def update_attribute(attribute_id, name):
                  WHERE ID = {}''' \
         .format(name, attribute_id)
     execute(sql_text)
+
+
+def get_attr_by_name(attr_name):
+    sql_text = '''select id, name from attributes where name = '{}' and delete_state = 0 and is_required = {}''' \
+        .format(attr_name, Attribute.option())
+    return execute(sql_text, True)
