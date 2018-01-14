@@ -7,16 +7,17 @@ def get_unsalabe_stock_info():
                 select 
                        si.brand_name,
                        si.model_name,
-                       count(*) as sum,
+                       sum(left_number) as sum,
                        max(julianday(date('now'))-julianday(bi.buy_date))
-                from   stock_detail sd,
+                from   
                        buy_info bi,
                        stock_info si
-                where  sd.changed_id=bi.id 
-                  and  si.id=sd.stock_id 
-                  and  julianday(date('now'))-julianday(bi.buy_date)>90
-                GROUP BY  si.model_id''' \
-        .format(StockDetail.in_store())
+                where   bi.stock_id=si.id
+                  and  julianday(date('now'))-julianday(bi.buy_date)>90          
+                  GROUP BY  si.model_id''' \
+        .format(StockDetail.by_bought())
 
     result = execute(sql_text)
     return result
+
+
