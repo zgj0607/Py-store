@@ -1,11 +1,10 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox
-
+from PyQt5.QtCore import Qt
 from View.buy.ui.ui_history_buy import Ui_HistorySock
 from View.utils import table_utils
 from database.dao.buy import buy_handler
 from database.dao.stock import brand_handler, model_handler
-
+from PyQt5.QtWidgets import QMessageBox, QCompleter
 
 class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
     def __init__(self):
@@ -44,6 +43,9 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
         if brands:
             brand_id = brands[0][0]
             self._refresh_model(brand_id)
+        completer = QCompleter(self._get_all_brand())
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.brand_combo.setCompleter(completer)
 
     def _brand_index_changed(self):
         self._refresh_model()
@@ -59,6 +61,9 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
             self.model_combo.clear()
             for model in models:
                 self.model_combo.addItem(model[1], model[0])
+            completer = QCompleter(self._get_all_brand())
+            completer.setCaseSensitivity(Qt.CaseInsensitive)
+            self.brand_combo.setCompleter(completer)
 
     def _brand_combo_edited(self):
         self.brand_edited = True
@@ -110,3 +115,11 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
         if model_id:
             record = buy_handler.get_compare_info(model_id)
             self._init_compare_table(record)
+
+    @staticmethod
+    def _get_all_brand():
+        brands = []
+        for brand in brand_handler.get_all_brand():
+            brands.append(brand[1])
+
+        return brands
