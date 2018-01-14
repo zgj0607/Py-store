@@ -19,25 +19,27 @@ class stock_calibration(QtWidgets.QWidget, Ui_stock_calibration):
         self.setupUi(self)
 
         self.setWindowTitle('校准信息')
-        self.table_title = ('日期', '品牌', '商品型号', '库存数量', '调整数量','调整金额','备注','经手人','审核状态')
+        self.table_title = ('日期', '品牌', '商品型号', '库存数量', '调整数量','调整金额','经手人','备注','审核状态')
         self._init_ui()
         self._init_signal_and_slot()
 
     def _init_ui(self):
-        record = stock_handler.get_calibration()
+        record = stock_handler.get_calibrationAll()
         table_utils.set_table_content(self.tableView,record, self.table_title)
-        time_now = time_utils.get_now()
-        self.start_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
-        self.end_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
+        # time_now = time_utils.get_now()
+        # self.start_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
+        # self.end_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
 
-        self._init_brand_and_model()
-        self._init_first_srv()
+        # self._init_brand_and_model()
+        # self._init_first_srv()
+        self.second_srv_combo.addItem("未审核", "0")
+        self.second_srv_combo.addItem("已审核", "1")
 
     def _init_signal_and_slot(self):
         self.seachButton.clicked.connect(self.search)
         self.calibrationButton.clicked.connect(self.calibration)
 
-        self.first_srv_combo.currentIndexChanged.connect(self._first_srv_changed)
+        # self.first_srv_combo.currentIndexChanged.connect(self._first_srv_changed)
 
     def _init_brand_and_model(self):
         self._set_completer(self.brand, 'brand')
@@ -72,23 +74,11 @@ class stock_calibration(QtWidgets.QWidget, Ui_stock_calibration):
             self._refresh_second_srv(int(father_id))
 
     def search(self):
-        start_date = self.start_date.date().toString('yyyy-MM-dd')
-        end_date = self.end_date.date().toString('yyyy-MM-dd')
-        brand_name = self.brand.text()
-        model_name = self.model.text()
 
-        first_srv_id = self.first_srv_combo.currentData()
-        second_srv_id = self.second_srv_combo.currentData()
+        state = self.second_srv_combo.currentData()
+        record = stock_handler.get_calibration(state)
+        table_utils.set_table_content(self.tableView, record, self.table_title)
 
-        stock = Stock()
-
-        stock.brand_name(brand_name)
-        stock.model_name(model_name)
-        stock.first_service_id(first_srv_id)
-        stock.second_service_id(second_srv_id)
-
-        record = stock_handler.get_stock_buy_info(stock, start_date, end_date)
-        table_utils.set_table_content_with_merge(self.tableView, record, self.table_title, 0)
         self.tableView.resizeColumnsToContents()
 
     def calibration(self):

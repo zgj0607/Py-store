@@ -198,7 +198,30 @@ def update_second_service_name(service_id, service_name):
         .format(service_name, service_id)
     execute(sql_text)
 
-def get_calibration():
+def get_calibration(state: str):
+    sql_text = '''
+                SELECT
+                       bi.create_time,
+                       BRAND_NAME,
+                       MODEL_NAME,
+                       si.balance,
+                       bi.total,
+                       bi.unit_price,
+                       ad.userName,
+                       bi.note,
+                      CASE bi.state WHEN 1 THEN '已审核'
+                    WHEN 0 THEN '未审核'
+                      END AS '未审核'
+                  FROM stock_info si,buy_info bi,Admin ad
+                  where si.id=bi.stock_id 
+                        and bi.buy_type='8' 
+                        and si.create_op=ad.id
+                        and bi.state= {}
+                ''' \
+        .format(state)
+    result = execute(sql_text)
+    return result
+def get_calibrationAll():
     sql_text = '''
                 SELECT
                        bi.create_time,
