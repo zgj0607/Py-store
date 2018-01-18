@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
+import logging
 
-from tornado.options import define, parse_command_line, options
-from tornado.web import Application
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
+from tornado.options import define, parse_command_line, options
+from tornado.web import Application
+
 from Common.Urls import route
 
-import tornado.httpserver
-import tornado.ioloop
-import tornado.options
-import tornado.web
+logger = logging.getLogger(__name__)
+
 
 def run_tornado(ui):
-    settings = {
-        # 'template_path' : os.path.join(os.path.dirname(__file__),"templates"),
-        # 'static_path' : os.path.join(os.path.dirname(__file__),"static"),
-        # 'cookie_secret':"2379874hsdhf0234990sdhsaiuofyasop977djdj",
-    }
-
-    # route.append((r"/(favicon\.ico)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])))
+    settings = {}
 
     define("port", default=15775, help="run for the backend", type="int")
     parse_command_line()
@@ -29,8 +23,10 @@ def run_tornado(ui):
 
     http_server = HTTPServer(app)
     try:
+        logger.info('Web server 启动中...')
         http_server.listen(options.port)
+        logger.info('Web server 已启动，监听端口：' + str(options.port))
         IOLoop.instance().start()
     except Exception as e:
-        print(e)
+        logger.error(e.__str__())
         ui.close()

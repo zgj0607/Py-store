@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 import json
+import logging
+import time
 from threading import Thread
 
 import requests
-import time
 
 from Common.config import BUFSIZ, domain
+from Controller.DbHandler import DB_Handler as DbHelp
 from database.dao.customer.customer_handler import get_like_customer_by_key
 from database.dao.sale.sale_handler import get_sale_info_by_one_key
 from .MySocket import myClient
-from Controller.DbHandler import DB_Handler as DbHelp
+
+logger = logging.getLogger(__name__)
 
 
 def run_socket():
@@ -17,7 +20,7 @@ def run_socket():
 
 
 def server_handle(client):
-    print('客户端线程已经启动 , 等待其它客户端连接')
+    logger.info('客户端线程已经启动 , 等待其它客户端连接')
     while True:
         try:
             data, addr = myClient.recvfrom(BUFSIZ)
@@ -26,7 +29,7 @@ def server_handle(client):
             break
 
         data = data.decode()
-        print("我收到：{}".format(data))
+        logger.info("我收到：{}".format(data))
         dataWord = data.split(" ")
         heard = dataWord[0]
         if data == "":
@@ -158,11 +161,15 @@ def server_handle(client):
 
 
 def get_pc_name(pc_id):
+    logger.info('远程获取店面名称')
     pc_sign = ''
     if pc_id != '':
         url = domain + 'store/api/findById?pcId={}'.format(pc_id)
+        logger.info('调用远程URL：' + url)
         req = requests.get(url)
         result_data = json.loads(req.text)
+        logger.info('获取远程数据：' + result_data)
+
         if result_data.get("code") != 200:
             pass
         else:

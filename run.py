@@ -16,17 +16,14 @@ __mtime__ = '6/21/2016'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-import configparser
 import decimal
-import json
-import os
+import logging
 import socket
 import sys
 import threading
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import apscheduler
-import requests
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import *
@@ -40,6 +37,7 @@ from View.customer.return_visit_setting import ReturnVisitSetting
 from View.login.login import Login
 from View.login.register import Register as Reg_Ui_MainWindow
 from database.dao.customer.customer_handler import get_return_visit_info
+from remote import store_pc_info
 from server.MySocket import myClient
 
 decimal.__version__
@@ -49,19 +47,9 @@ apscheduler.__version__
 # 运行之前要检查配置文件
 def pre_check():
     result = False
-    root = 'config.ini'
+    local_code = config.get_local_register_code()
 
-    basic_msg = configparser.ConfigParser()
-    basic_msg.read(root)
-
-    code = None
-    try:
-        code = basic_msg.get('msg', 'code')
-    except Exception as check_exception:
-        print(check_exception)
-        pass
-
-    if Common.compare_local_code_with_remote_register(code):
+    if Common.compare_local_code_with_remote_register(local_code):
         result = True
 
     return result
@@ -71,9 +59,8 @@ def pre_check():
 def return_visit():
     result_data = get_return_visit_info()
     for data in result_data:
-        msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>" \
-            .format(data[0][:10], data[2], data[1], data[3])
-        ui = ReturnVisitSetting(msg, record_id=data[4], car_phone=data[1], car_id=data[3], car_user=data[2])
+        ui = ReturnVisitSetting(data['next_visit_time'], record_id=data['id'], car_phone=data['phone'],
+                                car_id=data['carId'], car_user=data['username'])
         ui.exec_()
 
 
@@ -162,39 +149,35 @@ def is_open(port=15775, ip='127.0.0.1'):
 
 
 def try_use():
-    # now = datetime.now()
-    url = 'http://119.23.39.238:8500/store/api/time'
-    try:
-        req = requests.get(url)
-    except Exception as try_use_exception:
-        print(try_use_exception)
-        return "online"
-    json_data = json.loads(req.text)
-    now = datetime.strptime(json_data.get("data"), "%Y-%m-%d %H:%M:%S")
+    now = store_pc_info.get_try_time()
+    if now == 'online':
+        return now
 
-    if os.path.isfile('secret.conf'):
-        fp = open('secret.conf', 'rb')
-        record = fp.readline()
-        if not record:
+    local_start_use_time = config.get_local_start_use_time()
+
+    if not local_start_use_time:
+        return False
+    else:
+        if now > (local_start_use_time + timedelta(days=30)):
             return False
         else:
-            record = record.decode()
-            record_time = datetime.strptime(record, "%Y-%m-%d %H:%M:%S")
-
-            if now > (record_time + timedelta(days=30)):
-                return False
-            else:
-                return True
-    else:
-        return False
+            return True
 
 
 if __name__ == '__main__':
+    my_format = '%(asctime)s  %(filename)s.%(module)s.%(funcName)s: %(lineno)s : %(levelname)s  %(message)s'  # 定义输出log的格式
+    my_date_format = '%Y-%m-%d %A %H:%M:%S'
+    logging.basicConfig(filename=config.get_log_file_name(),
+                        filemode="a",
+                        level=logging.DEBUG,
+                        format=my_format,
+                        datefmt=my_date_format)
+    logger = logging.getLogger(__name__)
 
     if not is_open():
         try:
             init_database.create_all_table()
             run()
         except Exception as e:
-            print(e)
+            logger.error(e)
             pass

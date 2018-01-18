@@ -1,5 +1,8 @@
+import logging
+
 from database import db_connection
 
+logger = logging.getLogger(__name__)
 
 def begin():
     print('开启事物')
@@ -9,23 +12,23 @@ def begin():
     cursor = db_connection.get_cursor()
 
     cursor.execute('BEGIN')
-    print('事物已开启')
+    logger.info('事物已开启')
 
 
 def commit():
     cursor = db_connection.get_cursor()
-    print('提交事物')
+    logger.info('提交事物')
 
     cursor.execute('COMMIT')
-    print('事物已提交')
+    logger.info('事物已提交')
     close()
 
 
 def rollback():
     cursor = db_connection.get_cursor()
-    print('回滚事物')
+    logger.info('回滚事物')
     cursor.execute('ROLLBACK')
-    print('事物已回滚')
+    logger.info('事物已回滚')
 
     close()
 

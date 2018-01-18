@@ -83,11 +83,12 @@ class SupplierArrears(QtWidgets.QWidget, Ui_SupplierArrears):
 
         unpaid = Decimal(table_utils.get_table_current_index_info(self.detail_table, 9))
         paid = Decimal(table_utils.get_table_current_index_info(self.detail_table, 8))
+        supplier_id = self._get_supplier_id()
 
         buy_info.paid(paid)
         buy_info.unpaid(unpaid)
         buy_info.note(self.supplier_name)
-
+        buy_info.supplier_id(supplier_id)
         dialog = PayOffArrearsDialog(buy_info)
         dialog.exec()
 
@@ -107,8 +108,8 @@ class SupplierArrears(QtWidgets.QWidget, Ui_SupplierArrears):
                 paid = Decimal(table_utils.get_table_cell(self.detail_table, index, 8))
                 buy_id = int(table_utils.get_table_cell(self.detail_table, index, 10))
                 buys.append((buy_id, unpaid + paid, 0.0))
-
-        dialog = SupplierBulkPayOff(buys, total, self.supplier_name)
+        supplier_id = self._get_supplier_id()
+        dialog = SupplierBulkPayOff(buys, total, self.supplier_name, supplier_id)
         dialog.exec()
 
         self._init_table()
@@ -130,3 +131,11 @@ class SupplierArrears(QtWidgets.QWidget, Ui_SupplierArrears):
                 total -= unpaid
             self.summary_need_pay.setText(str(total))
             self.detail_table_cell_check_state[row] = (check_state == Qt.Checked)
+
+    def _get_supplier_id(self):
+        supplier_id = table_utils.get_table_current_index_info(self.summary_table, 0)
+        if not supplier_id:
+            supplier_id = int(table_utils.get_table_cell(self.summary_table, 0, 0))
+        else:
+            supplier_id = int(supplier_id)
+        return supplier_id

@@ -40,6 +40,8 @@ class Ui_sub_serviceoperationdataForm(object):
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.sub_serviceoperationtableView = QtWidgets.QTableView(sub_serviceoperationdataForm)
+        self.sub_serviceoperationtableView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.sub_serviceoperationtableView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.sub_serviceoperationtableView.setObjectName("sub_serviceoperationtableView")
         self.verticalLayout.addWidget(self.sub_serviceoperationtableView)
 

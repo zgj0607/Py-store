@@ -45,6 +45,11 @@
       </property>
       <item>
        <widget class="QLabel" name="start_end_date_lable">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>起止时间：</string>
         </property>
@@ -72,6 +77,11 @@
           <width>88</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="dateTime">
          <datetime>
@@ -124,6 +134,11 @@
           <width>88</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="currentSection">
          <enum>QDateTimeEdit::YearSection</enum>

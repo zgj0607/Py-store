@@ -11,14 +11,19 @@ from database.dao.sale import sale_handler
 
 
 class ReturnVisitSetting(QtWidgets.QDialog, Ui_MainWindow):
-    def __init__(self, msg, record_id, car_phone, car_id, car_user):
+    def __init__(self, next_visit_time, record_id, car_phone, car_id, car_user):
         super(ReturnVisitSetting, self).__init__()
-        self.msg = msg
         self.id = record_id
         self.car_phone = car_phone
         self.car_id = car_id
         self.car_user = car_user
         self.setupUi(self)
+        self.next_visit_time = next_visit_time
+
+        self.info_label.setText(
+            '''您于<b>{}</b>要回访用户：<b>{}</b><br>联系方式为：<b>{}</b> < br>车牌号为：<b>{}</b> '''
+                .format(next_visit_time, car_user, car_phone, car_id))
+
         self.submit_set.clicked.connect(self.change_state)
         self.do_set_next_date.stateChanged.connect(self.set_time)
 

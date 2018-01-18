@@ -17,19 +17,24 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
         super(StockSearch, self).__init__()
         self.setupUi(self)
 
-        self.setWindowTitle('库存信息')
-        self.table_title = ('一级分类', '二级分类', '品牌', '商品型号', '库存数量', '销量')
+        self.setWindowTitle('库存查询')
+        self.table_title = ('一级分类', '二级分类', '品牌', '商品型号', '库存数量', '库存金额', '销量')
         self._init_ui()
         self._init_signal_and_slot()
 
     def _init_ui(self):
         table_utils.set_table_content(self.tableView, (), self.table_title)
-        time_now = time_utils.get_now()
-        self.start_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
-        self.end_date.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
 
         self._init_brand_and_model()
         self._init_first_srv()
+        self._init_date()
+
+    def _init_date(self):
+        date_dict = time_utils.get_this_year()
+        start_date = date_dict['start_time'] + " 00:00:00"
+        end_date = date_dict['end_time'] + " 00:00:00"
+        self.start_date.setDateTime(QDateTime.fromString(start_date, 'yyyy-MM-dd hh:mm:ss'))
+        self.end_date.setDateTime(QDateTime.fromString(end_date, 'yyyy-MM-dd hh:mm:ss'))
 
     def _init_signal_and_slot(self):
         self.seachButton.clicked.connect(self.search)
@@ -65,7 +70,7 @@ class StockSearch(QtWidgets.QWidget, Ui_StockSearch):
     def _first_srv_changed(self):
         father_id = self.first_srv_combo.currentData()
         if not father_id:
-            self.model_combo.clear()
+            self.second_srv_combo.clear()
         else:
             self._refresh_second_srv(int(father_id))
 

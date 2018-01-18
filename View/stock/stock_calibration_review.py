@@ -18,7 +18,7 @@ class stock_calibration_review(QtWidgets.QWidget, Ui_stock_calibration):
         self.setupUi(self)
 
         self.setWindowTitle('校准')
-        self.table_title = ('一级分类', '二级分类', '品牌', '商品型号', '库存数量', '销量')
+        self.table_title = ('一级分类', '二级分类', '品牌', '商品型号', '库存数量', '库存金额', '销量')
         self._init_ui()
         self._init_signal_and_slot()
 

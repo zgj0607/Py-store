@@ -1,3 +1,5 @@
+import logging
+
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
@@ -18,16 +20,18 @@ from View.sale.all_sale import AllSale
 from View.sale.local_sale import LocalSale
 from View.service.attribute import AttributeManage
 from View.service.service import Service
-from View.stock.stock_money import StockMoney
-from View.stock.stock_search import StockSearch
 from View.stock.stock_calibration import stock_calibration
 from View.stock.stock_calibration_review import stock_calibration_review
+from View.stock.stock_money import StockMoney
+from View.stock.stock_search import StockSearch
 from View.stock.stock_unsalable_waring import StockUnsalableWarning
 from View.supplier.supplier_arrears import SupplierArrears
 from View.users.staff import Staff
 from View.users.store_and_password import StoreAndPassword
 from View.users.system_user import SystemUser
 from domain.device import Device
+
+logger = logging.getLogger(__name__)
 
 
 class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -182,10 +186,9 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # 统一处理Tab页的显示
     def _tab_show(self, obj_name):
-        tab_widget = None
-        tab_id = self.tabWidget.count()
+        tab_count = self.tabWidget.count()
 
-        if tab_id >= 7:
+        if tab_count >= 7:
             QMessageBox.information(self, "提示", "选项卡过多，请关闭部分后再打开")
             return
 
@@ -265,7 +268,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
             self._add_tab(tab_widget)
             self._add_tab_info_dict(obj_name, tab_widget)
             self.tabWidget.setCurrentWidget(tab_widget)
-            print('add_tab')
+            logger.info('add tab：' + obj_name)
         else:
             QMessageBox.information(self.tabWidget, '提示', '功能开发中，请稍后！')
             return

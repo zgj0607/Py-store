@@ -1,16 +1,18 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMessageBox, QCompleter
+
 from View.buy.ui.ui_history_buy import Ui_HistorySock
 from View.utils import table_utils
 from database.dao.buy import buy_handler
 from database.dao.stock import brand_handler, model_handler
-from PyQt5.QtWidgets import QMessageBox, QCompleter
+
 
 class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
     def __init__(self):
         super(HistoryStock, self).__init__()
         self.setupUi(self)
-        self.setWindowTitle('历史进货信息')
+        self.setWindowTitle('单品历史进货信息')
         self.history_table_title = ('品牌ID', '型号ID', '商品品牌', '商品型号', '最低进货价', '进货平均价', '最后一次进货价')
         self.compare_table_title = ('供应商', '商品品牌', '商品型号', '进货平均价', '进货次数', '进货数量')
         self.brand_edited = False
@@ -105,10 +107,13 @@ class HistoryStock(QtWidgets.QWidget, Ui_HistorySock):
 
     def _refresh_history_table(self, record):
         table_utils.set_table_content(self.history_table, record, self.history_table_title)
+        self.history_table.resizeColumnToContents(3)
 
     def _init_compare_table(self, record):
 
         table_utils.set_table_content(self.compare_table, record, self.compare_table_title)
+        self.compare_table.resizeColumnToContents(0)
+        self.compare_table.resizeColumnToContents(2)
 
     def _refresh_compare_table(self, index: int):
         model_id = table_utils.get_table_current_index_info(self.history_table, 0)

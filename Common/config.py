@@ -18,12 +18,15 @@ __mtime__ = '2017/2/10'
             ┗┻┛  ┗┻┛
 """
 import configparser
+import logging
 import os
 from datetime import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from domain.store import Store
+
+logger = logging.getLogger(__name__)
 
 
 # 配置文件信息父级目录
@@ -49,6 +52,10 @@ def get_printer_font_file():
 # 秘密文件信息
 def get_secret_info_file():
     return get_config_file_parent() + 'secret.conf'
+
+
+def get_log_file_name():
+    return get_config_file_parent() + 'py-store.log'
 
 
 def initialization_config():
@@ -131,6 +138,34 @@ def get_print_font_size():
             print(e)
 
     return font_size
+
+
+def get_local_start_use_time():
+    secret_file = get_secret_info_file()
+    if os.path.isfile(secret_file):
+        fp = open(secret_file, 'rb')
+        record = fp.readline()
+        if not record:
+            return None
+        else:
+            record = record.decode()
+            return datetime.strptime(record, "%Y-%m-%d %H:%M:%S")
+
+
+def get_local_register_code():
+    root = get_register_info_file()
+
+    basic_msg = configparser.ConfigParser()
+    basic_msg.read(root)
+
+    local_code = None
+    try:
+        local_code = basic_msg.get('msg', 'code')
+    except Exception as check_exception:
+        logger.error(check_exception.__str__())
+        pass
+
+    return local_code
 
 
 PORT = 8555

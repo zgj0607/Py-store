@@ -147,8 +147,10 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             editor.hide()
             buy_info.removeWidget(editor)
             del editor
+            delattr(self, editor_name)
 
         self.buy_info_container.removeItem(buy_info)
+        delattr(self, attr_name)
         del buy_info
 
     def _clear_first_line(self):
@@ -162,8 +164,12 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             if title == 'number':
                 editor.setValue(0)
                 continue
-            if title in ('seq', 'remove', 'payment', 'service'):
+            if title in ('seq', 'remove', 'payment'):
                 continue
+            if title == 'service':
+                editor.clear()
+                self._add_all_service_item(editor)
+
             editor.clear()
         QMessageBox.information(self.submit, "提示", '首行数据已经被重执！')
 
@@ -212,11 +218,12 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             unpaid_editor.setText(str(new_unpaid))
 
     def do_add(self):
-        succeeded_list = '成功添加：'
+        succeeded_list = '成功录入的行数：\n'
         failed_dict = OrderedDict()
         for row_index in range(1, self.line_number + 1):
             # 如果没有这个对应的序号属性，则说明已经删除，继续处理下一条记录
             if not hasattr(self, 'seq_' + str(row_index)):
+                print(row_index)
                 continue
 
             line_number = getattr(self, 'seq_' + str(row_index)).text()
@@ -283,9 +290,9 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 failed_dict[line_number] = e.__str__()
                 db_transaction_util.rollback()
 
-        failed_info = '未录入成功的行数：'
+        failed_info = '\n未成功录入的行数：\n'
         for key in list(failed_dict.keys()):
-            failed_info += '第' + key + '数据：' + failed_dict[key]
+            failed_info += '第' + key + '行数据：' + failed_dict[key]
 
         succeeded_list += '\n' + failed_info
         QMessageBox.information(self.submit, '提示', succeeded_list)

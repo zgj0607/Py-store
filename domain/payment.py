@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QComboBox
 
+from database.dao.dictionary import dictionary_handler
+
 
 class Payment(object):
     __id = 0
@@ -104,13 +106,11 @@ class Payment(object):
         return 1
 
     @staticmethod
-    def cash(payment_method=None):
-        if payment_method:
-            return '现金/转账'
-        return 1
+    def group_name():
+        return 'payment'
 
     @staticmethod
-    def add_all_payment(combo_box: QComboBox):
-        payments = Payment.get_payment_method()
-        for key in list(payments.keys()):
-            combo_box.addItem(payments[key], key)
+    def get_all_payment(combo_box: QComboBox):
+        payments = dictionary_handler.get_key_and_value_by_group_name(Payment.group_name())
+        for k_v in payments:
+            combo_box.addItem(k_v['value_desc'], k_v['key_id'])

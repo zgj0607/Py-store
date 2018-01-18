@@ -1,5 +1,3 @@
-from PyQt5 import QtWidgets
-
 from Controller.Interface.TableHandler import xiaofeiTableSet
 from View.sale.sale_base import SaleBase
 
@@ -16,4 +14,3 @@ class AllSale(SaleBase):
         result_str = xiaofeiTableSet(self.sales_details_result_table, start_date, end_date, True)
         self.sales_details_result_table.resizeColumnsToContents()
         self._result_process(result_str)
-

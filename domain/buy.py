@@ -141,3 +141,21 @@ class BuyInfo(object):
         if buy_type:
             return '退货'
         return 2
+
+    @staticmethod
+    def calibrated(buy_type=None):
+        if buy_type:
+            return '库存校准'
+        return 8
+
+    @staticmethod
+    def normal(state=None):
+        if state == 0:
+            return '正常'
+        return 0
+
+    @staticmethod
+    def under_reviewed(state=None):
+        if state == 1:
+            return '校准待审核'
+        return 1

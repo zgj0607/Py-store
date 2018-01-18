@@ -131,6 +131,7 @@ def get_stock_buy_info(stock: Stock, start_date: str, end_date: str):
                        BRAND_NAME,
                        MODEL_NAME,
                        BALANCE,
+                       total_cost,
                        ifnull(sum(s.number), 0) AS sale_number
                   FROM stock_info si
                   LEFT JOIN stock_detail sd on sd.stock_id = si.id
@@ -138,21 +139,21 @@ def get_stock_buy_info(stock: Stock, start_date: str, end_date: str):
         .format(StockDetail.by_write_off(), StockDetail.by_negative(), StockDetail.by_bought())
     if start_date != end_date:
         sql_text += ''' AND s.sale_date BETWEEN '{}' AND '{}\''''.format(start_date, end_date)
-
+    sql_text += '\n                 WHERE 1=1'
     if stock.second_service_id():
-        sql_text += ''' WHERE si.second_service_id = {}'''.format(stock.second_service_id())
+        sql_text += '''\n                   AND si.second_service_id = {}'''.format(stock.second_service_id())
     if stock.first_service_id():
-        sql_text += ''' AND si.first_service_id = {}'''.format(stock.first_service_id())
+        sql_text += '''\n                   AND si.first_service_id = {}'''.format(stock.first_service_id())
     if stock.brand_name():
-        sql_text += ''' AND si.brand_name like '%{}%\''''.format(stock.brand_name())
+        sql_text += '''\n                   AND si.brand_name like '%{}%\''''.format(stock.brand_name())
     if stock.model_name():
-        sql_text += ''' AND si.model_name like '%{}%\''''.format(stock.model_name())
+        sql_text += '''\n                   AND si.model_name like '%{}%\''''.format(stock.model_name())
 
-    sql_text += ''' GROUP BY FIRST_SERVICE_NAME,
-                       SECOND_SERVICE_NAME,
-                       BRAND_NAME,
-                       MODEL_NAME,
-                       BALANCE '''
+    sql_text += '''\n                  GROUP BY FIRST_SERVICE_NAME,
+                        SECOND_SERVICE_NAME,
+                        BRAND_NAME,
+                        MODEL_NAME,
+                        BALANCE '''
     result = execute(sql_text)
     return result
 

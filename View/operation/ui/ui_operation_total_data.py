@@ -38,6 +38,7 @@ class Ui_operationtotaldataForm(object):
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.tableWidget = QtWidgets.QTableWidget(operationtotaldataForm)
+        self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(0)
@@ -56,7 +57,9 @@ class Ui_operationtotaldataForm(object):
         _translate = QtCore.QCoreApplication.translate
         operationtotaldataForm.setWindowTitle(_translate("operationtotaldataForm", "Form"))
         self.label.setText(_translate("operationtotaldataForm", "请选择时间"))
+        self.start_date.setDisplayFormat(_translate("operationtotaldataForm", "yyyy-MM-dd"))
         self.label_2.setText(_translate("operationtotaldataForm", "---"))
+        self.end_date.setDisplayFormat(_translate("operationtotaldataForm", "yyyy-MM-dd"))
         self.search.setText(_translate("operationtotaldataForm", "查询"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("operationtotaldataForm", "到店车辆"))

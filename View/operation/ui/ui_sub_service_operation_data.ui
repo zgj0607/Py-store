@@ -88,7 +88,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="sub_serviceoperationtableView"/>
+    <widget class="QTableView" name="sub_serviceoperationtableView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

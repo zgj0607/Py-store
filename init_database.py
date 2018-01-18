@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import logging
 
 from Common import time_utils
 from database.db_connection import execute
@@ -15,6 +15,7 @@ def create_sale():
               code         VARCHAR(100) NOT NULL,
               pcId         VARCHAR(32)  NOT NULL,
               pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
               project      VARCHAR(50)  NOT NULL,
               workerId     INTEGER      NOT NULL,
               workerName   VARCHAR(20)  NOT NULL,
@@ -22,21 +23,25 @@ def create_sale():
               carUser      VARCHAR(50),
               carPhone     VARCHAR(50),
               carModel     VARCHAR(30),
-              attribute    TEXT,
               createdTime  DATETIME     NOT NULL,
               orderNo      VARCHAR(32)  NOT NULL,
               orderCheckId VARCHAR(32)  NOT NULL,
-              goodId       INTEGER,
-              price        VARCHAR(30),
-              stockId      INTEGER,
-              serviceId    INT,
-              number       INT,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
               sale_date    VARCHAR(50),
-              stock_id     INTEGER
+              attribute    TEXT
             )
             ''')
 
     execute('''CREATE INDEX userId ON Sales (userId)''')
+
+    execute('''CREATE    INDEX    sales_service_ID    ON Sales(service_id)''')
+
+    execute('''CREATE INDEX sales_card_id ON Sales(carId)''')
 
     execute('''CREATE INDEX createdTime ON Sales (createdTime);''')
 
@@ -92,8 +97,7 @@ def create_service():
     execute('''
         CREATE TABLE service
         (
-          id             INTEGER
-            PRIMARY KEY
+          id             INTEGER     PRIMARY KEY
           AUTOINCREMENT,
           createdTime    DATETIME    NOT NULL,
           name           VARCHAR(20) NOT NULL,
@@ -185,11 +189,25 @@ def create_dictionary():
 
     execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (1, 1, '进货', 'buy_type')''')
     execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (2, 2, '退货', 'buy_type')''')
-    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (3, 0, '在库', 'stock_state')''')
-    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (4, 1, '已售', 'stock_state')''')
-    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (5, 2, '已退货', 'stock_state')''')
-    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (6, 3, '已核减', 'stock_state')''')
-    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (7, 4, '待销负', 'stock_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (3, 0, '进货库存', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (4, 1, '退货库存', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (5, 2, '核增库存', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (6, 3, '核减库存', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (7, 4, '正库存销售', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (8, 0, '已禁用', 'device_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (9, 1, '已启用', 'device_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (10, 0, '选填', 'is_required')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (11, 1, '必填', 'is_required')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (12, 8, '库存校准', 'buy_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (13, 5, '负库存销售', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (14, 6, '已销负销售', 'stock_type')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (15, 0, '正常', 'buy_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (16, 1, '待审核', 'buy_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (17, 2, '已作废', 'buy_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (18, 0, '待回访', 'visit_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (19, 1, '已回访', 'visit_state')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (20, 1, '一级服务项目', 'service_level')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (21, 2, '二级服务项目', 'service_level')''')
 
 
 # 商品品牌表
@@ -197,9 +215,7 @@ def create_brand():
     execute('''
         CREATE TABLE brand
         (
-          id           INTEGER NOT NULL
-            PRIMARY KEY
-                           AUTOINCREMENT,
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
           brand_name   VARCHAR(50),
           create_time  VARCHAR(30),
           create_op    VARCHAR(30),
@@ -213,9 +229,7 @@ def create_model():
     execute('''
             CREATE TABLE model
             (
-              id           INTEGER NOT NULL
-                PRIMARY KEY
-                               AUTOINCREMENT,
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
               model_name   VARCHAR(50),
               brand_id     INT,
               create_time  VARCHAR(30),
@@ -279,6 +293,7 @@ def create_supplier():
         (
           id            INTEGER NOT NULL,
           supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2),
           create_time   VARCHAR(50),
           create_op     INTEGER,
           delete_state  INT DEFAULT 0 NOT NULL
@@ -306,7 +321,9 @@ def create_buy_info():
           total       INT,
           rela_buy_id INTEGER,
           buy_type    INT,
-          notes       VARCHAR(100)
+          notes       VARCHAR(100),
+          left_number INTEGER DEFAULT 0,
+          state       INT     DEFAULT 0
         )
         ''')
 
@@ -332,95 +349,96 @@ def create_payment_detail():
 
 # 创建所有表
 def create_all_table():
-    print("Opened database successfully")
+    logger = logging.getLogger(__name__)
+    logger.info("Opened database successfully")
     try:
         create_user()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_customer()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_device()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_worker()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_dictionary()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_brand()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_model()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_attribute()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_service()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_service_item()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_stock_info()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_stock_detail()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_buy_info()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_payment_detail()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
     try:
         create_sale()
     except Exception as e:
-        print(e)
+        logger.error(e)
         pass
 
-    print("Table created successfully")
+    logger.info("Table created successfully")

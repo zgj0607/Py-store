@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDateTime
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 
+from Common import time_utils
 from View.operation.ui.ui_sub_service_operation_data import Ui_sub_serviceoperationdataForm
 from View.utils import excel_utils, table_utils
 from database.dao.operation import operation_handler
@@ -19,6 +20,15 @@ class SubServiceOperationData(QtWidgets.QWidget, Ui_sub_serviceoperationdataForm
         self.sub_serviceoperationtableView.horizontalHeader().setDefaultAlignment(Qt.AlignCenter)
         self.table_title = (
             '一级分类', '二级分类', '成交单量', '成交车次', '成交数量', '成交金额', '成交毛利')
+
+        self._init_date()
+
+    def _init_date(self):
+        date_dict = time_utils.get_this_year()
+        start_date = date_dict['start_time'] + " 00:00:00"
+        end_date = date_dict['end_time'] + " 00:00:00"
+        self.start_date.setDateTime(QDateTime.fromString(start_date, 'yyyy-MM-dd hh:mm:ss'))
+        self.end_date.setDateTime(QDateTime.fromString(end_date, 'yyyy-MM-dd hh:mm:ss'))
 
     # 按照时间查询
     def _do_search(self):

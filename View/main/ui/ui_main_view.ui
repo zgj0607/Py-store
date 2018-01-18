@@ -238,7 +238,7 @@
   </action>
   <action name="history_stock">
    <property name="text">
-    <string>历史进货</string>
+    <string>单品历史进货</string>
    </property>
   </action>
   <action name="store_user">
@@ -268,12 +268,12 @@
   </action>
   <action name="inventory_search">
    <property name="text">
-    <string>库存查询</string>
+    <string>库存明细查询</string>
    </property>
   </action>
   <action name="inventory_unsalable_pre_warning">
    <property name="text">
-    <string>滞销预警</string>
+    <string>滞销库存预警</string>
    </property>
   </action>
   <action name="stock_monitor">
@@ -283,7 +283,7 @@
   </action>
   <action name="inventory_money">
    <property name="text">
-    <string>库存金额</string>
+    <string>分类库存总览</string>
    </property>
   </action>
   <action name="supplier_arrears">

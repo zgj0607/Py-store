@@ -22,10 +22,10 @@ class StockUnsalableWarning(QtWidgets.QWidget, Ui_inventoryunsalablewarningForm)
         self._init_inventory_table()
 
     def _init_inventory_table(self):
-        inventorywaringtableView = self.inventorywaringtableView
+        unsalable_warning_table = self.inventorywaringtableView
 
         # 填充数据
-        set_table_content(inventorywaringtableView, stock_unsalable_warning_handler.get_unsalable_warning(),
+        set_table_content(unsalable_warning_table, stock_unsalable_warning_handler.get_unsalable_warning(),
                           self.table_title)
 
     def export(self):

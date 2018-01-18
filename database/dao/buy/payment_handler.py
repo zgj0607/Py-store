@@ -2,11 +2,12 @@ from Common import Common
 from Common.time_utils import get_now
 from database.db_connection import execute
 from domain.buy import BuyInfo
+from domain.payment import Payment
 
 payment_table_name = 'PAYMENT_DETAIL'
 
 
-def add_payment_detail(payment):
+def add_payment_detail(payment: Payment):
     sql_text = '''
                 INSERT INTO PAYMENT_DETAIL(
                                 BUY_ID,

@@ -21,6 +21,7 @@ class SystemUser(QtWidgets.QDialog, UiSystemUser):
         self._init_signal_and_slot()
 
         set_table_content(self.sys_user_table, get_all_sys_user(), self.table_title)
+        self.sys_user_table.resizeColumnsToContents()
 
     def _init_signal_and_slot(self):
         self.add_sys_user.clicked.connect(self._add_sys_user)

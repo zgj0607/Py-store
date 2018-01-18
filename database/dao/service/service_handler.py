@@ -83,7 +83,7 @@ def get_second_service_count_by_father(father_id):
         return 0
 
     sql_text = '''select count(1) from service where father = {}'''.format(father_id)
-    count = execute(sql_text)
+    count = execute(sql_text, True)
 
     return count
 

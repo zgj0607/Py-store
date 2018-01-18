@@ -11,25 +11,25 @@ def get_return_visit_info():
     time_str = "/".join(now.split(' ')[0].split("-"))
     time_str = format_time(time_str, True)
 
-    sql_text = '''SELECT callbackTime,phone,username,carId,id 
-                    FROM CallBack
-                   WHERE state='0'
-                     AND callbackTime <= '{}' 
-                  ORDER BY createdTime DESC ''' \
-        .format(time_str)
+    sql_text = '''SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state={}
+                     AND next_visit_time <= '{}' 
+                  ORDER BY create_time DESC ''' \
+        .format(ReturnVisit.unvisited(), time_str)
     data = execute(sql_text)
     return data
 
 
 def update_return_visit_state(return_visit_id, state):
-    sql_str = "UPDATE CallBack SET state = '{}' WHERE id = {}".format(state, return_visit_id)
+    sql_str = "UPDATE return_visit SET state = {} WHERE id = {}".format(state, return_visit_id)
     execute(sql_str)
 
 
 def add_return_visit_data(time_str, car_phone, car_id, car_user, today):
     sql_text = '''
-              INSERT INTO CallBack(callbackTime, phone, carId, username, createdTime, state) 
-              VALUES('{}', '{}', '{}', '{}', '{}', '{}')''' \
+              INSERT INTO return_visit(next_visit_time, phone, carId, username, create_time, state) 
+              VALUES('{}', '{}', '{}', '{}', '{}', {})''' \
         .format(return_visit_table, time_str, car_phone, car_id, car_user, today, ReturnVisit.unvisited())
     result = execute(sql_text)
 

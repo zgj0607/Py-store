@@ -1,14 +1,19 @@
+import logging
 from decimal import Decimal
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
 from Common import time_utils, Common
 from View.supplier.ui.ui_supplier_payment_dialog import Ui_SupplierArrearPayOffDialog
 from View.utils import db_transaction_util
 from database.dao.buy import payment_handler, buy_handler
+from database.dao.dictionary import dictionary_handler
+from database.dao.supplier import supplier_handler
 from domain.buy import BuyInfo
 from domain.payment import Payment
+
+logger = logging.getLogger(__name__)
 
 
 class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
@@ -21,6 +26,7 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
         self._init_signal_and_slot()
 
         self.buy_id = buy.buy_id()
+        self.supplier_id = buy.supplier_id()
 
     def _init_input_info(self, buy):
         self.pay_to.setText(buy.note())
@@ -29,15 +35,14 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
         self.paid.setText(str(buy.paid()))
         self.pay.setText(str(buy.unpaid()))
 
-        payment_methods = Payment.get_payment_method()
-
-        for key in list(payment_methods.keys()):
-            self.payment_method.addItem(payment_methods[key], key)
+        Payment.get_all_payment(self.payment_method)
+        self.payment_method.addItem('点击添加')
         self.pay.setFocus()
 
     def _init_signal_and_slot(self):
         self.payButton.clicked.connect(self.do_pay)
         self.pay.textEdited.connect(self._pay_changed)
+        self.payment_method.activated['int'].connect(self._need_add_payment)
 
     def _pay_changed(self):
         pay = Decimal(self.pay.text())
@@ -64,6 +69,8 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
             self._add_payment_detail(new_paid, unpaid)
             # 更新进货付款信息
             self._update_buy_pay_info(new_paid, unpaid, note)
+            # 更新供应商未付信息
+            self._update_supplier_unpaid(pay)
 
             db_transaction_util.commit()
 
@@ -71,7 +78,7 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
             self.close()
 
         except Exception as e:
-            print(e)
+            logger.error(e.__str__())
             db_transaction_util.rollback()
             QMessageBox.information(self.payButton, '提示', '付款失败！')
 
@@ -94,3 +101,27 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
 
     def _update_buy_pay_info(self, paid: float, unpaid: float, notes: str):
         buy_handler.update_paid_info(self.buy_id, unpaid, paid, notes)
+
+    def _update_supplier_unpaid(self, pay):
+        update_pay = 0 - pay
+
+        supplier_handler.update_supplier_unpaid(self.supplier_id, update_pay)
+
+    def _need_add_payment(self, index):
+        if index == self.payment_method.count() - 1:
+            self._add_new_payment_method()
+
+    def _add_new_payment_method(self):
+        payment_method, ok = QInputDialog.getText(self.payButton, '新增付款方式', '请输入付款方式')
+        if ok and not payment_method:
+            QMessageBox.warning(self.payButton, '警告', '付款方式不能为空，请重新添加！')
+            return
+        exist_num = dictionary_handler.get_count_by_group_and_value(Payment.group_name(), payment_method)
+        if exist_num:
+            QMessageBox.warning(self.payButton, '警告', '付款方式已经存在，请重新添加！')
+            return
+        key_id = dictionary_handler.get_max_key_id_by_group_name(Payment.group_name()) + 1
+        dictionary_handler.add_dictionary(key_id, payment_method, Payment.group_name())
+        QMessageBox.warning(self.payButton, '提示', '付款方式添加成功！')
+        self.payment_method.insertItem(0, payment_method, key_id)
+        self.payment_method.setCurrentIndex(0)

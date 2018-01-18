@@ -45,33 +45,34 @@ def get_this_day(split='/') -> dict:
     return period
 
 
-def get_this_week() -> dict:
+def get_this_week(split='-') -> dict:
     now = datetime.now()
     day_in_week = timedelta(days=now.isoweekday())
     day_from = now - day_in_week + timedelta(days=1)
     day_to = now - day_in_week + timedelta(days=7)
-    period = {'start_time': day_from.strftime('%Y/%m/%d'),
-              'end_time': day_to.strftime('%Y/%m/%d')}
+    period = {'start_time': day_from.strftime('%Y{}%m{}%d'.format(split, split)),
+              'end_time': day_to.strftime('%Y{}%m{}%d'.format(split, split))}
 
     return period
 
 
-def get_this_month() -> dict:
+def get_this_month(split='-') -> dict:
     now = datetime.now()
     year = now.year
     month = now.month
     last_day_of_month = calendar.monthrange(year, month)[1]
-    start_time = '{}/{}/{}'.format(now.year, month, "01")
-    end_time = '{}/{}/{}'.format(now.year, month, last_day_of_month)
+    month = str(month).rjust(2, '0')
+    start_time = '{}{}{}{}{}'.format(year, split, month, split, "01")
+    end_time = '{}{}{}{}{}'.format(year, split, month, split, last_day_of_month)
     period = {'start_time': start_time,
               'end_time': end_time}
     return period
 
 
-def get_this_year():
+def get_this_year(split='-'):
     now = datetime.now()
-    start_time = '{}/{}/{}'.format(now.year, "01", "01")
-    end_time = '{}/{}/{}'.format(now.year, "12", "31")
+    start_time = '{}{}{}{}{}'.format(now.year, split, "01", split, "01")
+    end_time = '{}{}{}{}{}'.format(now.year, split, "12", split, "31")
     period = {'start_time': start_time,
               'end_time': end_time}
     return period

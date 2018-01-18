@@ -291,7 +291,8 @@ def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
                        and di.group_name = 'buy_type'
                        and sl.id = bi.supplier_id
                        and bi.buy_date BETWEEN '{}' and '{}'
-                '''.format(second_srv_id, BuyInfo.bought(), start_time, end_time)
+                     ORDER BY si.brand_name, si.model_name, bi.buy_date'''\
+        .format(second_srv_id, BuyInfo.bought(), start_time, end_time)
 
     result = execute(sql_text)
 
@@ -317,7 +318,7 @@ def get_left_gt_zero(stock_id: int):
                    WHERE stock_id = {}
                      AND left_number > 0
                      AND buy_type = {}
-                   order by buy_date''' \
+                   order by create_time''' \
         .format(stock_id, BuyInfo.bought())
     return execute(sql_text)
 
@@ -333,6 +334,6 @@ def get_unpaid_gt_zero(stock_id: int):
                    WHERE stock_id = {}
                      AND unpaid > 0.0 
                      AND buy_type = {}
-                    order by buy_date''' \
+                    order by create_time''' \
         .format(stock_id, BuyInfo.bought())
     return execute(sql_text)

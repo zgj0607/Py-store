@@ -44,13 +44,13 @@ class Performance(QtWidgets.QWidget, UiPerformance):
     def _check_today(self):
         self._change_style('today')
 
-        time_dict = time_utils.get_this_day()
+        time_dict = time_utils.get_this_day('-')
 
         self._update_performance_table(time_dict)
 
     def _check_week(self):
         self._change_style('week')
-        time_dict = time_utils.get_this_week()
+        time_dict = time_utils.get_this_week('-')
 
         self._update_performance_table(time_dict)
 

@@ -23,7 +23,6 @@ class Service(QtWidgets.QWidget, UiService):
 
         self._init_signal_and_slot()
         self._refresh_all_table()
-        print("按钮样式表", self.import_service.backgroundRole())
 
     def _init_signal_and_slot(self):
         self.export_service.clicked.connect(self._export_data)
@@ -42,8 +41,6 @@ class Service(QtWidgets.QWidget, UiService):
 
     def _refresh_all_table(self):
         self._refresh_first_service()
-        # self._refresh_second_service()
-        # self._refresh_attribute_table()
 
     def _refresh_first_service(self):
         set_table_content(self.first_service_table, service_handler.get_all_first_level_service(),
@@ -116,7 +113,7 @@ class Service(QtWidgets.QWidget, UiService):
                                                    QtWidgets.QMessageBox.Yes,
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                if not service_handler.get_second_service_count_by_father(service_id):
+                if not service_handler.get_second_service_count_by_father(service_id)[0]:
                     service_handler.delete_service(service_id)
                     QtWidgets.QMessageBox.information(self.remove_first_service, "提示", "删除成功！")
                     self._refresh_all_table()
@@ -156,7 +153,7 @@ class Service(QtWidgets.QWidget, UiService):
                                                    QtWidgets.QMessageBox.Yes,
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                if stock_handler.get_count_by_service(service_id):
+                if stock_handler.get_count_by_service(service_id)[0]:
                     QtWidgets.QMessageBox.information(self.remove_second_service, "提示", "该服务项目存在库存信息，不允许删除！")
                     return
                 else:

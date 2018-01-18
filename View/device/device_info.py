@@ -25,6 +25,7 @@ class DeviceInfo(QtWidgets.QWidget, UiDevice):
 
     def _update_device_table(self):
         set_table_content(self.device_table, get_all_device(), self.table_title)
+        self.device_table.resizeColumnsToContents()
 
     def _start(self):
         device_id = get_table_current_index_info(self.device_table, 0)

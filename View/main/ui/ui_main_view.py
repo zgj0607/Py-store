@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
         self.actionAll.setText(_translate("MainWindow", "全店"))
         self.normal_stock_add.setText(_translate("MainWindow", "普通进货录入"))
         self.write_off_add.setText(_translate("MainWindow", "销负进货录入"))
-        self.history_stock.setText(_translate("MainWindow", "历史进货"))
+        self.history_stock.setText(_translate("MainWindow", "单品历史进货"))
         self.store_user.setText(_translate("MainWindow", "门店人员"))
         self.system_user.setText(_translate("MainWindow", "系统人员"))
         self.return_visit_customer.setText(_translate("MainWindow", "回访"))

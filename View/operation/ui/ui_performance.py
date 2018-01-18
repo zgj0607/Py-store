@@ -73,6 +73,8 @@ class Ui_Form(object):
         self.verticalLayout_4.addLayout(self.horizontalLayout_5)
         self.performance_table = QtWidgets.QTableView(self.layoutWidget)
         self.performance_table.setMinimumSize(QtCore.QSize(911, 391))
+        self.performance_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.performance_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.performance_table.setObjectName("performance_table")
         self.performance_table.horizontalHeader().setStretchLastSection(True)
         self.performance_table.verticalHeader().setVisible(False)

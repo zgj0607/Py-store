@@ -25,6 +25,9 @@
      </item>
      <item>
       <widget class="QDateEdit" name="start_date">
+       <property name="displayFormat">
+        <string>yyyy-MM-dd</string>
+       </property>
        <property name="date">
         <date>
          <year>2018</year>
@@ -52,6 +55,9 @@
          <month>12</month>
          <day>1</day>
         </datetime>
+       </property>
+       <property name="displayFormat">
+        <string>yyyy-MM-dd</string>
        </property>
        <property name="date">
         <date>
@@ -86,6 +92,9 @@
    </item>
    <item>
     <widget class="QTableWidget" name="tableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>到店车辆</string>

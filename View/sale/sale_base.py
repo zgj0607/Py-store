@@ -1,9 +1,11 @@
 import traceback
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QDateTime
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 
+from Common import time_utils
 from View.sale.excel_process import ExcelProcess
 from View.sale.ui.ui_sale_detail import Ui_SaleDetail as SaleDetail
 from View.utils import table_utils
@@ -21,6 +23,15 @@ class SaleBase(QtWidgets.QWidget, SaleDetail):
             '订单号', '消费时间', '消费门店', '车牌号', '车主姓名', '联系电话', '车型', '操作人员', '消费项目', '数量', '单价', '小计', '总价', '单位', '备注')
 
         self._init_table()
+
+        self._init_date()
+
+    def _init_date(self):
+        date_dict = time_utils.get_this_year()
+        start_date = date_dict['start_time'] + " 00:00:00"
+        end_date = date_dict['end_time'] + " 00:00:00"
+        self.start_date.setDateTime(QDateTime.fromString(start_date, 'yyyy-MM-dd hh:mm:ss'))
+        self.end_date.setDateTime(QDateTime.fromString(end_date, 'yyyy-MM-dd hh:mm:ss'))
 
     def _init_table(self):
         table_utils.set_table_content(self.sales_details_result_table, [], self.table_title)

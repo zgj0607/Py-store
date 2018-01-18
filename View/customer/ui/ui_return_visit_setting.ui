@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
-    <height>236</height>
+    <width>333</width>
+    <height>258</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,27 @@
     <widget class="QWidget" name="centralwidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="info_label">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
-         <string>请填写回访备注，设置下一次回访时间</string>
+         <string/>
+        </property>
+        <property name="margin">
+         <number>10</number>
+        </property>
+        <property name="indent">
+         <number>-1</number>
         </property>
        </widget>
       </item>
@@ -31,7 +49,7 @@
           <rect>
            <x>10</x>
            <y>4</y>
-           <width>251</width>
+           <width>258</width>
            <height>31</height>
           </rect>
          </property>

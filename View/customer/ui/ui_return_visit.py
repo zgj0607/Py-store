@@ -20,6 +20,8 @@ class Ui_ReturnVisit(object):
         self.verticalLayout_11.setObjectName("verticalLayout_11")
         self.return_visit_table = QtWidgets.QTableView(self.layoutWidget)
         self.return_visit_table.setMinimumSize(QtCore.QSize(941, 551))
+        self.return_visit_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.return_visit_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.return_visit_table.setObjectName("return_visit_table")
         self.verticalLayout_11.addWidget(self.return_visit_table)
         self.horizontalLayout_17 = QtWidgets.QHBoxLayout()

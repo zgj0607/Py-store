@@ -1,4 +1,5 @@
 from database import db_common_handler
+from domain.stock_detail import StockDetail
 
 
 def get_performance_by_time(time: dict):
@@ -8,10 +9,10 @@ def get_performance_by_time(time: dict):
                        first.name  AS first_service,
                        second.name AS second_service,
                        count(1)    AS total_num,
-                       sum(price)  AS total_price
+                       sum(unit_price)  AS total_price
                   FROM Sales sale, service second, service first
                  WHERE sale.createdTime BETWEEN '{}' AND '{}'
-                   AND sale.serviceId = second.id
+                   AND sale.service_id = second.id
                    AND second.father = first.id AND first.father = -1
                  GROUP BY first_service, second_service
                  ORDER BY first_service, second_service
@@ -22,28 +23,50 @@ def get_performance_by_time(time: dict):
 
 
 def get_operation_by_time(start_date: str, end_date: str):
-    sql_text = '''select   first_srv.name as first_name,
-                           second_srv.name as second_name,
-                           count(*) as order_count,
-                           count(*) as car_count,
-                           sum(sal.number) as salnumber,
-                           sum(sal.number*sal.price) as total_price,
-                           sum(sal.number*sal.price)-buy.total_buy
-                    from   Sales sal ,
-                           service second_srv,
-                           service first_srv,
-                          (select sum(b.changed_money) as total_buy,
-                                  b.sale_id
-                           from sales a,
-                                stock_detail b
-                           where a.id=b.sale_id 
-                                 and a.sale_date BETWEEN '{}' AND '{}'
-                           group by b.sale_id) buy
-                    where  sal.serviceId=second_srv.id
-                           and buy.sale_id=sal.id
-                           and sal.sale_date BETWEEN '{}' AND '{}'
-                           and second_srv.father=first_srv.id GROUP BY  sal.project;
-                 ''' \
-        .format(start_date, end_date, start_date, end_date)
+    sql_text = '''
+                SELECT
+                       first_srv.name                                   AS first_name,
+                       second_srv.name                                  AS second_name,
+                       count(1)                                         AS order_count,
+                       count(1)                                         AS car_count,
+                       sum(sal.number)                                  AS salnumber,
+                       sum(sal.number * sal.unit_price)                 AS total_price,
+                       sum(sal.number * sal.unit_price) - buy.total_buy AS gross_profit
+                  FROM Sales sal,
+                       service second_srv,
+                       service first_srv,
+                       (SELECT b.changed_money AS total_buy,
+                               changed_id
+                          FROM stock_detail b
+                         WHERE b.type in ({},{},{})) buy
+                 WHERE sal.service_id = second_srv.id
+                   AND sal.createdTime BETWEEN '{}' AND '{}'
+                   AND second_srv.father = first_srv.id
+                   AND buy.changed_id = sal.sale_id
+                 GROUP BY sal.project''' \
+        .format(StockDetail.by_sold(), StockDetail.by_negative(), StockDetail.by_write_off(), start_date, end_date)
+    result = db_common_handler.execute(sql_text)
+    return result
+
+
+def get_total_operation_by_time(start_date: str, end_date: str):
+    sql_text = '''
+                SELECT
+                       count(1)                                         AS car_count,
+                       sum(sal.number * sal.unit_price)                 AS total_price,
+                       sum(sal.number * sal.unit_price) - buy.total_buy AS gross_profit
+                  FROM Sales sal,
+                       service second_srv,
+                       service first_srv,
+                       (SELECT b.changed_money AS total_buy,
+                               changed_id
+                          FROM stock_detail b
+                         WHERE b.type in ({},{},{})) buy
+                 WHERE sal.service_id = second_srv.id
+                   AND sal.createdTime BETWEEN '{}' AND '{}'
+                   AND second_srv.father = first_srv.id
+                   AND buy.changed_id = sal.sale_id
+                 GROUP BY sal.project''' \
+        .format(StockDetail.by_sold(), StockDetail.by_negative(), StockDetail.by_write_off(), start_date, end_date)
     result = db_common_handler.execute(sql_text)
     return result
