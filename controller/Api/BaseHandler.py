@@ -18,6 +18,7 @@ __mtime__ = '2017/2/14'
             ┗┻┛  ┗┻┛
 """
 import json
+import logging
 import time
 # 这个并发库在python3自带在python2需要安装sudo pip install futures
 from concurrent.futures import ThreadPoolExecutor
@@ -33,6 +34,8 @@ from common.static_func import ErrorCode, set_return_dicts
 from controller.DbHandler import DB_Handler
 from database.dao.device import device_handler
 from domain.device import Device
+
+logger = logging.getLogger(__name__)
 
 
 class BaseHandler(web.RequestHandler):
@@ -68,7 +71,7 @@ class BaseHandler(web.RequestHandler):
                 for data in value:
                     data = data.decode()
                 result[name] = value
-        print("入参：", result)
+        logger.info("入参：" + result.__str__())
 
         return result
 
@@ -106,10 +109,11 @@ class BaseHandler(web.RequestHandler):
             self.write(json.dumps(set_return_dicts(forWorker=e.error_result['forWorker'],
                                                    code=e.error_result['errorCode'],
                                                    forUser=e.error_result['forUser'])))
+            logger.error(e)
             self.finish()
 
         except Exception as commException:
-            print(commException)
+            logger.error(commException)
             self.write(json.dumps(set_return_dicts(forWorker='不合法的参数',
                                                    code=ErrorCode.ParameterError,
                                                    forUser='请求超时')))
@@ -135,7 +139,6 @@ class BaseHandler(web.RequestHandler):
                 except Exception as inner:
                     print(inner)
                     raise ApiException(ErrorCode.JsonError)
-            # print ('post:',get_Data)
 
             check_result = self.check_device()
             if not check_result:

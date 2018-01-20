@@ -188,7 +188,6 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 continue
 
             editor.clear()
-        QMessageBox.information(self.submit, "提示", '首行数据已经被重执！')
 
     def _set_completer(self, editor: QWidget, title: str):
         if isinstance(editor, QLineEdit):
@@ -306,6 +305,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
 
                 db_transaction_util.commit()
                 succeeded_list = succeeded_list + '第' + line_number + '行、'
+                self.do_remove(line_number)
             except Exception as e:
                 logger.error(e.__str__())
                 logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))

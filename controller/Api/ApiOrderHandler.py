@@ -407,6 +407,7 @@ class ApiOrder_Handler(BaseHandler):
 
                             # 回访设置
                             if data.get("callbackTime"):
+                                return_visit = Return
                                 dbname = "CallBack"
                                 key = "{},{},{},{},{},{}".format("callbackTime", "phone", 'carId', "username",
                                                                  'createdTime', 'state')

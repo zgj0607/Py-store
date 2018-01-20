@@ -14966,3 +14966,3037 @@ ConnectionRefusedError: [Errno 61] Connection refused
 2018-01-20 Saturday 20:04:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
 2018-01-20 Saturday 20:04:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT * FROM Admin ORDER BY username ASC
 2018-01-20 Saturday 20:04:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT key_id,
+                       value_desc
+                  FROM dictionary
+                 WHERE group_name = 'payment'
+                 GROUP BY value_desc
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, SUPPLIER_NAME FROM supplier WHERE DELETE_STATE = 0 ORDER BY SUPPLIER_NAME
+2018-01-20 Saturday 20:10:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:52  main_view.py.main_view._tab_show: 271 : INFO  add tab：normal_buy_add
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT
+                      one.id   AS father_id,
+                      one.name AS father_name,
+                      two.id,
+                      two.name,
+                      two.attribute,
+                      two.attributeState
+                    FROM service one, service two
+                    WHERE two.father = one.id
+                      AND one.id = 1
+                      AND two.level = 2
+                    ORDER BY one.name, two.name
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:54  main_view.py.main_view._tab_show: 271 : INFO  add tab：stock_search
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:10:54  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:54  main_view.py.main_view._tab_show: 271 : INFO  add tab：return_visit
+2018-01-20 Saturday 20:10:55  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       id,
+                       supplier_name,
+                       sp.unpaid
+                  FROM supplier sp
+                 WHERE sp.unpaid > 0.0
+                 GROUP BY id, supplier_name
+                 ORDER BY supplier_name
+2018-01-20 Saturday 20:10:55  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:55  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:10:55  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:10:55  main_view.py.main_view._tab_show: 271 : INFO  add tab：supplier_arrears
+2018-01-20 Saturday 20:11:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:11:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:11:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 1
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:11:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:11:01  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:11:01  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:11:02  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 1
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:11:02  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:11:10  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:11:10  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:13  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:17:13  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:17:13  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:17:13  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:17:14  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:17:14  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:22  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:17:22  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:22  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:17:22  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:17:22  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT key_id,
+                       value_desc
+                  FROM dictionary
+                 WHERE group_name = 'payment'
+                 GROUP BY value_desc
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, SUPPLIER_NAME FROM supplier WHERE DELETE_STATE = 0 ORDER BY SUPPLIER_NAME
+2018-01-20 Saturday 20:17:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:27  main_view.py.main_view._tab_show: 271 : INFO  add tab：normal_buy_add
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, SUPPLIER_NAME FROM supplier WHERE DELETE_STATE = 0 ORDER BY SUPPLIER_NAME
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT key_id,
+                       value_desc
+                  FROM dictionary
+                 WHERE group_name = 'payment'
+                 GROUP BY value_desc
+2018-01-20 Saturday 20:17:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:17:48  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:17:48  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:17:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 2
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:17:49  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT
+                      one.id   AS father_id,
+                      one.name AS father_name,
+                      two.id,
+                      two.name,
+                      two.attribute,
+                      two.attributeState
+                    FROM service one, service two
+                    WHERE two.father = one.id
+                      AND one.id = 1
+                      AND two.level = 2
+                    ORDER BY one.name, two.name
+2018-01-20 Saturday 20:19:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:19:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:02  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT
+                      one.id   AS father_id,
+                      one.name AS father_name,
+                      two.id,
+                      two.name,
+                      two.attribute,
+                      two.attributeState
+                    FROM service one, service two
+                    WHERE two.father = one.id
+                      AND one.id = 1
+                      AND two.level = 2
+                    ORDER BY one.name, two.name
+2018-01-20 Saturday 20:19:02  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_transaction_util.py.db_transaction_util.begin: 9 : INFO  开启事物
+2018-01-20 Saturday 20:19:23  db_transaction_util.py.db_transaction_util.begin: 16 : INFO  事物已开启
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 and brand_name ='米其林'
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：INSERT INTO brand(
+                                    BRAND_NAME,
+                                    create_time,
+                                    create_op
+                                    )
+                  VALUES(
+                          '米其林',
+                          '2018-01-20 20:19:23',
+                          1
+                  )
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 AND model_name = '205/55R16-XM2'
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：INSERT INTO model(
+                                    model_name,
+                                    brand_id,
+                                    create_time,
+                                    create_op)
+                  VALUES('205/55R16-XM2',3,'2018-01-20 20:19:23',1)
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, supplier_name FROM supplier WHERE supplier_name = '昆明聚仁腾飞商贸有限公司'
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT ID, 
+                       NAME,
+                       UNIT,
+                       FIRST_SERVICE_ID,
+                       FIRST_SERVICE_NAME,
+                       SECOND_SERVICE_ID,
+                       SECOND_SERVICE_NAME,
+                       BRAND_ID,
+                       BRAND_NAME,
+                       MODEL_ID,
+                       MODEL_NAME,
+                       BALANCE,
+                       TOTAL_COST
+                  FROM stock_info
+                 WHERE MODEL_ID = 3
+                
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                INSERT INTO stock_info(
+                                        UNIT,
+                                        first_service_name,
+                                        first_service_id,
+                                        model_id,
+                                        model_name,
+                                        brand_id,
+                                        brand_name,
+                                        name,
+                                        second_service_id,
+                                        second_service_name,
+                                        balance,
+                                        total_cost,
+                                        create_time,
+                                        create_op
+                                        )
+                VALUES(
+                        '条',
+                        '轮胎项目',
+                         1,
+                         3,
+                        '205/55R16-XM2',
+                         3,
+                        '米其林',
+                        '米其林-205/55R16-XM2',
+                         2,
+                        '轮胎更换',
+                         4,
+                        2000.00,
+                        '2018-01-20 20:19:23',
+                        1                    
+                )
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                INSERT INTO buy_info( 
+                                STOCK_ID,
+                                SUPPLIER_ID,
+                                UNIT_PRICE,
+                                NUMBER,
+                                BUY_DATE,
+                                CREATE_TIME,
+                                CREATE_OP,
+                                UNPAID,
+                                PAID,
+                                TOTAL,
+                                BUY_TYPE,
+                                note,
+                                left_number
+                               )
+              VALUES (
+                      3,
+                      1,
+                      500.00,
+                      4,
+                      '2018-01-20',
+                      '2018-01-20 20:19:23',
+                      1,
+                      0.00,
+                      2000.00,
+                      2000.00,
+                      1,
+                      '',
+                      4
+              )
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                INSERT INTO stock_detail(stock_id,changed_id,changed_money,changed_number,type,update_op,update_time)
+                VALUES(
+                        3,
+                        4,
+                        2000.00,
+                        4,
+                        0,
+                        1,
+                        '2018-01-20 20:19:23'
+                        
+                )
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                INSERT INTO PAYMENT_DETAIL(
+                                BUY_ID,
+                                PAYMENT_METHOD,
+                                PAID,
+                                UNPAID,
+                                CREATE_TIME,
+                                CREATE_OP,
+                                refund_type,
+                                supplier_id,
+                                note
+                               )
+                VALUES (
+                         4,
+                         2,
+                        2000.00,
+                        0.00,
+                        '2018-01-20 20:19:23',
+                         1,
+                         1,
+                         1,
+                        ''
+                       )
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:19:23  db_transaction_util.py.db_transaction_util.commit: 21 : INFO  提交事物
+2018-01-20 Saturday 20:19:23  db_transaction_util.py.db_transaction_util.commit: 24 : INFO  事物已提交
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:19:23  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:29  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:20:29  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:20:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:20:29  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:20:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:20:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:31  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:20:31  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:31  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:20:31  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:20:31  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME, BRAND_ID FROM model WHERE DELETE_STATE = 0 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id, name FROM service WHERE level = 1 ORDER BY createdTime
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT
+                      one.id   AS father_id,
+                      one.name AS father_name,
+                      two.id,
+                      two.name,
+                      two.attribute,
+                      two.attributeState
+                    FROM service one, service two
+                    WHERE two.father = one.id
+                      AND one.id = 1
+                      AND two.level = 2
+                    ORDER BY one.name, two.name
+2018-01-20 Saturday 20:20:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:20:35  main_view.py.main_view._tab_show: 271 : INFO  add tab：stock_search
+2018-01-20 Saturday 20:20:36  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT 
+                       FIRST_SERVICE_NAME,
+                       SECOND_SERVICE_NAME,
+                       BRAND_NAME,
+                       MODEL_NAME,
+                       BALANCE,
+                       total_cost,
+                       ifnull(sum(s.number), 0) AS sale_number
+                  FROM stock_info si
+                  LEFT JOIN stock_detail sd on sd.stock_id = si.id
+                  LEFT JOIN Sales s on s.id = sd.changed_id and sd.type in (6, 5,0) AND s.sale_date BETWEEN '2018-01-01' AND '2018-12-31'
+                 WHERE 1=1
+                  GROUP BY FIRST_SERVICE_NAME,
+                        SECOND_SERVICE_NAME,
+                        BRAND_NAME,
+                        MODEL_NAME,
+                        BALANCE 
+2018-01-20 Saturday 20:20:36  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:21:01  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:01  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 3
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:21:04  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:08  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 3
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:21:08  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:11  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:21:11  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:11  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:21:11  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:12  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:21:12  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:21:16  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 1
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:21:16  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:42  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 1
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:39:42  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:46  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:39:46  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:46  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:39:46  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:47  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 3
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:39:47  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:48  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 3
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:39:48  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:39:49  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:39:49  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:39:50  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 2
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:39:50  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:11  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:40:11  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:11  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:40:11  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:21  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:40:21  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:40:21  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:40:21  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:40:22  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:40:22  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:40:26  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:26  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:40:26  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:40:26  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:40:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:30  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:40:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:40:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:40:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:40:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:26  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:41:26  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:41:26  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:41:26  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:41:27  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:41:27  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:41:29  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:29  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:41:29  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:41:29  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:32  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:32  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:41:34  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 2
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:41:34  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:41:36  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 2
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:41:39  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:41  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:41  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:41  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:41  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:46  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:46  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:46  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:46  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:51  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:41:51  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:41:51  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:41:51  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:24  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:42:24  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:24  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:42:24  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:49  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:42:49  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:42:49  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:42:49  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:42:50  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:42:50  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:52  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='adin'
+2018-01-20 Saturday 20:42:52  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:55  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:42:55  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:42:56  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:42:56  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:42:56  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:00  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:00  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:43:10  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:43:10  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:10  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:10  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:15  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:43:15  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:43:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:43:15  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:43:16  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:43:16  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:17  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:43:17  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:18  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:43:18  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:43:18  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:21  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:43:41  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:43:41  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:43:41  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:43:41  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:15  run.py.run.is_open: 153 : ERROR  [Errno 61] Connection refused
+2018-01-20 Saturday 20:44:15  run.py.run.is_open: 154 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/run.py", line 148, in is_open
+    c.connect((ip, port))
+ConnectionRefusedError: [Errno 61] Connection refused
+
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 365 : INFO  Opened database successfully
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Admin
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           userName VARCHAR(20) NOT NULL,
+           pwd VARCHAR (32) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 369 : ERROR  table Admin already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE User
+        (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          userName    VARCHAR(20),
+          carModel    VARCHAR(30),
+          carPhone    VARCHAR(15),
+          carId       VARCHAR(10),
+          createdTime DATETIME
+        )
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 375 : ERROR  table User already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Device
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           createdTime DATETIME NOT NULL ,
+           name VARCHAR (20) NOT NULL ,
+           ip VARCHAR (20) NOT NULL ,
+           state INT
+          )
+    
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 381 : ERROR  table Device already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：CREATE TABLE Worker
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           workerName VARCHAR(20) NOT NULL,
+           sex VARCHAR (4) NOT NULL ,
+           idCard VARCHAR (20) NOT NULL ,
+           createdTime DATETIME NOT NULL
+           );
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 387 : ERROR  table Worker already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE dictionary
+        (
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
+          key_id     INT,
+          value_desc VARCHAR(50),
+          group_name VARCHAR(50)
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 393 : ERROR  table dictionary already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE brand
+        (
+          id           INTEGER NOT NULL   PRIMARY KEY    AUTOINCREMENT,
+          brand_name   VARCHAR(50),
+          create_time  VARCHAR(30),
+          create_op    VARCHAR(30),
+          delete_state INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 399 : ERROR  table brand already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE model
+            (
+              id           INTEGER NOT NULL   PRIMARY KEY       AUTOINCREMENT,
+              model_name   VARCHAR(50),
+              brand_id     INT,
+              create_time  VARCHAR(30),
+              create_op    VARCHAR(30),
+              delete_state INT DEFAULT 0 NOT NULL
+            )
+            
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 405 : ERROR  table model already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE Attributes
+        (
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
+          name         VARCHAR(20) NOT NULL,
+          is_required  INT DEFAULT 0,
+          create_time  VARCHAR(50) NOT NULL,
+          create_op    INT         NOT NULL,
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 411 : ERROR  table Attributes already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service
+        (
+          id             INTEGER     PRIMARY KEY
+          AUTOINCREMENT,
+          createdTime    DATETIME    NOT NULL,
+          name           VARCHAR(20) NOT NULL,
+          father         INTEGER     NOT NULL,
+          level          INT,
+          attribute      VARCHAR(1000),
+          attributeState VARCHAR(1000)
+        )
+    
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 417 : ERROR  table service already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE service_item
+        (
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
+          service_id     INTEGER,
+          attribute_id   INTEGER,
+          attribute_name VARCHAR(20),
+          create_time    VARCHAR(50),
+          create_op      INTEGER
+        )
+    
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 423 : ERROR  table service_item already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                CREATE TABLE stock_info
+                (
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+                  unit                VARCHAR(10),
+                  first_service_name  VARCHAR(30),
+                  first_service_id    INTEGER,
+                  model_id            INTEGER,
+                  model_name          VARCHAR(100),
+                  brand_id            INTEGER,
+                  brand_name          VARCHAR(100),
+                  name                VARCHAR(150),
+                  second_service_id   INTEGER,
+                  second_service_name VARCHAR(50),
+                  balance             INT,
+                  total_cost          INT(18, 2),
+                  create_time         VARCHAR(50),
+                  create_op           INTEGER
+                )
+                
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 429 : ERROR  table stock_info already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+            CREATE TABLE stock_detail
+            (
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
+              stock_id    INTEGER,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
+              type        INT(2),
+              update_time VARCHAR(50),
+              update_op   INTEGER
+            )
+            
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 435 : ERROR  table stock_detail already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE buy_info
+        (
+          id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          stock_id    VARCHAR(30),
+          supplier_id INTEGER,
+          unit_price  INT(10,2),
+          number      INTEGER,
+          buy_date    VARCHAR(50),
+          create_time VARCHAR(50),
+          create_op   INTEGER,
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
+          left_number INTEGER DEFAULT 0,
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 441 : ERROR  table buy_info already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE payment_detail
+        (
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+          buy_id         INTEGER,
+          payment_method INT,
+          paid           INT(18, 2),
+          unpaid         INT(18, 2),
+          create_time    VARCHAR(50),
+          create_op      VARCHAR(50),
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 447 : ERROR  table payment_detail already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+          CREATE TABLE Sales
+            (
+              id           VARCHAR(35),
+              userId       INTEGER      NOT NULL,
+              code         VARCHAR(100) NOT NULL,
+              pcId         VARCHAR(32)  NOT NULL,
+              pcSign       VARCHAR(32)  NOT NULL,
+              service_id   INTEGER,
+              project      VARCHAR(50)  NOT NULL,
+              workerId     INTEGER      NOT NULL,
+              workerName   VARCHAR(20)  NOT NULL,
+              carId        VARCHAR(10)  NOT NULL,
+              carUser      VARCHAR(50),
+              carPhone     VARCHAR(50),
+              carModel     VARCHAR(30),
+              createdTime  DATETIME     NOT NULL,
+              orderNo      VARCHAR(32)  NOT NULL,
+              orderCheckId VARCHAR(32)  NOT NULL,
+              unit         VARCHAR(20),
+              unit_price   VARCHAR(30),
+              number       INTEGER,
+              subtotal     INTEGER,
+              total        INTEGER,
+              note         TEXT,
+              sale_date    VARCHAR(50),
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
+            )
+            
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 453 : ERROR  table Sales already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE return_visit
+          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
+           phone VARCHAR(50) NOT NULL ,
+           carId VARCHAR(10) NOT NULL ,
+           username VARCHAR(50) NOT NULL ,
+           state VARCHAR (2) NOT NULL
+          )
+    
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 459 : ERROR  table return_visit already exists
+2018-01-20 Saturday 20:44:15  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+        CREATE TABLE supplier
+        (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          supplier_name VARCHAR NOT NULL,
+          unpaid        INT(18,2) DEFAULT 0.0,
+          create_time   VARCHAR(50),
+          create_op     INTEGER,
+          delete_state  INT DEFAULT 0 NOT NULL
+        )
+        
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 464 : ERROR  table supplier already exists
+2018-01-20 Saturday 20:44:15  init_database.py.init_database.create_all_table: 467 : INFO  Table created successfully
+2018-01-20 Saturday 20:44:16  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:44:16  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:17  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, USERNAME, PWD FROM Admin WHERE USERNAME='admin'
+2018-01-20 Saturday 20:44:17  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:17  web.py.web.run_tornado: 27 : INFO  Web server 启动中...
+2018-01-20 Saturday 20:44:17  socket.py.socket.server_handle: 24 : INFO  客户端线程已经启动 , 等待其它客户端连接
+2018-01-20 Saturday 20:44:17  web.py.web.run_tornado: 29 : INFO  Web server 已启动，监听端口：15775
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 2 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:44:20  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:20  main_view.py.main_view._tab_show: 271 : INFO  add tab：history_buy
+2018-01-20 Saturday 20:44:29  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_name like '%%'
+                          AND si.brand_name like '%马牌%'
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:29  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 1 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 1
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:44:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:32  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:32  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:33  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:33  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:33  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:33  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:34  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 1
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:44:34  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:35  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:35  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:36  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sp.supplier_name,
+                       si.brand_name,
+                       si.model_name,
+                       avg(bi.unit_price) avg_price,
+                       count(1)           buy_times,
+                       sum(bi.number)     total_number
+                  FROM buy_info bi,
+                       stock_info si,
+                       supplier sp
+                 WHERE bi.stock_id = si.id
+                   AND si.model_id = 1
+                   AND bi.buy_type = 1
+                   AND bi.supplier_id = sp.id
+                 GROUP BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+                 ORDER BY sp.supplier_name,
+                          si.brand_name,
+                          si.model_name
+               
+2018-01-20 Saturday 20:44:36  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:37  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 1
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:37  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:40  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, MODEL_NAME FROM model WHERE DELETE_STATE = 0 AND brand_id = 3 ORDER BY MODEL_NAME
+2018-01-20 Saturday 20:44:40  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:40  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT ID, BRAND_NAME FROM brand WHERE DELETE_STATE = 0 ORDER BY BRAND_NAME
+2018-01-20 Saturday 20:44:40  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:44:41  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       sts.brand_id,
+                       sts.model_id,
+                       sts.brand_name,
+                       sts.model_name,
+                       min_price,
+                       avg_price,
+                       lbi.unit_price
+                  FROM (
+                       SELECT
+                              si.brand_id,
+                              si.model_id,
+                              si.brand_name,
+                              si.model_name,
+                              min(bi.unit_price) min_price,
+                              avg(bi.unit_price) avg_price,
+                              max(bi.id)         max_id
+                         FROM buy_info bi,
+                              stock_info si
+                        WHERE bi.stock_id = si.id
+                          AND si.model_id = 3
+                          AND bi.buy_type = 1
+                        GROUP BY si.brand_name, si.model_name
+                     ) sts,
+                       buy_info lbi
+                 WHERE lbi.id = max_id
+2018-01-20 Saturday 20:44:41  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:18  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT id,username,carId,phone,next_visit_time
+                    FROM return_visit
+                   WHERE state=0
+                     AND next_visit_time <= '2018-01-20 23:59:59' 
+                  ORDER BY create_time DESC 
+2018-01-20 Saturday 20:49:18  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:18  main_view.py.main_view._tab_show: 271 : INFO  add tab：return_visit
+2018-01-20 Saturday 20:49:21  main_view.py.main_view._tab_show: 271 : INFO  add tab：return_visit
+2018-01-20 Saturday 20:49:22  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+                SELECT
+                       id,
+                       supplier_name,
+                       sp.unpaid
+                  FROM supplier sp
+                 WHERE sp.unpaid > 0.0
+                 GROUP BY id, supplier_name
+                 ORDER BY supplier_name
+2018-01-20 Saturday 20:49:22  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:22  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:49:22  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:22  main_view.py.main_view._tab_show: 271 : INFO  add tab：supplier_arrears
+2018-01-20 Saturday 20:49:24  main_view.py.main_view._tab_show: 271 : INFO  add tab：supplier_arrears
+2018-01-20 Saturday 20:49:25  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 2
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:49:25  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:25  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：
+               SELECT
+                      bi.buy_date,                      
+                      si.brand_name,
+                      si.model_name,
+                      bi.number,
+                      si.unit,
+                      bi.unit_price,
+                      bi.total,
+                      bi.paid,
+                      bi.unpaid,
+                      bi.id
+                 FROM buy_info bi, stock_info si, supplier sl
+                WHERE bi.stock_id = si.id
+                  AND bi.supplier_id = sl.id
+                  AND bi.unpaid > 0.0
+                  AND sl.id = 1
+                  AND bi.buy_type = 1
+                ORDER BY buy_date
+2018-01-20 Saturday 20:49:25  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:28  main_view.py.main_view._tab_show: 271 : INFO  add tab：local_sale
+2018-01-20 Saturday 20:49:30  db_connection.py.db_connection.execute: 53 : INFO  执行SQL脚本：SELECT orderNo,
+                               createdTime,
+                               pcSign,
+                               carId,
+                               carUser,
+                               carPhone,
+                               carModel,
+                               workerName,
+                               project,
+                               attribute,
+                               orderCheckId,
+                               id
+                          FROM Sales
+                         WHERE createdTime BETWEEN '2018-01-01 00:00:00' and '2018-12-31 23:59:59'
+                         ORDER BY createdTime DESC 
+2018-01-20 Saturday 20:49:30  db_connection.py.db_connection.execute: 68 : INFO  SQL执行成功
+2018-01-20 Saturday 20:49:33  common.py.common.ClientClose: 154 : ERROR  Scheduler is not running
+2018-01-20 Saturday 20:49:33  socket.py.socket.server_handle: 29 : ERROR  [Errno 9] Bad file descriptor
+2018-01-20 Saturday 20:49:33  socket.py.socket.server_handle: 30 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/server/socket.py", line 27, in server_handle
+    data, addr = myClient.recvfrom(BUFSIZ)
+OSError: [Errno 9] Bad file descriptor
+
+2018-01-20 Saturday 20:49:33  common.py.common.ClientClose: 155 : ERROR  traceback.format_exc():
+Traceback (most recent call last):
+  File "/Users/zhou/PycharmProjects/Py-store/common/common.py", line 152, in ClientClose
+    config.scheduler.shutdown()
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/apscheduler/schedulers/blocking.py", line 22, in shutdown
+    super(BlockingScheduler, self).shutdown(wait)
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/apscheduler/schedulers/base.py", line 176, in shutdown
+    raise SchedulerNotRunningError
+apscheduler.schedulers.SchedulerNotRunningError: Scheduler is not running
+
