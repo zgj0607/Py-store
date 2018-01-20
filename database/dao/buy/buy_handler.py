@@ -49,7 +49,8 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                                 PAID,
                                 TOTAL,
                                 BUY_TYPE,
-                                note
+                                note,
+                                left_number
                                )
               VALUES (
                       {},
@@ -63,12 +64,13 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                       {:.2f},
                       {:.2f},
                       {},
-                      '{}'                                       
+                      '{}',
+                      {}
               )''' \
         .format(buy_info.stock_id(), buy_info.supplier_id(),
                 buy_info.unit_price(), buy_info.number(), buy_info.buy_date(), buy_info.create_time(),
                 buy_info.create_op(), buy_info.unpaid(), buy_info.paid(), buy_info.total(),
-                buy_info.buy_type(), buy_info.note())
+                buy_info.buy_type(), buy_info.note(), buy_info.left())
     new_buy_id = execute(sql_text)
 
     return new_buy_id

@@ -1,11 +1,12 @@
 import json
 import logging
+import traceback
 from datetime import datetime
 
 import requests
 
-from Common import config
-from Common.config import domain, code
+from common import config
+from common.config import domain, code
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,7 @@ def check_register_code(pc_code, code):
             result = req_text.get("data")
     except Exception as e:
         logger.error(e.__str__())
+        logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
         result = req_text
 
     return result
@@ -81,6 +83,7 @@ def get_store_detail():
         data = json.loads(json_data)
     except Exception as e:
         logger.error(e.__str__())
+        logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
         data = None
 
     return data
@@ -93,6 +96,7 @@ def get_try_time():
         req = requests.get(url)
     except Exception as try_use_exception:
         logger.error(try_use_exception.__str__())
+        logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
         return "online"
     logger.info(req.text)
     json_data = json.loads(req.text)

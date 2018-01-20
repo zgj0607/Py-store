@@ -18,7 +18,7 @@ __mtime__ = '2017/3/1'
             ┗┻┛  ┗┻┛
 """
 from socket import *
-from Common.config import ADDR, code
+from common.config import ADDR, code
 
 linkKey = None
 

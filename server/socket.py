@@ -2,12 +2,13 @@
 import json
 import logging
 import time
+import traceback
 from threading import Thread
 
 import requests
 
-from Common.config import BUFSIZ, domain
-from Controller.DbHandler import DB_Handler as DbHelp
+from common.config import BUFSIZ, domain
+from controller.DbHandler import DB_Handler as DbHelp
 from database.dao.customer.customer_handler import get_like_customer_by_key
 from database.dao.sale.sale_handler import get_sale_info_by_one_key
 from .MySocket import myClient
@@ -25,7 +26,8 @@ def server_handle(client):
         try:
             data, addr = myClient.recvfrom(BUFSIZ)
         except Exception as e:
-            print(e)
+            logger.error(e.__str__())
+            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
             break
 
         data = data.decode()

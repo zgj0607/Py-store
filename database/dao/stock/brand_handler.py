@@ -1,5 +1,5 @@
-from Common import Common
-from Common.time_utils import get_now
+from common import common
+from common.time_utils import get_now
 from database.db_connection import execute
 
 model_table_name = 'brand'
@@ -28,7 +28,7 @@ def add_brand(brand_name: str):
                           '{}',
                           {}
                   )''' \
-        .format(brand_name, get_now(), Common.config.login_user_info[0])
+        .format(brand_name, get_now(), common.config.login_user_info[0])
 
     result = execute(sql_text)
 

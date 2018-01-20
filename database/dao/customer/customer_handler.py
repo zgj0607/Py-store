@@ -1,4 +1,4 @@
-from Common.time_utils import get_now, format_time
+from common.time_utils import get_now, format_time
 from database.db_connection import execute
 from domain.customer import Customer
 from domain.return_visit import ReturnVisit

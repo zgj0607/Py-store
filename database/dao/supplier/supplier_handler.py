@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from Common import Common
-from Common.time_utils import get_now
+from common import common
+from common.time_utils import get_now
 from database.db_connection import execute
 
 supplier_table_name = 'supplier'
@@ -23,7 +23,7 @@ def add_supplier(supplier_name: str):
                           '{}',
                           '{}',
                            {})''' \
-        .format(supplier_name, get_now(), Common.config.login_user_info[0])
+        .format(supplier_name, get_now(), common.config.login_user_info[0])
 
     result = execute(sql_text)
 

@@ -1,10 +1,10 @@
-from Common import Common
+from common import common
 from database.db_connection import execute
 
 
 def get_sale_detail(start_time, end_time, YeJi=False, Table=True):
-    start_time = Common.format_time(start_time)
-    end_time = Common.format_time(end_time, True)
+    start_time = common.format_time(start_time)
+    end_time = common.format_time(end_time, True)
     if Table:
         sql_text = '''
                     SELECT orderNo,

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
+import traceback
 
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.options import define, parse_command_line, options
 from tornado.web import Application
 
-from Common.Urls import route
+from common.urls import route
 
 logger = logging.getLogger(__name__)
 
@@ -29,4 +30,5 @@ def run_tornado(ui):
         IOLoop.instance().start()
     except Exception as e:
         logger.error(e.__str__())
+        logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
         ui.close()

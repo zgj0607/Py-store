@@ -8,7 +8,7 @@ def get_unsalable_warning():
                          si.brand_name,
                          si.model_name,
                          sum(left_number) AS sum,
-                         max(julianday(date('now'))-julianday(bi.buy_date))
+                         replace(max(julianday(date('now'))-julianday(bi.buy_date)),'.','_')/1 as longest_days
                     FROM buy_info bi,
                          stock_info si
                    WHERE bi.stock_id=si.id

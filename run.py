@@ -21,6 +21,7 @@ import logging
 import socket
 import sys
 import threading
+import traceback
 from datetime import timedelta
 
 import apscheduler
@@ -29,13 +30,14 @@ from PyQt5.QtCore import QTranslator
 from PyQt5.QtWidgets import *
 from apscheduler.triggers.cron import CronTrigger
 
+import common.config
 import init_database
-from Common import Common
-from Common import config
-from Common.config import BUFSIZ
-from View.customer.return_visit_setting import ReturnVisitSetting
-from View.login.login import Login
-from View.login.register import Register as Reg_Ui_MainWindow
+from common import common
+from common import config
+from common.config import BUFSIZ
+from view.customer.return_visit_setting import ReturnVisitSetting
+from view.login.login import Login
+from view.login.register import Register as Reg_Ui_MainWindow
 from database.dao.customer.customer_handler import get_return_visit_info
 from remote import store_pc_info
 from server.MySocket import myClient
@@ -49,7 +51,7 @@ def pre_check():
     result = False
     local_code = config.get_local_register_code()
 
-    if Common.compare_local_code_with_remote_register(local_code):
+    if common.compare_local_code_with_remote_register(local_code):
         result = True
 
     return result
@@ -76,11 +78,11 @@ def run():
         # 判断注册码是否正确
         if pre_check():
             # 链接服务器
-            if Common.config.connect:
+            if common.config.connect:
                 try:
-                    myClient.send("connect {}".format(Common.get_store_id()).encode())
+                    myClient.send("connect {}".format(common.config.get_store_id()).encode())
                     data, addr = myClient.recvfrom(BUFSIZ)
-                    Common.linkKey = data.decode()
+                    common.linkKey = data.decode()
 
                     def heart_beat():
                         try:
@@ -89,11 +91,13 @@ def run():
                             else:
                                 config.heartbeatCheck = True
                         except Exception as run_exception:
-                            print(run_exception)
+                            logger.error(run_exception.__str__())
+                            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
                             try:
                                 config.scheduler.shutdown()
                             except Exception as shutdown_exception:
-                                print(shutdown_exception)
+                                logger.error(shutdown_exception.__str__())
+                                logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
                                 pass
 
                     def scheduler_start(scheduler):
@@ -105,22 +109,24 @@ def run():
                     trigger = CronTrigger(minute='*')
                     config.scheduler.add_job(heart_beat, trigger)
                     schedule = threading.Thread(target=scheduler_start, args=[config.scheduler])
-                    if Common.config.connect:
+                    if common.config.connect:
                         schedule.start()
 
                 except Exception as main_exception:
-                    print(main_exception)
-                    Common.config.connect = False
+                    logger.error(main_exception.__str__())
+                    logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+                    common.config.connect = False
 
             try:
                 ui = Login()
 
             except Exception as exception:
-                print(exception)
+                logger.error(exception.__str__())
+                logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
                 pass
         else:
             ui = Reg_Ui_MainWindow()
-        Common.skin_change('qss/white.qss')
+        common.skin_change('qss/white.qss')
         return_visit()
         ui.show()
         sys.exit(app.exec_())
@@ -144,7 +150,8 @@ def is_open(port=15775, ip='127.0.0.1'):
         c.close()
         return True
     except Exception as socket_exception:
-        print(socket_exception)
+        logger.error(socket_exception.__str__())
+        logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
         return False
 
 
@@ -179,5 +186,6 @@ if __name__ == '__main__':
             init_database.create_all_table()
             run()
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
+            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
             pass

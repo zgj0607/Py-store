@@ -1,5 +1,5 @@
-from Common import Common
-from Common.time_utils import get_now
+from common import common
+from common.time_utils import get_now
 from database.db_connection import execute
 
 model_table_name = 'model'
@@ -35,7 +35,7 @@ def add_model(model_name: str, brand_id):
                                     create_time,
                                     create_op)
                   VALUES('{}',{},'{}',{})''' \
-        .format(model_name, brand_id, get_now(), Common.config.login_user_info[0])
+        .format(model_name, brand_id, get_now(), common.config.login_user_info[0])
 
     result = execute(sql_text)
 

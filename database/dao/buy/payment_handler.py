@@ -1,5 +1,5 @@
-from Common import Common
-from Common.time_utils import get_now
+from common import common
+from common.time_utils import get_now
 from database.db_connection import execute
 from domain.buy import BuyInfo
 from domain.payment import Payment
@@ -32,7 +32,7 @@ def add_payment_detail(payment: Payment):
                         '{}'
                        )''' \
         .format(payment.buy_id(), payment.payment_method(), payment.paid(), payment.unpaid(),
-                get_now(), Common.config.login_user_info[0], payment.refund_type(), payment.supplier_id(),
+                get_now(), common.config.login_user_info[0], payment.refund_type(), payment.supplier_id(),
                 payment.note())
 
     result = execute(sql_text)

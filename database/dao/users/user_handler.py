@@ -1,4 +1,4 @@
-from Common.time_utils import get_now
+from common.time_utils import get_now
 from database.db_common_handler import delete_by_int_column, get_all_record, execute
 
 staff_table_name = "worker"

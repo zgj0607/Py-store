@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from Common import time_utils
+from common import time_utils
 from database.db_connection import execute
 
 
@@ -10,7 +10,7 @@ def create_sale():
     execute('''
           CREATE TABLE Sales
             (
-              id           VARCHAR(35)    PRIMARY KEY,
+              id           VARCHAR(35),
               userId       INTEGER      NOT NULL,
               code         VARCHAR(100) NOT NULL,
               pcId         VARCHAR(32)  NOT NULL,
@@ -33,7 +33,8 @@ def create_sale():
               total        INTEGER,
               note         TEXT,
               sale_date    VARCHAR(50),
-              attribute    TEXT
+              attribute    TEXT,
+              sale_id      INTEGER PRIMARY KEY AUTOINCREMENT
             )
             ''')
 
@@ -116,7 +117,7 @@ def create_service_item():
     execute('''
         CREATE TABLE service_item
         (
-          id             INTEGER NOT NULL,
+          id             INTEGER     PRIMARY KEY AUTOINCREMENT,
           service_id     INTEGER,
           attribute_id   INTEGER,
           attribute_name VARCHAR(20),
@@ -132,16 +133,27 @@ def create_attribute():
     execute('''
         CREATE TABLE Attributes
         (
-          id           INTEGER     NOT NULL,
+          id           INTEGER     PRIMARY KEY AUTOINCREMENT,
           name         VARCHAR(20) NOT NULL,
           is_required  INT DEFAULT 0,
           create_time  VARCHAR(50) NOT NULL,
           create_op    INT         NOT NULL,
-          delete_state INT DEFAULT 0 NOT NULL
+          delete_state INT DEFAULT 0 NOT NULL,
+          display_order INT
         )
         ''')
     execute('''CREATE UNIQUE INDEX serviceAttribute_id_uindex ON attributes (id);''')
     execute('''CREATE UNIQUE INDEX serviceAttribute_name_uindex ON attributes (name)''')
+    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
+               VALUES (1, '数量', 1, '2018-01-07 23:23:34', 1, 0, 1)''')
+    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
+               VALUES (2, '单价', 1, '2018-01-07 23:24:02', 1, 0, 2)''')
+    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
+               VALUES (3, '小计', 1, '2018-01-07 23:24:11', 1, 0, 3)''')
+    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
+               VALUES (4, '总价', 1, '2018-01-07 23:24:18', 1, 0, 4)''')
+    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
+               VALUES (5, '备注', 1, '2018-01-07 23:24:35', 1, 0, 5)''')
 
 
 # PC设备IP管理表
@@ -162,10 +174,10 @@ def create_device():
 # 客户回访信息表
 def create_return_visit_info():
     execute('''
-        CREATE TABLE CallBack
+        CREATE TABLE return_visit
           (id INTEGER PRIMARY KEY AUTOINCREMENT,
-           createdTime DATETIME NOT NULL ,
-           callbackTime DATETIME NOT NULL ,
+           create_Time DATETIME NOT NULL ,
+           next_visit_time DATETIME NOT NULL ,
            phone VARCHAR(50) NOT NULL ,
            carId VARCHAR(10) NOT NULL ,
            username VARCHAR(50) NOT NULL ,
@@ -179,7 +191,7 @@ def create_dictionary():
     execute('''
         CREATE TABLE dictionary
         (
-          id         INTEGER NOT NULL,
+          id         INTEGER PRIMARY KEY AUTOINCREMENT,
           key_id     INT,
           value_desc VARCHAR(50),
           group_name VARCHAR(50)
@@ -208,6 +220,11 @@ def create_dictionary():
     execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (19, 1, '已回访', 'visit_state')''')
     execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (20, 1, '一级服务项目', 'service_level')''')
     execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (21, 2, '二级服务项目', 'service_level')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (22, 1, '现金/转账', 'payment')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (23, 2, '信用卡', 'payment')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (24, 3, '微信', 'payment')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (25, 4, '支付宝', 'payment')''')
+    execute('''INSERT INTO dictionary (id, key_id, value_desc, group_name) VALUES (26, 5, '支票', 'payment')''')
 
 
 # 商品品牌表
@@ -244,9 +261,7 @@ def create_stock_info():
     execute('''
                 CREATE TABLE stock_info
                 (
-                  id                  INTEGER NOT NULL
-                    PRIMARY KEY
-                  AUTOINCREMENT,
+                  id                  INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
                   unit                VARCHAR(10),
                   first_service_name  VARCHAR(30),
                   first_service_id    INTEGER,
@@ -270,18 +285,14 @@ def create_stock_detail():
     execute('''
             CREATE TABLE stock_detail
             (
-              Id          INTEGER NOT NULL
-                PRIMARY KEY
-              AUTOINCREMENT,
+              Id          INTEGER NOT NULL  PRIMARY KEY  AUTOINCREMENT,
               stock_id    INTEGER,
-              buy_id      INTEGER NOT NULL,
-              buy_price   INT(10, 2),
-              sale_price  INT(10, 2),
-              state       INT(2)  NOT NULL,
+              changed_id      INTEGER NOT NULL,
+              changed_money   INT(10, 2),
+              changed_number  INTEGER,
               type        INT(2),
               update_time VARCHAR(50),
-              update_op   INTEGER,
-              sale_id     INTEGER
+              update_op   INTEGER
             )
             ''')
 
@@ -291,9 +302,9 @@ def create_supplier():
     execute('''
         CREATE TABLE supplier
         (
-          id            INTEGER NOT NULL,
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
           supplier_name VARCHAR NOT NULL,
-          unpaid        INT(18,2),
+          unpaid        INT(18,2) DEFAULT 0.0,
           create_time   VARCHAR(50),
           create_op     INTEGER,
           delete_state  INT DEFAULT 0 NOT NULL
@@ -311,19 +322,18 @@ def create_buy_info():
           id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
           stock_id    VARCHAR(30),
           supplier_id INTEGER,
-          unit_price  VARCHAR(30),
-          number      VARCHAR(10),
+          unit_price  INT(10,2),
+          number      INTEGER,
           buy_date    VARCHAR(50),
           create_time VARCHAR(50),
           create_op   INTEGER,
-          unpaid      INT(10, 2),
-          paid        INT(10, 2),
-          total       INT,
-          rela_buy_id INTEGER,
-          buy_type    INT,
-          notes       VARCHAR(100),
+          unpaid      INT(10,2),
+          paid        INT(10,2),
+          total       INT(10,2),
+          buy_type    INT(2),
           left_number INTEGER DEFAULT 0,
-          state       INT     DEFAULT 0
+          state       INT(2)     DEFAULT 0,
+          note        VARCHAR(200)
         )
         ''')
 
@@ -333,14 +343,16 @@ def create_payment_detail():
     execute('''
         CREATE TABLE payment_detail
         (
-          id             INTEGER NOT NULL,
+          id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
           buy_id         INTEGER,
           payment_method INT,
           paid           INT(18, 2),
           unpaid         INT(18, 2),
           create_time    VARCHAR(50),
           create_op      VARCHAR(50),
-          refund_type    INTEGER
+          refund_type    INTEGER,
+          supplier_id    INTEGER,
+          note           VARCHAR(200)
         )
         ''')
 
@@ -437,6 +449,17 @@ def create_all_table():
 
     try:
         create_sale()
+    except Exception as e:
+        logger.error(e)
+        pass
+
+    try:
+        create_return_visit_info()
+    except Exception as e:
+        logger.error(e)
+        pass
+    try:
+        create_supplier()
     except Exception as e:
         logger.error(e)
         pass
