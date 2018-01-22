@@ -8,6 +8,8 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 from domain.store import Store
 
+if not os.path.exists('config/'):
+    os.makedirs('config')
 logger = logging.getLogger(__name__)
 
 
@@ -42,6 +44,8 @@ def get_secret_info_file():
 
 
 def get_log_file_name():
+    if not os.path.exists(get_config_file_parent() + 'log/'):
+        os.makedirs(get_config_file_parent() + 'log/')
     today = datetime.now().strftime('%Y%m%d')
     return get_config_file_parent() + 'log/py-store-' + today + '.log'
 

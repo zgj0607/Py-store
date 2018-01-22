@@ -48,7 +48,7 @@ apscheduler.__version__
 
 # 运行之前要检查配置文件
 def pre_check():
-    result = False
+    result = True
     local_code = config.get_local_register_code()
 
     if common.compare_local_code_with_remote_register(local_code):
