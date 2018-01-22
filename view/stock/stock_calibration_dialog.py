@@ -1,116 +1,95 @@
+import logging
+import traceback
 from decimal import Decimal
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QDateTime
 from PyQt5.QtWidgets import QMessageBox
 
-from common import time_utils, common
+from common import time_utils
+from controller.view_service import buy_service, stock_service
+from database.dao.buy import buy_handler
+from database.dao.stock import brand_handler, model_handler
+from database.dao.stock import stock_handler
+from database.dao.users import user_handler
+from domain.buy import BuyInfo
+from domain.payment import Payment
+from domain.stock_detail import StockDetail
 from view.stock.ui.ui_stock_calibration_dialog import Ui_stock_calibrationDialog
 from view.utils import db_transaction_util
-from database.dao.buy import payment_handler, buy_handler
-from database.dao.stock import brand_handler, model_handler
-from PyQt5.QtCore import QDateTime
-from domain.stock import Stock
-from database.dao.stock import stock_handler
-from domain.buy import BuyInfo
 
-class stock_calibrationDialog(QtWidgets.QDialog, Ui_stock_calibrationDialog):
+logger = logging.getLogger(__name__)
+
+
+class StockCalibrationDialog(QtWidgets.QDialog, Ui_stock_calibrationDialog):
     def __init__(self):
-        super(stock_calibrationDialog, self).__init__()
+        super(StockCalibrationDialog, self).__init__()
         self.setupUi(self)
-        self._init_brand()
-        self._init_staffComb()
+
         self.setWindowTitle('请填写校准信息')
-        time_now = time_utils.get_now()
-        self.dateEdit.setDateTime(QDateTime.fromString(time_now, 'yyyy-MM-dd hh:mm:ss'))
+        self._init_ui_info()
+
+        self._init_signal_and_slot()
+
+    def _init_ui_info(self):
+        self.calibration_date.setDateTime(QDateTime.fromString(time_utils.get_now(), 'yyyy-MM-dd hh:mm:ss'))
+        self._init_brand()
+        self._init_staff_combo()
+
+    def _init_signal_and_slot(self):
         self.addButton.clicked.connect(self._submit)
-        # self._init_input_info(buy)
-        # self._init_signal_and_slot()
-        #
-        # self.buy_id = buy.buy_id()
-
-
-    def _pay_changed(self):
-        pay = Decimal(self.pay.text())
-        need_pay = Decimal(self.need_pay.text())
-
-        changed = need_pay - pay
-
-        self.unpaid.setText(str(changed))
-
-    def do_pay(self):
-
-        unpaid = Decimal(self.unpaid.text())
-        if unpaid < 0:
-            QMessageBox.information(self.payButton, '提示', '付款额度超过未付款额度，请重新填写！')
-            return
-        pay = Decimal(self.pay.text())
-        note = self.notes.text()
-        paid = Decimal(self.paid.text())
-        new_paid = paid + pay
-        try:
-            db_transaction_util.begin()
-
-            # 新增付款明细
-            self._add_payment_detail(new_paid, unpaid)
-            # 更新进货付款信息
-            self._update_buy_pay_info(new_paid, unpaid, note)
-
-            db_transaction_util.commit()
-
-            QMessageBox.information(self.payButton, '提示', '付款成功！')
-            self.close()
-
-        except Exception as e:
-            print(e)
-            db_transaction_util.rollback()
-            QMessageBox.information(self.payButton, '提示', '付款失败！')
+        self.brand_combo.currentIndexChanged.connect(self._brand_index_changed)
+        self.model_combo.currentIndexChanged.connect(self._model_index_changed)
 
     def _submit(self):
-        # stock = Stock()
-        #
-        # brand = self.brand_combo
-        # stock.brand_name(brand.currentText()).brand_id(brand.currentData())
-        #
-        # model = self.model_combo
-        # stock.model_name(model.currentText()).model_id(model.currentData())
-        #
-        # name = brand.currentText() + '-' + model.currentText()
-        # stock.name(name)
-        # # stock.unit(self.unit.text())
-        # stock.create_op(self.staffComb.currentData())
-        # stock.create_time(self.dateEdit.text())
-        #
-        # stock_id = stock_handler.add_stock_info(stock)
-        model = self.model_combo
-        stock_info = stock_handler.get_stock_by_model(model.currentData())
-        buy_info = BuyInfo()
-        buy_info.buy_date(self.dateEdit.text())
-        buy_info.stock_id(stock_info[0])
-        buy_info.supplier_id("99999")
-        buy_info.unit_price(Decimal(self.money.text()))
+        money_changed = self.money_changed.text()
+        balance_changed = self.balance_changed.text()
+        if not money_changed or not balance_changed:
+            QMessageBox.information(self.addButton, '提示', '调整金额和调整数量不能为空！')
+            self.balance_changed.setFocus()
+            return
+        money_changed = Decimal(money_changed)
+        balance_changed = int(balance_changed)
 
-        create_time = time_utils.get_now()
-        buy_info.create_time(create_time)
-        create_op = self.staffComb.currentData()
-        buy_info.create_op(create_op)
+        if money_changed == self.original_cost and balance_changed == self.original_balance:
+            QMessageBox.information(self.addButton, '提示', '金额和数量未做调整，请重新填写！')
+            self.balance_changed.setFocus()
+            return
 
-        # buy_info.paid(abs(paid))
-        # buy_info.unpaid(abs(unpaid))
-        buy_info.total(Decimal(self.toal.text()))
+        changed_number = balance_changed - self.original_balance
+        changed_cost = money_changed - self.original_cost
+        buy_date = self.calibration_date.date().toString('yyyy-MM-dd')
+        payment_method = list(Payment.get_payment_method().keys())[0]
+        note = self.notes.text()
+        create_op = int(self.staffComb.currentData())
+        try:
+            db_transaction_util.begin()
+            logger.info('新增库存校准数据')
+            buy_id = buy_service.add_buy_info(self.stock_id, 9999, 0.0, changed_number, buy_date, 0.0, 0.0,
+                                              changed_cost, payment_method, note, 0, create_op, BuyInfo.calibrated(),
+                                              BuyInfo.under_reviewed())
+            if changed_number >= 0:
+                change_type = StockDetail.by_increased()
+            else:
+                change_type = StockDetail.by_decreased()
 
-        buy_info.note(self.notes.text())
-        buy_info.buy_type("8")
-        buy_handler.add_buy_info(buy_info)
-        QMessageBox.information(self.addButton, '提示', '校准成功！')
-        self.close()
+            stock_service.add_stock_detail(self.stock_id, buy_id, abs(changed_cost), abs(changed_number), change_type)
+            db_transaction_util.commit()
+            logger.info('库存校准数据新增完成')
+            QMessageBox.information(self.addButton, '提示', '库存校准成功，请等待数据审核！')
+            self.close()
+        except Exception as e:
+            db_transaction_util.rollback()
+            logger.error(e)
+            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
 
     def _update_buy_pay_info(self, paid: float, unpaid: float, notes: str):
         buy_handler.update_paid_info(self.buy_id, unpaid, paid, notes)
 
-    def _init_staffComb(self):
-        brands = brand_handler.get_all_staff()
-        for brand in brands:
-            self.staffComb.addItem(brand[1], brand[0])
+    def _init_staff_combo(self):
+        users = user_handler.get_all_sys_user()
+        for user in users:
+            self.staffComb.addItem(user['username'], user['id'])
 
     def _init_brand(self):
         brands = brand_handler.get_all_brand()
@@ -119,11 +98,9 @@ class stock_calibrationDialog(QtWidgets.QDialog, Ui_stock_calibrationDialog):
         if brands:
             brand_id = brands[0][0]
             self._refresh_model(brand_id)
-        self.brand_combo.currentIndexChanged.connect(self._brand_index_changed)
+
     def _brand_index_changed(self):
         self._refresh_model()
-        self.brand_edited = False
-        self.model_edited = False
 
     def _refresh_model(self, brand_id=0):
         if not brand_id:
@@ -135,4 +112,21 @@ class stock_calibrationDialog(QtWidgets.QDialog, Ui_stock_calibrationDialog):
             for model in models:
                 self.model_combo.addItem(model[1], model[0])
 
+        self._model_index_changed()
 
+    def _model_index_changed(self):
+        model_id = self.model_combo.currentData()
+        if not model_id:
+            balance = 0
+            cost = 0.0
+            self.stock_id = 0
+        else:
+            model_id = int(model_id)
+            stock_info = stock_handler.get_stock_by_model(model_id)
+            balance = stock_info['balance']
+            cost = stock_info['total_cost']
+            self.stock_id = stock_info['id']
+        self.original_balance = balance
+        self.original_cost = cost
+        self.balance_in_db.setText(str(balance))
+        self.money_in_db.setText(str(cost))

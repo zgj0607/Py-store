@@ -34,11 +34,12 @@ from PyQt5.QtWidgets import *
 from common import config
 from common.common import cncurrency
 from common.exception import ApiException
-from common.static_func import get_order_id, ErrorCode
+from common.static_func import get_uuid1, ErrorCode
 from common.config import domain, connect as myconnect
 from common.time_utils import get_now
 from controller import DbHandler
 from database.dao.customer.customer_handler import check_customer
+from database.dao.sale import sale_handler
 from database.dao.sale.sale_handler import get_sale_info_by_one_key
 
 dbhelp = DbHandler.DB_Handler()
@@ -334,16 +335,15 @@ def ImportExcel(fileName, self):
     check = str(sh.row_values(0)[0])
     matchs = pattern.match(check)
     title = sh.row_values(1)
-    progressDialog = QProgressDialog(self)
-    progressDialog.setWindowTitle("导入中")
-    # progdialog.setWindowModality(Qt.ApplicationModal)
-    progressDialog.setWindowModality(Qt.WindowModal)
-    progressDialog.setMinimumDuration(4)
-    progressDialog.setWindowTitle(self.tr("请等待"))
-    progressDialog.setLabelText(self.tr("导入中..."))
-    progressDialog.setCancelButtonText(self.tr("取消"))
-    progressDialog.setRange(0, nrows - 3)
-    progressDialog.show()
+    progress_dialog = QProgressDialog(self)
+    progress_dialog.setWindowTitle("导入中")
+    progress_dialog.setWindowModality(Qt.WindowModal)
+    progress_dialog.setMinimumDuration(4)
+    progress_dialog.setWindowTitle(self.tr("请等待"))
+    progress_dialog.setLabelText(self.tr("导入中..."))
+    progress_dialog.setCancelButtonText(self.tr("取消"))
+    progress_dialog.setRange(0, nrows - 3)
+    progress_dialog.show()
     if True:
         p = 0
         msgList = list()
@@ -351,9 +351,9 @@ def ImportExcel(fileName, self):
             # 用正则表达式判断第一行数据内容，从而判断是否用软件导出的EXCEL文档
             if matchs:
                 # 若是用软件导出的则
-                if progressDialog.wasCanceled():
+                if progress_dialog.wasCanceled():
                     break
-                progressDialog.setValue(p)
+                progress_dialog.setValue(p)
                 p += 1
                 try:
                     # if True:
@@ -407,7 +407,7 @@ def ImportExcel(fileName, self):
                                                 attribute[title[ki]] = msg[ki]
 
                                         saveData['attribute'] = json.dumps(attribute)
-                                        saveData['id'] = get_order_id()
+                                        saveData['id'] = get_uuid1()
                                         dbhelp.add_sale_info(saveData)
 
                                     row_data = allMsg
@@ -446,8 +446,8 @@ def ImportExcel(fileName, self):
                                     pass
 
                             saveData['attribute'] = json.dumps(attribute)
-                            saveData['id'] = get_order_id()
-                            dbhelp.add_sale_info(saveData)
+                            saveData['id'] = get_uuid1()
+                            sale_handler.add_sale_info(saveData)
 
                         # 清空缓存
                         temp = list()
@@ -486,11 +486,11 @@ def ImportExcel(fileName, self):
             # 插入信息
             must = ["订单号", "接待门店", "车牌号", "车主姓名", "联系电话", "车型", "操作人员", "消费项目", "消费时间"]
             for k, v in saveList.items():
-                if progressDialog.wasCanceled():
+                if progress_dialog.wasCanceled():
                     break
-                progressDialog.setValue(p)
+                progress_dialog.setValue(p)
                 p += 1
-                orderCheckId = get_order_id()
+                orderCheckId = get_uuid1()
                 # 对同一个订单进行录入
                 userSave = {}
                 for tempDict in v:
@@ -526,7 +526,7 @@ def ImportExcel(fileName, self):
                         "workerName": workerName,
                         "project": project,
                         "orderCheckId": orderCheckId,
-                        "id": get_order_id(),
+                        "id": get_uuid1(),
                     }
                     tempAttribute = tempDict
 
@@ -562,8 +562,8 @@ def ImportExcel(fileName, self):
                         except:
                             pass
         # 最后全部导入
-        progressDialog.setValue(nrows - 3)
-        progressDialog.close()
+        progress_dialog.setValue(nrows - 3)
+        progress_dialog.close()
 
 
 def ImportMenuExcel(fileName, mustSet):
@@ -625,6 +625,3 @@ def ImportMenuExcel(fileName, mustSet):
                     except:
                         pass
 
-
-def Insert():
-    return dbhelp.InsertData

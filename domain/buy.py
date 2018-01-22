@@ -15,6 +15,7 @@ class BuyInfo(object):
     __buy_type = 1
     __note = ''
     __left = 0
+    __state = 0
 
     def buy_id(self, buy_id=0):
         if buy_id:
@@ -126,6 +127,13 @@ class BuyInfo(object):
 
         return self.__left
 
+    def state(self, state=0):
+        if state:
+            self.__state = state
+            return self
+
+        return self.__state
+
     @staticmethod
     def buy_types():
         return {1: '进货', 2: '退货'}
@@ -151,11 +159,17 @@ class BuyInfo(object):
     @staticmethod
     def normal(state=None):
         if state == 0:
-            return '正常'
+            return '已审核'
         return 0
 
     @staticmethod
     def under_reviewed(state=None):
         if state == 1:
-            return '校准待审核'
+            return '待审核'
         return 1
+
+    @staticmethod
+    def rejected(state=None):
+        if state == 2:
+            return '已拒绝'
+        return 2

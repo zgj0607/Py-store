@@ -1,5 +1,6 @@
 from common import common
 from database.db_connection import execute
+from domain.stock_detail import StockDetail
 
 
 def get_sale_detail(start_time, end_time, YeJi=False, Table=True):
@@ -151,16 +152,21 @@ def get_sale_info_by_one_key(key, value, remote=False):
                            orderCheckId,
                            pcSign,
                            unit_price,
-                           unit,
+                           si.unit,
                            number,
                            subtotal,
                            total,
                            note,
-                           id
-                      FROM Sales
+                           si.id,
+                           sale_id,
+                           s.brand_name,
+                           s.model_name
+                      FROM Sales si
+                      LEFT JOIN stock_detail sd on si.sale_id = sd.changed_id and sd.type in ({},{},{})
+                      LEFT JOIN stock_info s on s.id = sd.stock_id
                      WHERE {}='{}'
                     ORDER BY createdTime DESC''' \
-            .format(key, value)
+            .format(StockDetail.by_sold(), StockDetail.by_negative(), StockDetail.by_write_off(), key, value)
     data = execute(sql_str)
     return data
 

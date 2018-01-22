@@ -12,7 +12,7 @@ from database.dao.supplier import supplier_handler
 from domain.buy import BuyInfo
 from domain.payment import Payment
 from view.supplier.ui.ui_supplier_payment_dialog import Ui_SupplierArrearPayOffDialog
-from view.utils import db_transaction_util
+from view.utils import db_transaction_util, view_utils
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class PayOffArrearsDialog(QtWidgets.QDialog, Ui_SupplierArrearPayOffDialog):
         self.paid.setText(str(buy.paid()))
         self.pay.setText(str(buy.unpaid()))
 
-        Payment.get_all_payment(self.payment_method)
+        view_utils.get_all_payment(self.payment_method)
         self.payment_method.addItem('点击添加')
         self.pay.setFocus()
 

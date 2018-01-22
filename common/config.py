@@ -1,22 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-__author__ = 'sunny'
-__mtime__ = '2017/2/10'
-# code is far away from bugs with the god animal protecting
-    I love animals. They taste delicious.
-                   ┏┓      ┏┓
-                ┏┛┻━━━┛┻┓
-               ┃      ☃      ┃
-              ┃  ┳┛  ┗┳  ┃
-             ┃      ┻      ┃
-            ┗━┓      ┏━┛
-               ┃      ┗━━━┓
-              ┃              ┣┓
-             ┃　            ┏┛
-            ┗┓┓┏━┳┓┏┛
-             ┃┫┫  ┃┫┫
-            ┗┻┛  ┗┻┛
-"""
 import configparser
 import logging
 import os
@@ -61,7 +42,8 @@ def get_secret_info_file():
 
 
 def get_log_file_name():
-    return get_config_file_parent() + 'py-store.log'
+    today = datetime.now().strftime('%Y%m%d')
+    return get_config_file_parent() + 'log/py-store-' + today + '.log'
 
 
 def initialization_config():

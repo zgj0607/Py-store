@@ -3,7 +3,12 @@ from domain.attribute import Attribute
 
 
 def get_all_attributes():
-    sql_text = '''SELECT att.id, name, di.value_desc required_desc, is_required
+    sql_text = '''SELECT att.id,
+                         name,
+                         di.value_desc required_desc,
+                         display_order,
+                         (CASE WHEN att.print_order = -1 THEN '不打印' ELSE att.print_order END) print_order,
+                         is_required
                     FROM attributes att, dictionary di
                    WHERE delete_state = 0
                      AND att.is_required = di.key_id
@@ -18,7 +23,7 @@ def get_all_required_attributes():
                         FROM attributes
                        WHERE delete_state = 0
                          and is_required = {}
-                        ORDER BY name
+                        ORDER BY display_order, name
                        ''' \
         .format(Attribute.required())
     return execute(sql_text)
@@ -34,7 +39,7 @@ def get_all_option_attributes():
                             FROM attributes
                            WHERE delete_state = 0
                              and is_required = {}
-                            ORDER BY name
+                            ORDER BY display_order, name
                            ''' \
         .format(Attribute.option())
     return execute(sql_text)
@@ -85,3 +90,15 @@ def get_attr_by_name(attr_name):
     sql_text = '''select id, name from attributes where name = '{}' and delete_state = 0 and is_required = {}''' \
         .format(attr_name, Attribute.option())
     return execute(sql_text, True)
+
+
+def get_all_need_print_attr():
+    sql_text = '''SELECT id,
+                         name,
+                         print_order,
+                         is_required
+                    FROM attributes
+                   WHERE print_order > 0
+                     AND delete_state = 0
+                   ORDER BY print_order'''
+    return execute(sql_text)

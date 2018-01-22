@@ -43,21 +43,21 @@ class SecondServiceInfo(QtWidgets.QDialog, UiSecondServiceInfo):
         column = 0
         model = QtGui.QStandardItemModel()
         for attr in all_attr_list:
-            item = QtGui.QStandardItem(attr[1])
+            item = QtGui.QStandardItem(attr['name'])
 
-            if attr[3] == Attribute.required():
+            if attr['is_required'] == Attribute.required():
                 # 如果是必填，则默认勾选，同时不允许修改
                 item.setCheckState(Qt.Checked)
                 item.setFlags(QtCore.Qt.NoItemFlags)
             else:
                 item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
                 # 如果该属性已经关联了服务项目，则默认勾选
-                if attr[0] not in self.checked_dict:
+                if attr['id'] not in self.checked_dict:
                     item.setCheckState(Qt.Unchecked)
                 else:
                     item.setCheckState(Qt.Checked)
 
-            self.checkbox_dict[attr[0]] = item
+            self.checkbox_dict[attr['id']] = item
 
             model.setItem(row, column, item)
             # 表格中每行显示5条记录

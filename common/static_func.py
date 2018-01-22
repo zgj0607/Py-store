@@ -106,10 +106,8 @@ class ErrorCode:
 # forUser是显示给用户看的文字，forWorker是显示提供给后台程序员看的字段
 # ret代表成功或者失败，data代表返回值，result代表错误代码
 def set_return_dicts(data=None, forUser='', code=200, ret=True, forWorker=''):
-    if data == None:
+    if not data:
         ret = False
-        # logger.error('API: FORUSER:{}  CODE:{}  FORWORKER:{} '.format(forUser.encode(),code,forWorker.encode()))
-        # logger.error('API:CODE:{}'.format(code))
 
     return_dicts = {
         'data': data,
@@ -123,12 +121,12 @@ def set_return_dicts(data=None, forUser='', code=200, ret=True, forWorker=''):
 
 
 # 生成订单号：日期+当日订单序号+随机数
-def get_order_id():
+def get_uuid1():
     return str(uuid.uuid1()).replace("-", '')
 
 
 # 生成随机数
-def GetDiscountCode(count=10):
+def get_discount_code(count=10):
     l1 = [chr(i) for i in range(97, 123)]
     l2 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
     lists = l1 + l2
@@ -141,3 +139,12 @@ def md5(string):
     m = hashlib.md5()
     m.update(string.encode())
     return m.hexdigest()
+
+
+# 动态创建对象
+def create_instance(class_name, *args, **kwargs):
+    (module_name, class_name) = class_name.rsplit('.', 1)
+    module_meta = __import__(module_name, globals(), locals(), [class_name])
+    class_meta = getattr(module_meta, class_name)
+    obj = class_meta(*args, **kwargs)
+    return obj

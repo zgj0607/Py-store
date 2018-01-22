@@ -1,4 +1,5 @@
 import logging
+import traceback
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
@@ -9,7 +10,7 @@ from database.dao.dictionary import dictionary_handler
 from database.dao.supplier import supplier_handler
 from domain.payment import Payment
 from view.supplier.ui.ui_supplier_bulk_pay_off import Ui_BulkPayOff
-from view.utils import db_transaction_util
+from view.utils import db_transaction_util, view_utils
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ class SupplierBulkPayOff(QtWidgets.QDialog, Ui_BulkPayOff):
         self.pay_to.setText(supplier_name)
         self.pay.setText(str(total))
 
-        Payment.get_all_payment(self.payment_method)
+        view_utils.get_all_payment(self.payment_method)
         self.payment_method.addItem('点击添加')
 
     def do_bulk_pay(self):

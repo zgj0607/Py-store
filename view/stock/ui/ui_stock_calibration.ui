@@ -57,7 +57,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="seachButton">
+        <widget class="QPushButton" name="searchButton">
          <property name="minimumSize">
           <size>
            <width>90</width>
@@ -95,7 +95,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="reviewButton">
          <property name="minimumSize">
           <size>
            <width>90</width>
@@ -143,6 +143,9 @@
      </property>
      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
       <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
      </attribute>
     </widget>
    </item>

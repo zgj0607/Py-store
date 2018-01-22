@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
 from common.common import ClientClose
+from domain.device import Device
 from view.buy.buy_monitor_query import BuyInfoMonitor
 from view.buy.history_buy_query import HistoryStock
 from view.buy.normal_buy_add import NormalBuyAdd
@@ -20,8 +21,7 @@ from view.sale.all_sale import AllSale
 from view.sale.local_sale import LocalSale
 from view.service.attribute import AttributeManage
 from view.service.service import Service
-from view.stock.stock_calibration import stock_calibration
-from view.stock.stock_calibration_review import stock_calibration_review
+from view.stock.stock_calibration import StockCalibration
 from view.stock.stock_money import StockMoney
 from view.stock.stock_search import StockSearch
 from view.stock.stock_unsalable_waring import StockUnsalableWarning
@@ -29,7 +29,6 @@ from view.supplier.supplier_arrears import SupplierArrears
 from view.users.staff import Staff
 from view.users.store_and_password import StoreAndPassword
 from view.users.system_user import SystemUser
-from domain.device import Device
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +75,6 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.inventory_unsalable_pre_warning.triggered.connect(self._inventory_unsalable_pre_warning_show)
         self.inventory_money.triggered.connect(self._inventory_money_show)
         self.do_stock_calibration.triggered.connect(self._inventory_calibration_show)
-        self.stock_calibration_review.triggered.connect(self._stock_calibration_review)
 
         # 客户回访
         self.return_visit_customer.triggered.connect(self._return_visit_show)
@@ -136,10 +134,6 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
     # 库存校准
     def _inventory_calibration_show(self):
         self._tab_signal.emit('do_stock_calibration')
-
-    # 校准审核
-    def _stock_calibration_review(self):
-        self._tab_signal.emit('stock_calibration_review')
 
     # 客户回访
     def _return_visit_show(self):
@@ -227,10 +221,7 @@ class MainView(QtWidgets.QMainWindow, Ui_MainWindow):
                 tab_widget = StockMoney()
 
             elif obj_name == 'do_stock_calibration':
-                tab_widget = stock_calibration()
-
-            elif obj_name == 'stock_calibration_review':
-                tab_widget = stock_calibration_review()
+                tab_widget = StockCalibration()
 
             elif obj_name == 'supplier_arrears':
                 tab_widget = SupplierArrears()

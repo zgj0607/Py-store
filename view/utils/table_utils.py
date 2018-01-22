@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QVariant
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QTableView, QTableWidget, QTableWidgetItem, QLineEdit, QDateEdit, \
     QCompleter, QItemDelegate
@@ -48,21 +48,21 @@ def set_table_content(table: QTableView, record, table_title=()):
     model = table.model()
     for row_index, data in enumerate(record):
         for column_index in range(column_len):
-            model.setItem(row_index, column_index, QStandardItem(str(data[column_index])))
+            item = QStandardItem()
+            item.setData(QVariant(data[column_index]), Qt.EditRole)
+            model.setItem(row_index, column_index, item)
             model.item(row_index, column_index).setTextAlignment(Qt.AlignCenter)
 
 
 def append_table_content(table: QTableView, record):
-    # if table_title:
-    #     add_table_header(table, table_title)
-
     model = table.model()
     column_len = model.columnCount()
     row_len = model.rowCount()
     items = []
     for row_index, data in enumerate(record, row_len):
         for column_index in range(column_len):
-            item = QStandardItem(str(data[column_index]))
+            item = QStandardItem()
+            item.setData(QVariant(data[column_index]), Qt.EditRole)
             items.append(item)
         model.appendRow(items)
         items.clear()
@@ -78,7 +78,9 @@ def set_table_content_with_merge(table: QTableView, record, table_title=(), merg
     merge_row_num = 0
     for row_index, data in enumerate(record):
         for column_index in range(column_len):
-            model.setItem(row_index, column_index, QStandardItem(str(data[column_index])))
+            item = QStandardItem()
+            item.setData(QVariant(data[column_index]), Qt.EditRole)
+            model.setItem(row_index, column_index, item)
 
         merge_cell_value = data[merge_column_index]
         if row_index == 0:

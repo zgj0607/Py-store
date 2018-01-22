@@ -65,8 +65,7 @@ def get_total_operation_by_time(start_date: str, end_date: str):
                  WHERE sal.service_id = second_srv.id
                    AND sal.createdTime BETWEEN '{}' AND '{}'
                    AND second_srv.father = first_srv.id
-                   AND buy.changed_id = sal.sale_id
-                 GROUP BY sal.project''' \
+                   AND buy.changed_id = sal.sale_id''' \
         .format(StockDetail.by_sold(), StockDetail.by_negative(), StockDetail.by_write_off(), start_date, end_date)
     result = db_common_handler.execute(sql_text)
     return result

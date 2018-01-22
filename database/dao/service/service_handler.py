@@ -27,6 +27,23 @@ def get_all_second_level_service():
     return execute(sql_text)
 
 
+def get_service_by_id(service_id):
+    sql_text = '''SELECT
+                          one.id   AS father_id,
+                          one.name AS father_name,
+                          two.id,
+                          two.name,
+                          two.attribute,
+                          two.attributeState
+                     FROM service two
+                     LEFT JOIN service one ON two.father = one.id
+                    WHERE two.id = {}
+                    ORDER BY one.name, two.name''' \
+        .format(service_id)
+
+    return execute(sql_text, True)
+
+
 def add_first_level_service(service_name):
     time_now = get_now()
     sql_text = '''INSERT INTO service(name, createdTime, father, level) VALUES('{}','{}',{},{})''' \

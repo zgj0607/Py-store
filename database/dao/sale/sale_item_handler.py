@@ -16,9 +16,12 @@ def get_item_info_buy_sale_id(sale_id):
                        si.attribute_id,
                        attr.name,
                        si.attribute_value
-                  from sales_item si, attributes attr
-                where sale_id = '{}'
-                and attr.id = si.attribute_id''' \
+                  from sales_item si, attributes attr, dictionary di
+                where sale_id = {}
+                  and attr.id = si.attribute_id
+                  and di.key_id = attr.is_required
+                  and di.group_name = 'is_required'
+                order by di.value_desc,attr.display_order''' \
         .format(sale_id)
     return execute(sql_text)
 

@@ -33,6 +33,7 @@ class Ui_AttributeQWidget(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.tableView = QtWidgets.QTableView(AttributeQWidget)
         self.tableView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tableView.setSortingEnabled(True)
         self.tableView.setObjectName("tableView")
         self.tableView.horizontalHeader().setVisible(True)
         self.tableView.horizontalHeader().setStretchLastSection(False)

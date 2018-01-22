@@ -30,7 +30,7 @@ def add_return_visit_data(time_str, car_phone, car_id, car_user, today):
     sql_text = '''
               INSERT INTO return_visit(next_visit_time, phone, carId, username, create_time, state) 
               VALUES('{}', '{}', '{}', '{}', '{}', {})''' \
-        .format(return_visit_table, time_str, car_phone, car_id, car_user, today, ReturnVisit.unvisited())
+        .format(time_str, car_phone, car_id, car_user, today, ReturnVisit.unvisited())
     result = execute(sql_text)
 
     return result
@@ -76,4 +76,12 @@ def add_customer(customer: Customer):
                 INSERT INTO User(userName, carId, carModel, carPhone, createdTime)
                 VALUES ('{}', '{}', '{}', '{}', '{}')''' \
         .format(customer.username(), customer.car_id(), customer.car_model(), customer.phone(), customer.create_time())
+    return execute(sql_text)
+
+
+def insert_customer(username, car_id, car_model, phone):
+    sql_text = '''
+                    INSERT INTO User(userName, carId, carModel, carPhone, createdTime)
+                    VALUES ('{}', '{}', '{}', '{}', '{}')''' \
+        .format(username, car_id, car_model, phone, get_now())
     return execute(sql_text)

@@ -28,7 +28,8 @@ def get_all_buy_info():
                   AND sr.id = si.second_service_id
                   AND di.key_id = bi.buy_type
                   AND di.group_name = 'buy_type'
-                ORDER BY buy_date DESC'''
+                  AND bi.buy_type in({},{})
+                ORDER BY buy_date DESC'''.format(BuyInfo.bought(), BuyInfo.returned())
 
     result = execute(sql_text)
 
@@ -50,7 +51,8 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                                 TOTAL,
                                 BUY_TYPE,
                                 note,
-                                left_number
+                                left_number,
+                                state
                                )
               VALUES (
                       {},
@@ -65,12 +67,13 @@ def add_buy_info(buy_info: BuyInfo) -> int:
                       {:.2f},
                       {},
                       '{}',
+                      {},
                       {}
               )''' \
         .format(buy_info.stock_id(), buy_info.supplier_id(),
                 buy_info.unit_price(), buy_info.number(), buy_info.buy_date(), buy_info.create_time(),
                 buy_info.create_op(), buy_info.unpaid(), buy_info.paid(), buy_info.total(),
-                buy_info.buy_type(), buy_info.note(), buy_info.left())
+                buy_info.buy_type(), buy_info.note(), buy_info.left(), buy_info.state())
     new_buy_id = execute(sql_text)
 
     return new_buy_id
@@ -261,7 +264,8 @@ def get_buy_info_detail_by_time(start_time: str, end_time: str):
                            and di.group_name = 'buy_type'
                            and sl.id = bi.supplier_id
                            and bi.buy_date BETWEEN '{}' and '{}'
-                    '''.format(start_time, end_time)
+                           and bi.buy_type in ({},{})
+                    '''.format(start_time, end_time, BuyInfo.bought(), BuyInfo.returned())
 
     result = execute(sql_text)
 
@@ -293,7 +297,7 @@ def get_detail_info(second_srv_id: int, start_time: str, end_time: str):
                        and di.group_name = 'buy_type'
                        and sl.id = bi.supplier_id
                        and bi.buy_date BETWEEN '{}' and '{}'
-                     ORDER BY si.brand_name, si.model_name, bi.buy_date'''\
+                     ORDER BY si.brand_name, si.model_name, bi.buy_date''' \
         .format(second_srv_id, BuyInfo.bought(), start_time, end_time)
 
     result = execute(sql_text)
@@ -330,12 +334,19 @@ def update_left_info(buy_id: int, left_number: int):
     return execute(sql_text)
 
 
-def get_unpaid_gt_zero(stock_id: int):
+def get_unpaid_gt_zero(stock_id: int, supplier_id: int):
     sql_text = '''SELECT ID, unpaid, paid
                     FROM buy_info
                    WHERE stock_id = {}
                      AND unpaid > 0.0 
                      AND buy_type = {}
+                     AND supplier_id = {}
                     order by create_time''' \
-        .format(stock_id, BuyInfo.bought())
+        .format(stock_id, BuyInfo.bought(), supplier_id)
     return execute(sql_text)
+
+
+def update_buy_state(buy_id, state):
+    sql_text = '''update buy_info set state = {} where id = {}''' \
+        .format(state, buy_id)
+    execute(sql_text)

@@ -50,7 +50,7 @@ def execute(sql_text: str, fetch_one=False):
 
     logger = logging.getLogger(__name__)
 
-    logger.info("执行SQL脚本：" + sql_text)
+    logger.info("执行SQL：\n" + sql_text)
 
     cur.execute(sql_text)
     upper_text = sql_text.upper().lstrip().lstrip('\s')

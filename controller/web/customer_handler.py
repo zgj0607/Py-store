@@ -1,22 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-__author__ = 'Sunny'
-__mtime__ = '1/5/2017'
-
-                ┏┓     ┏┓
-              ┏┛┻━━━┛┻┓
-             ┃     ☃     ┃
-             ┃ ┳┛  ┗┳  ┃
-            ┃     ┻     ┃
-            ┗━┓     ┏━┛
-               ┃     ┗━━━┓
-              ┃  神兽保佑   ┣┓
-             ┃　永无BUG！  ┏┛
-            ┗┓┓┏━┳┓┏┛
-             ┃┫┫  ┃┫┫
-            ┗┻┛  ┗┻┛
-"""
-import json
 from collections import OrderedDict, defaultdict
 
 from tornado.concurrent import run_on_executor
@@ -25,16 +6,16 @@ from common import time_utils
 from common.common import SocketServer
 from common.exception import ApiException
 from common.static_func import ErrorCode, set_return_dicts
-from controller.Api.BaseHandler import BaseHandler
+from controller.web.base_handler import BaseHandler
 from database.dao.customer import customer_handler
 from database.dao.customer.customer_handler import get_like_customer_by_key
-from database.dao.sale import sale_handler
+from database.dao.sale import sale_handler, sale_item_handler
 from domain.customer import Customer
 
 
-class ApiUserHandler(BaseHandler):
+class CustomerHandler(BaseHandler):
     def __init__(self, application, request, **kwargs):
-        super(ApiUserHandler, self).__init__(application, request, **kwargs)
+        super(CustomerHandler, self).__init__(application, request, **kwargs)
         self.func = self.user
 
     @run_on_executor
@@ -178,8 +159,19 @@ class ApiUserHandler(BaseHandler):
         sale_info_list = defaultdict(list)
         print(car_id)
         for data in result:
-            attribute = OrderedDict(json.loads(data[8]))
-            pc_sign = data[11]
+            attribute = OrderedDict()
+            attribute['单位'] = data['unit']
+            attribute['数量'] = data['number']
+            attribute['单价'] = data['unit_price']
+            attribute['小计'] = data['subtotal']
+            attribute['总价'] = data['total']
+            attribute['品牌'] = data['brand_name']
+            attribute['型号'] = data['model_name']
+
+            for attr in sale_item_handler.get_item_info_buy_sale_id(data['sale_id']):
+                attribute[attr['name']] = attr['attribute_value']
+
+            pc_sign = data['pcSign']
             try:
                 price = float(attribute.pop("总价", 0))
             except Exception as e:

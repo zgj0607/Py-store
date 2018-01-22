@@ -1,331 +1,319 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>MainWindow</class>
-    <widget class="QMainWindow" name="MainWindow">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>1000</width>
-                <height>734</height>
-            </rect>
-        </property>
-        <property name="font">
-            <font>
-                <family>Songti SC</family>
-            </font>
-        </property>
-        <property name="windowTitle">
-            <string>门店管理系统</string>
-        </property>
-        <widget class="QWidget" name="centralwidget">
-            <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                    <widget class="QTabWidget" name="tabWidget">
-                        <property name="minimumSize">
-                            <size>
-                                <width>960</width>
-                                <height>630</height>
-                            </size>
-                        </property>
-                        <property name="maximumSize">
-                            <size>
-                                <width>960</width>
-                                <height>630</height>
-                            </size>
-                        </property>
-                        <property name="font">
-                            <font>
-                                <pointsize>10</pointsize>
-                            </font>
-                        </property>
-                        <property name="styleSheet">
-                            <string notr="true"/>
-                        </property>
-                        <property name="currentIndex">
-                            <number>-1</number>
-                        </property>
-                        <property name="iconSize">
-                            <size>
-                                <width>16</width>
-                                <height>16</height>
-                            </size>
-                        </property>
-                        <property name="elideMode">
-                            <enum>Qt::ElideNone</enum>
-                        </property>
-                        <property name="documentMode">
-                            <bool>true</bool>
-                        </property>
-                        <property name="tabsClosable">
-                            <bool>true</bool>
-                        </property>
-                    </widget>
-                </item>
-            </layout>
-        </widget>
-        <widget class="QStatusBar" name="statusbar"/>
-        <widget class="QMenuBar" name="menuBar">
-            <property name="geometry">
-                <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>1000</width>
-                    <height>35</height>
-                </rect>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>500</width>
-                    <height>30</height>
-                </size>
-            </property>
-            <property name="font">
-                <font>
-                    <family>Songti SC</family>
-                </font>
-            </property>
-            <property name="styleSheet">
-                <string notr="true">padding-top:5px;</string>
-            </property>
-            <property name="nativeMenuBar">
-                <bool>false</bool>
-            </property>
-            <widget class="QMenu" name="sales">
-                <property name="font">
-                    <font>
-                        <family>Songti SC</family>
-                    </font>
-                </property>
-                <property name="styleSheet">
-                    <string notr="true"/>
-                </property>
-                <property name="title">
-                    <string>销售明细</string>
-                </property>
-                <addaction name="actionLocal"/>
-                <addaction name="actionAll"/>
-            </widget>
-            <widget class="QMenu" name="supplier">
-                <property name="title">
-                    <string>供应商对账</string>
-                </property>
-                <addaction name="supplier_arrears"/>
-            </widget>
-            <widget class="QMenu" name="setting">
-                <property name="title">
-                    <string>系统管理</string>
-                </property>
-                <widget class="QMenu" name="setting_user">
-                    <property name="title">
-                        <string>人员管理</string>
-                    </property>
-                    <addaction name="store_user"/>
-                    <addaction name="system_user"/>
-                </widget>
-                <widget class="QMenu" name="menu">
-                    <property name="title">
-                        <string>服务项目管理</string>
-                    </property>
-                    <addaction name="service_manage"/>
-                    <addaction name="attribute_setting"/>
-                </widget>
-                <addaction name="setting_user"/>
-                <addaction name="menu"/>
-                <addaction name="setting_device"/>
-                <addaction name="setting_password"/>
-            </widget>
-            <widget class="QMenu" name="stock">
-                <property name="font">
-                    <font>
-                        <family>Songti SC</family>
-                    </font>
-                </property>
-                <property name="title">
-                    <string>进货管理</string>
-                </property>
-                <property name="separatorsCollapsible">
-                    <bool>false</bool>
-                </property>
-                <widget class="QMenu" name="stock_add">
-                    <property name="title">
-                        <string>进货录入</string>
-                    </property>
-                    <addaction name="normal_stock_add"/>
-                    <addaction name="write_off_add"/>
-                </widget>
-                <addaction name="stock_add"/>
-                <addaction name="history_stock"/>
-                <addaction name="stock_monitor"/>
-            </widget>
-            <widget class="QMenu" name="inventory">
-                <property name="title">
-                    <string>库存管理</string>
-                </property>
-                <widget class="QMenu" name="stock_calibration">
-                    <property name="title">
-                        <string>库存校准</string>
-                    </property>
-                    <addaction name="do_stock_calibration"/>
-                    <addaction name="stock_calibration_review"/>
-                </widget>
-                <addaction name="inventory_search"/>
-                <addaction name="inventory_unsalable_pre_warning"/>
-                <addaction name="inventory_money"/>
-                <addaction name="stock_calibration"/>
-            </widget>
-            <widget class="QMenu" name="operation">
-                <property name="title">
-                    <string>经营分析</string>
-                </property>
-                <addaction name="performance"/>
-                <addaction name="sub_service_operation_data"/>
-                <addaction name="operation_total_data"/>
-            </widget>
-            <addaction name="sales"/>
-            <addaction name="stock"/>
-            <addaction name="inventory"/>
-            <addaction name="return_visit_customer"/>
-            <addaction name="supplier"/>
-            <addaction name="operation"/>
-            <addaction name="setting"/>
-        </widget>
-        <action name="actionLocal">
-            <property name="text">
-                <string>本店</string>
-            </property>
-            <property name="font">
-                <font>
-                    <family>Songti SC</family>
-                </font>
-            </property>
-        </action>
-        <action name="actionAll">
-            <property name="text">
-                <string>全店</string>
-            </property>
-            <property name="font">
-                <font>
-                    <family>Songti SC</family>
-                </font>
-            </property>
-        </action>
-        <action name="normal_stock_add">
-            <property name="text">
-                <string>普通进货录入</string>
-            </property>
-            <property name="font">
-                <font>
-                    <family>Songti SC</family>
-                </font>
-            </property>
-        </action>
-        <action name="write_off_add">
-            <property name="text">
-                <string>销负进货录入</string>
-            </property>
-            <property name="font">
-                <font>
-                    <family>Songti SC</family>
-                </font>
-            </property>
-        </action>
-        <action name="history_stock">
-            <property name="text">
-                <string>单品历史进货</string>
-            </property>
-        </action>
-        <action name="store_user">
-            <property name="text">
-                <string>门店人员</string>
-            </property>
-        </action>
-        <action name="system_user">
-            <property name="text">
-                <string>系统人员</string>
-            </property>
-        </action>
-        <action name="return_visit_customer">
-            <property name="text">
-                <string>回访</string>
-            </property>
-        </action>
-        <action name="setting_device">
-            <property name="text">
-                <string>设备管理</string>
-            </property>
-        </action>
-        <action name="setting_password">
-            <property name="text">
-                <string>门店及密码</string>
-            </property>
-        </action>
-        <action name="inventory_search">
-            <property name="text">
-                <string>库存明细查询</string>
-            </property>
-        </action>
-        <action name="inventory_unsalable_pre_warning">
-            <property name="text">
-                <string>滞销库存预警</string>
-            </property>
-        </action>
-        <action name="stock_monitor">
-            <property name="text">
-                <string>进货监控</string>
-            </property>
-        </action>
-        <action name="inventory_money">
-            <property name="text">
-                <string>分类库存总览</string>
-            </property>
-        </action>
-        <action name="supplier_arrears">
-            <property name="text">
-                <string>欠款明细</string>
-            </property>
-        </action>
-        <action name="supplier_payment">
-            <property name="text">
-                <string>付款录入</string>
-            </property>
-        </action>
-        <action name="performance">
-            <property name="text">
-                <string>业绩报表</string>
-            </property>
-        </action>
-        <action name="sub_service_operation_data">
-            <property name="text">
-                <string>二级分类经营数据</string>
-            </property>
-        </action>
-        <action name="operation_total_data">
-            <property name="text">
-                <string>总体经营数据</string>
-            </property>
-        </action>
-        <action name="service_manage">
-            <property name="text">
-                <string>服务管理</string>
-            </property>
-        </action>
-        <action name="attribute_setting">
-            <property name="text">
-                <string>属性管理</string>
-            </property>
-        </action>
-        <action name="do_stock_calibration">
-            <property name="text">
-                <string>校准</string>
-            </property>
-        </action>
-        <action name="stock_calibration_review">
-            <property name="text">
-                <string>校准审核</string>
-            </property>
-        </action>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>734</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Songti SC</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>门店管理系统</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="minimumSize">
+       <size>
+        <width>960</width>
+        <height>630</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>960</width>
+        <height>630</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>500</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Songti SC</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">padding-top:5px;</string>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="sales">
+    <property name="font">
+     <font>
+      <family>Songti SC</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="title">
+     <string>销售明细</string>
+    </property>
+    <addaction name="actionLocal"/>
+    <addaction name="actionAll"/>
+   </widget>
+   <widget class="QMenu" name="supplier">
+    <property name="title">
+     <string>供应商对账</string>
+    </property>
+    <addaction name="supplier_arrears"/>
+   </widget>
+   <widget class="QMenu" name="setting">
+    <property name="title">
+     <string>系统管理</string>
+    </property>
+    <widget class="QMenu" name="setting_user">
+     <property name="title">
+      <string>人员管理</string>
+     </property>
+     <addaction name="store_user"/>
+     <addaction name="system_user"/>
     </widget>
-    <resources/>
-    <connections/>
+    <widget class="QMenu" name="menu">
+     <property name="title">
+      <string>服务项目管理</string>
+     </property>
+     <addaction name="service_manage"/>
+     <addaction name="attribute_setting"/>
+    </widget>
+    <addaction name="setting_user"/>
+    <addaction name="menu"/>
+    <addaction name="setting_device"/>
+    <addaction name="setting_password"/>
+   </widget>
+   <widget class="QMenu" name="stock">
+    <property name="font">
+     <font>
+      <family>Songti SC</family>
+     </font>
+    </property>
+    <property name="title">
+     <string>进货管理</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
+    </property>
+    <widget class="QMenu" name="stock_add">
+     <property name="title">
+      <string>进货录入</string>
+     </property>
+     <addaction name="normal_stock_add"/>
+     <addaction name="write_off_add"/>
+    </widget>
+    <addaction name="stock_add"/>
+    <addaction name="history_stock"/>
+    <addaction name="stock_monitor"/>
+   </widget>
+   <widget class="QMenu" name="inventory">
+    <property name="title">
+     <string>库存管理</string>
+    </property>
+    <addaction name="inventory_search"/>
+    <addaction name="inventory_unsalable_pre_warning"/>
+    <addaction name="inventory_money"/>
+    <addaction name="do_stock_calibration"/>
+   </widget>
+   <widget class="QMenu" name="operation">
+    <property name="title">
+     <string>经营分析</string>
+    </property>
+    <addaction name="performance"/>
+    <addaction name="sub_service_operation_data"/>
+    <addaction name="operation_total_data"/>
+   </widget>
+   <addaction name="sales"/>
+   <addaction name="stock"/>
+   <addaction name="inventory"/>
+   <addaction name="return_visit_customer"/>
+   <addaction name="supplier"/>
+   <addaction name="operation"/>
+   <addaction name="setting"/>
+  </widget>
+  <action name="actionLocal">
+   <property name="text">
+    <string>本店</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Songti SC</family>
+    </font>
+   </property>
+  </action>
+  <action name="actionAll">
+   <property name="text">
+    <string>全店</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Songti SC</family>
+    </font>
+   </property>
+  </action>
+  <action name="normal_stock_add">
+   <property name="text">
+    <string>普通进货录入</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Songti SC</family>
+    </font>
+   </property>
+  </action>
+  <action name="write_off_add">
+   <property name="text">
+    <string>销负进货录入</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Songti SC</family>
+    </font>
+   </property>
+  </action>
+  <action name="history_stock">
+   <property name="text">
+    <string>单品历史进货</string>
+   </property>
+  </action>
+  <action name="store_user">
+   <property name="text">
+    <string>门店人员</string>
+   </property>
+  </action>
+  <action name="system_user">
+   <property name="text">
+    <string>系统人员</string>
+   </property>
+  </action>
+  <action name="return_visit_customer">
+   <property name="text">
+    <string>回访</string>
+   </property>
+  </action>
+  <action name="setting_device">
+   <property name="text">
+    <string>设备管理</string>
+   </property>
+  </action>
+  <action name="setting_password">
+   <property name="text">
+    <string>门店及密码</string>
+   </property>
+  </action>
+  <action name="inventory_search">
+   <property name="text">
+    <string>库存明细查询</string>
+   </property>
+  </action>
+  <action name="inventory_unsalable_pre_warning">
+   <property name="text">
+    <string>滞销库存预警</string>
+   </property>
+  </action>
+  <action name="stock_monitor">
+   <property name="text">
+    <string>进货监控</string>
+   </property>
+  </action>
+  <action name="inventory_money">
+   <property name="text">
+    <string>分类库存总览</string>
+   </property>
+  </action>
+  <action name="supplier_arrears">
+   <property name="text">
+    <string>欠款明细</string>
+   </property>
+  </action>
+  <action name="supplier_payment">
+   <property name="text">
+    <string>付款录入</string>
+   </property>
+  </action>
+  <action name="performance">
+   <property name="text">
+    <string>业绩报表</string>
+   </property>
+  </action>
+  <action name="sub_service_operation_data">
+   <property name="text">
+    <string>二级分类经营数据</string>
+   </property>
+  </action>
+  <action name="operation_total_data">
+   <property name="text">
+    <string>总体经营数据</string>
+   </property>
+  </action>
+  <action name="service_manage">
+   <property name="text">
+    <string>服务管理</string>
+   </property>
+  </action>
+  <action name="attribute_setting">
+   <property name="text">
+    <string>属性管理</string>
+   </property>
+  </action>
+  <action name="do_stock_calibration">
+   <property name="text">
+    <string>库存校准</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
 </ui>

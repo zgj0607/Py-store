@@ -8,8 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5.QtGui import QIcon
-from controller.Interface import ViewHandler
-from controller.Interface.TableHandler import *
+from controller.view_service import view_service
+from controller.view_service.table_service import *
 from view.service.first_service_info import Menu1_Ui_MainWindow
 from view.service.second_service_info import SecondServiceInfo
 from common.config import domain, code
@@ -1110,7 +1110,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def XiaofeiOut(self):
         startTime = self.dateEdit_5.text()
         endTime = self.dateEdit_6.text()
-        fileName = ViewHandler.CreateXls(startTime, endTime)
+        fileName = view_service.CreateXls(startTime, endTime)
         if fileName:
             QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件名为：{}".format(fileName))
         else:
@@ -1122,7 +1122,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                                                                    "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
         if fileName:
             try:
-                ViewHandler.ImportExcel(fileName, self)
+                view_service.ImportExcel(fileName, self)
                 QtWidgets.QMessageBox.information(self.menu1Add, "提示", "导入成功")
             except Exception as e:
                 print(e)
@@ -1144,7 +1144,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     index = model.index(Item.row(), 0)
                     orderNo = model.data(index)
 
-                    result = ViewHandler.do_printer(self, orderNo)
+                    result = view_service.do_printer(self, orderNo)
                     if not result:
                         QtWidgets.QMessageBox.information(self.menu1Add, "提示", "打印格式出错")
 
@@ -1186,7 +1186,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         model = self.mendianMenu2.model()
         index = model.index(Item.row(), 0)
         id = model.data(index)
-        result = ViewHandler.GetTwoMenu(id)
+        result = view_service.GetTwoMenu(id)
         attribute = result[4].split(',')
         attributeState = result[5].split(',')
         showNameList = list()
@@ -1209,12 +1209,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     # 删除一级菜单
     def DeleteMenu1(self):
-        id = ViewHandler.GetTableMsg(self.mendianMenu1, 0)
+        id = view_service.GetTableMsg(self.mendianMenu1, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
                                                    "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                ViewHandler.RemoveById(id, 'OneMenu')
+                view_service.RemoveById(id, 'OneMenu')
                 self.ResetMenu1()
         else:
             QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择一级菜单")
@@ -1228,7 +1228,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             index = model.index(row, 0)
             id = model.data(index)
             if id:
-                result = ViewHandler.GetOneMenu(id)
+                result = view_service.GetOneMenu(id)
                 self.menu = Menu1_Ui_MainWindow(self, "修改一级菜单", id, result[2])
                 self.menu.exec()
             else:
@@ -1254,7 +1254,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             index = model.index(row, 0)
             id = model.data(index)
             if id:
-                result = ViewHandler.GetTwoMenu(id)
+                result = view_service.GetTwoMenu(id)
                 self.menu2 = SecondServiceInfo(self, "修改二级菜单", self.mustSet, id, result[2], self.showAttributeList)
                 self.menu2.exec()
             else:
@@ -1287,7 +1287,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 reply = QtWidgets.QMessageBox.question(self, 'Message',
                                                        "是否删除此菜单?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if reply == QtWidgets.QMessageBox.Yes:
-                    ViewHandler.RemoveById(id, "TwoMenu")
+                    view_service.RemoveById(id, "TwoMenu")
                     self.ResetMenu2()
             else:
                 QtWidgets.QMessageBox.information(self.menu1Add, "提示", "请选择二级菜单")
@@ -1296,7 +1296,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     # 导出excel
     def MenuOutFunc(self):
-        fileName = ViewHandler.CreateMenuExcel()
+        fileName = view_service.CreateMenuExcel()
         if fileName:
             QtWidgets.QMessageBox.information(self.menu1Add, "提示", "文件名为：{}".format(fileName))
         else:
@@ -1308,7 +1308,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                                                                    "Text Files (*.xlsx;*.xls)")  # 设置文件扩展名过滤,注意用分号间隔
         if fileName:
             try:
-                ViewHandler.ImportMenuExcel(fileName, self.mustSet)
+                view_service.ImportMenuExcel(fileName, self.mustSet)
                 QtWidgets.QMessageBox.information(self.menu1Add, "提示", "导入成功")
                 self.ResetMenu1()
             except:
@@ -1322,10 +1322,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.worker.exec()
 
     def UpdateWorker(self):
-        id = ViewHandler.GetTableMsg(self.UserTable, 0)
-        workerName = ViewHandler.GetTableMsg(self.UserTable, 1)
-        sex = ViewHandler.GetTableMsg(self.UserTable, 2)
-        idCard = ViewHandler.GetTableMsg(self.UserTable, 3)
+        id = view_service.GetTableMsg(self.UserTable, 0)
+        workerName = view_service.GetTableMsg(self.UserTable, 1)
+        sex = view_service.GetTableMsg(self.UserTable, 2)
+        idCard = view_service.GetTableMsg(self.UserTable, 3)
         if id:
             self.worker = Worker_Ui_MainWindow(self, WorkerTableSet, "修改员工信息", workerId=id, name=workerName,
                                                idCard=idCard, sex=sex)
@@ -1335,12 +1335,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
 
     def DeleteWorker(self):
-        id = ViewHandler.GetTableMsg(self.UserTable, 0)
+        id = view_service.GetTableMsg(self.UserTable, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
                                                    "是否删除此员工?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                ViewHandler.RemoveById(id, "Worker")
+                view_service.RemoveById(id, "Worker")
                 WorkerTableSet(self.UserTable)
         else:
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
@@ -1381,19 +1381,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     # =======================================================设备管理==============================================
 
     def Start(self):
-        id = ViewHandler.GetTableMsg(self.shebeiTable, 0)
+        id = view_service.GetTableMsg(self.shebeiTable, 0)
         if id:
             updateData = "state='1'"
-            ViewHandler.UpdateById(id, "Device", updateData)
+            view_service.UpdateById(id, "Device", updateData)
             SheBeiTableSet(self.shebeiTable)
         else:
             QtWidgets.QMessageBox.information(self.start, "提示", "请选择设备")
 
     def Stop(self):
-        id = ViewHandler.GetTableMsg(self.shebeiTable, 0)
+        id = view_service.GetTableMsg(self.shebeiTable, 0)
         if id:
             updateData = "state='0'"
-            ViewHandler.UpdateById(id, "Device", updateData)
+            view_service.UpdateById(id, "Device", updateData)
             SheBeiTableSet(self.shebeiTable)
         else:
             QtWidgets.QMessageBox.information(self, "提示", "请选择设备")
@@ -1410,7 +1410,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         ip = myList[4]
         if deviceName not in self.deviceName:
             self.deviceName.append(deviceName)
-            self.tempUi = PadConnect(word, key, today, deviceName, ip, ViewHandler.Insert())
+            self.tempUi = PadConnect(word, key, today, deviceName, ip, view_service.Insert())
             self.tempUi.exec_()
             self.deviceName.remove(deviceName)
             SheBeiTableSet(self.shebeiTable)
@@ -1419,9 +1419,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     # =======================================================设置==============================================
     def SavePcName(self):
-        pcSign = ViewHandler.GetCellMsg(self.pcTable, 0, 1)
-        pcPhone = ViewHandler.GetCellMsg(self.pcTable, 1, 1)
-        address = ViewHandler.GetCellMsg(self.pcTable, 2, 1)
+        pcSign = view_service.GetCellMsg(self.pcTable, 0, 1)
+        pcPhone = view_service.GetCellMsg(self.pcTable, 1, 1)
+        address = view_service.GetCellMsg(self.pcTable, 2, 1)
         if pcSign == "":
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "标识不能为空")
         elif address == "":
@@ -1429,7 +1429,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         elif pcPhone == "":
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "联系方式不能为空")
         else:
-            req = ViewHandler.UpdatePcName(pcSign, address, pcPhone, code)
+            req = view_service.UpdatePcName(pcSign, address, pcPhone, code)
             if req:
                 QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改成功")
                 url = domain + "store/api/list?code={}".format(code)
@@ -1443,9 +1443,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改失败")
 
     def UpdatePwd(self):
-        pwd = ViewHandler.GetCellMsg(self.pwdTable, 1, 1)
-        repwd = ViewHandler.GetCellMsg(self.pwdTable, 2, 1)
-        oldpwd = ViewHandler.GetCellMsg(self.pwdTable, 0, 1)
+        pwd = view_service.GetCellMsg(self.pwdTable, 1, 1)
+        repwd = view_service.GetCellMsg(self.pwdTable, 2, 1)
+        oldpwd = view_service.GetCellMsg(self.pwdTable, 0, 1)
         if oldpwd == "":
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "原密码不能为空")
         elif pwd == "":
@@ -1453,7 +1453,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         elif pwd != repwd:
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "两次输入密码不一致")
         else:
-            if ViewHandler.UpdatePwd(pwd, oldpwd):
+            if view_service.UpdatePwd(pwd, oldpwd):
                 QtWidgets.QMessageBox.information(self.updateWorker, "提示", "修改成功")
                 model = self.pwdTable.model()
                 model.setItem(0, 1, QtGui.QStandardItem(""))
@@ -1471,7 +1471,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.admin.exec()
 
     def ChangeAdmin(self):
-        id = ViewHandler.GetTableMsg(self.AdminTable, 0)
+        id = view_service.GetTableMsg(self.AdminTable, 0)
         if id:
             self.worker = ChangeAdmin_Ui_MainWindow(self, id)
             self.worker.exec()
@@ -1480,12 +1480,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self.changeUser, "提示", "请选择管理员")
 
     def RemoveAdmin(self):
-        id = ViewHandler.GetTableMsg(self.AdminTable, 0)
+        id = view_service.GetTableMsg(self.AdminTable, 0)
         if id:
             reply = QtWidgets.QMessageBox.question(self, 'Message',
                                                    "是否删除此管理员?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                ViewHandler.RemoveById(id, "Admin")
+                view_service.RemoveById(id, "Admin")
                 AdminTableSet(self.AdminTable)
         else:
             QtWidgets.QMessageBox.information(self.updateWorker, "提示", "请选择员工")
@@ -1493,11 +1493,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     # =======================================================系统人员管理==============================================
     # =======================================================回访==============================================
     def CallBack(self):
-        id = ViewHandler.GetTableMsg(self.callbackTable, 0)
-        username = ViewHandler.GetTableMsg(self.callbackTable, 1)
-        carId = ViewHandler.GetTableMsg(self.callbackTable, 2)
-        carPhone = ViewHandler.GetTableMsg(self.callbackTable, 3)
-        callbackTime = ViewHandler.GetTableMsg(self.callbackTable, 4)
+        id = view_service.GetTableMsg(self.callbackTable, 0)
+        username = view_service.GetTableMsg(self.callbackTable, 1)
+        carId = view_service.GetTableMsg(self.callbackTable, 2)
+        carPhone = view_service.GetTableMsg(self.callbackTable, 3)
+        callbackTime = view_service.GetTableMsg(self.callbackTable, 4)
         print(callbackTime)
         if id:
             msg = "您于  <b>{}</b> 要回访用户 ： <b>{}</b><br>联系方式为 ： <b>{}</b><br>车牌号为 ： <b>{}</b>".format(callbackTime[:10],

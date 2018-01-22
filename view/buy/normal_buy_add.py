@@ -5,20 +5,14 @@ from decimal import Decimal
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QDateTime, Qt
-from PyQt5.QtWidgets import QMessageBox, QWidget, QLineEdit, QCompleter, QComboBox, QInputDialog
+from PyQt5.QtWidgets import QMessageBox, QComboBox
 
-from common import time_utils, common, config
-from database.dao.buy import buy_handler, payment_handler
-from database.dao.dictionary import dictionary_handler
+from common import time_utils, static_func
+from controller.view_service import supplier_service, brand_and_model_service, buy_service, stock_service
 from database.dao.service import service_handler
-from database.dao.stock import stock_detail_handler, brand_handler, model_handler, stock_handler
-from database.dao.supplier import supplier_handler
-from domain.buy import BuyInfo
-from domain.payment import Payment
-from domain.stock import Stock
 from domain.stock_detail import StockDetail
 from view.buy.ui.ui_normal_buy_add import Ui_stockQueryForm
-from view.utils import pyqt_utils, db_transaction_util
+from view.utils import view_utils, db_transaction_util
 
 logger = logging.getLogger(__name__)
 
@@ -65,14 +59,14 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
         self.buy_date_1.setDateTime(QDateTime.fromString(time_utils.get_now(), 'yyyy-MM-dd hh:mm:ss'))
         self._add_all_service_item(self.first_service_1)
         self._add_all_service_item(self.second_service_1)
-        Payment.get_all_payment(self.payment_1)
+        view_utils.get_all_payment(self.payment_1)
         self.payment_1.addItem('点击新增')
         for title in self.line_title:
             name = title + '_' + '1'
             editor = getattr(self, name)
-            self._set_completer(editor, title)
-        pyqt_utils.set_validator(self.price_1, 'float')
-        pyqt_utils.set_validator(self.paid_1, 'float')
+            view_utils.set_completer(editor, title)
+        view_utils.set_validator(self.price_1, 'float')
+        view_utils.set_validator(self.paid_1, 'float')
         self.paid_1.setText('0.0')
         self.price_1.setText('0.0')
         self.total_1.setText('0.0')
@@ -91,7 +85,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
         buy_info.setObjectName(buy_info_name)
 
         for index, title in enumerate(self.line_title):
-            editor = self.create_instance('PyQt5.QtWidgets.' + self.edit_type[index])
+            editor = static_func.create_instance('PyQt5.QtWidgets.' + self.edit_type[index])
             attr_name = title + '_' + line_number
             editor.setObjectName(attr_name)
 
@@ -124,7 +118,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 editor.setText('0.0')
 
             if title in ('paid', 'price'):
-                pyqt_utils.set_validator(editor, 'float')
+                view_utils.set_validator(editor, 'float')
                 editor.textEdited.connect(self._text_edit)
                 editor.setText('0.0')
 
@@ -138,11 +132,11 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                     editor.currentIndexChanged.connect(self._first_service_changed)
 
             if title == 'payment':
-                Payment.get_all_payment(editor)
+                view_utils.get_all_payment(editor)
                 editor.addItem('点击新增')
                 editor.activated['int'].connect(self._need_add_payment)
 
-            self._set_completer(editor, title)
+            view_utils.set_completer(editor, title)
             setattr(self, attr_name, editor)
             buy_info.addWidget(editor)
         self.buy_info_container.addLayout(buy_info)
@@ -188,22 +182,6 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 continue
 
             editor.clear()
-
-    def _set_completer(self, editor: QWidget, title: str):
-        if isinstance(editor, QLineEdit):
-            if title in ('brand', 'model', 'supplier'):
-                completer_list = []
-                if title == 'brand':
-                    completer_list = self._get_all_brand()
-                if title == 'model':
-                    completer_list = self._get_all_model()
-                if title == 'supplier':
-                    completer_list = self._get_all_supplier()
-
-                completer = QCompleter(completer_list)
-                completer.setFilterMode(Qt.MatchContains)
-                completer.setCaseSensitivity(Qt.CaseInsensitive)
-                editor.setCompleter(completer)
 
     def _text_edit(self, text: str):
         editor = self.sender()
@@ -272,36 +250,41 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
             try:
                 db_transaction_util.begin()
 
-                brand_id = self._get_brand(brand)
+                brand_id = brand_and_model_service.get_brand_by_name(brand)
 
-                model_id = self._get_model(brand_id, model)
+                model_id = brand_and_model_service.get_model_by_name(brand_id, model)
 
-                supplier_id = self._get_supplier(supplier)
+                supplier_id = supplier_service.get_supplier_by_name(supplier)
 
-                stock_info = stock_handler.get_stock_by_model(model_id)
+                stock_info = stock_service.get_stock_by_model(model_id)
 
                 # 如果通过型号找到库存，则单位属性沿用库存中的单位，并更新库存总额和库存量
                 if stock_info:
                     stock_id = stock_info[0]
-                    self._update_stock_info(stock_id, number, total)
                 else:
                     # 新增库存信息
-                    stock_id = self._add_stock_info(model, brand, model_id, brand_id, line_number, total, number, unit)
+                    second_service = getattr(self, 'second_service_' + line_number)
+                    second_service_id = int(second_service.currentData())
+                    stock_info = stock_service.add_stock_info(model, brand, model_id, brand_id, unit, second_service_id)
+                    stock_id = stock_info.id()
+
+                stock_service.update_stock_info(stock_id, number, total)
 
                 # 新增进货信息
-                buy_id = self._add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total,
-                                            payment, note)
+                buy_id = buy_service.add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total,
+                                                  payment, note, number)
 
+                change_type = StockDetail.by_bought()
                 # 如果是退货，更新原来的进货信息中剩余量
                 if number < 0:
-                    self._update_buy_left(stock_id, number)
-                    self._update_buy_unpaid(stock_id, total)
-
+                    buy_service.decrease_buy_left(stock_id, number)
+                    buy_service.update_buy_unpaid(stock_id, total, supplier_id, payment)
+                    change_type = StockDetail.by_returned()
                 # 新增库存明细
-                self._add_stock_detail(stock_id, buy_id, total, number)
+                stock_service.add_stock_detail(stock_id, buy_id, total, number, change_type)
 
                 # 新增供应商支付信息，如果数量大于0，则为进货，小于零则为退货
-                self._add_supplier_payment_detail(buy_id, supplier_id, paid, unpaid, payment, number < 0)
+                supplier_service.add_supplier_payment_detail(buy_id, supplier_id, paid, unpaid, payment, number < 0)
 
                 db_transaction_util.commit()
                 succeeded_list = succeeded_list + '第' + line_number + '行、'
@@ -350,114 +333,6 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
 
         return msg
 
-    @staticmethod
-    def _add_buy_info(stock_id, supplier_id, price, number, buy_date, unpaid, paid, total, payment, note):
-        buy_info = BuyInfo()
-        buy_info.buy_date(buy_date)
-        buy_info.stock_id(stock_id)
-        buy_info.supplier_id(supplier_id)
-        buy_info.unit_price(price)
-        buy_info.payment_method(payment)
-
-        buy_info.number(abs(number))
-
-        create_time = time_utils.get_now()
-        buy_info.create_time(create_time)
-        create_op = common.config.login_user_info[0]
-        buy_info.create_op(create_op)
-
-        buy_info.paid(abs(paid))
-        buy_info.unpaid(abs(unpaid))
-        buy_info.total(abs(total))
-
-        buy_info.note(note)
-        # 判断是进货还是退货
-        if number < 0:
-            buy_info.buy_type(BuyInfo.returned())
-        else:
-            buy_info.buy_type(BuyInfo.bought())
-            buy_info.left(number)
-
-        return buy_handler.add_buy_info(buy_info)
-
-    def _add_stock_info(self, model, brand, model_id, brand_id, line_number, total, number, unit):
-        second_service = getattr(self, 'second_service_' + line_number)
-        first_service = getattr(self, 'first_service_' + line_number)
-        second_service_id = int(second_service.currentData())
-        second_service_name = second_service.currentText()
-        first_service_id = int(first_service.currentData())
-        first_service_name = first_service.currentText()
-
-        stock_info = Stock()
-
-        stock_info.model_id(model_id).model_name(model)
-        stock_info.brand_id(brand_id).brand_name(brand)
-        stock_info.first_service_id(first_service_id).first_service_name(first_service_name)
-        stock_info.second_service_id(second_service_id).second_service_name(second_service_name)
-        stock_info.unit(unit).name(brand + '-' + model)
-        stock_info.create_op(config.login_user_info[0]).create_time(time_utils.get_now())
-        stock_info.total_cost(total).balance(number)
-
-        stock_id = stock_handler.add_stock_info(stock_info)
-
-        return stock_id
-
-    @staticmethod
-    def _update_stock_info(stock_id: int, balance: int, total: Decimal):
-        stock_handler.update_stock_balance(stock_id, balance, total)
-
-    @staticmethod
-    def _add_supplier_payment_detail(buy_id, supplier_id, paid, unpaid, payment_method, is_return=False):
-
-        payment = Payment()
-        payment.buy_id(buy_id)
-        payment.supplier_id(supplier_id)
-        payment.payment_method(payment_method)
-        payment.paid(paid)
-        payment.unpaid(unpaid)
-        payment.create_op(common.config.login_user_info[0])
-        payment.create_time(time_utils.get_now())
-
-        if is_return:
-            payment.refund_type(Payment.returned())
-        else:
-            payment.refund_type(Payment.payoff())
-
-        payment_handler.add_payment_detail(payment)
-
-        if unpaid:
-            supplier_handler.update_supplier_unpaid(supplier_id, unpaid)
-
-    @staticmethod
-    def _get_all_brand():
-        brands = []
-        for brand in brand_handler.get_all_brand():
-            brands.append(brand[1])
-
-        return brands
-
-    @staticmethod
-    def _get_all_model():
-        models = []
-        for model in model_handler.get_all_model():
-            models.append(model[1])
-        return models
-
-    @staticmethod
-    def _get_all_supplier():
-        suppliers = []
-        for supplier in supplier_handler.get_all_supplier():
-            suppliers.append(supplier[1])
-        return suppliers
-
-    @staticmethod
-    def create_instance(class_name, *args, **kwargs):
-        (module_name, class_name) = class_name.rsplit('.', 1)
-        module_meta = __import__(module_name, globals(), locals(), [class_name])
-        class_meta = getattr(module_meta, class_name)
-        obj = class_meta(*args, **kwargs)
-        return obj
-
     def _first_service_changed(self, index):
         first_service = self.sender()
         obj_name_seg = first_service.objectName().split('_')
@@ -489,7 +364,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 services = ()
 
         for service in services:
-            if combo_box.findData(service['id']) == -1:
+            if combo_box.findData(service['id'], flags=Qt.MatchExactly) == -1:
                 combo_box.addItem(service['name'], service['id'])
 
         need_delete = []
@@ -504,100 +379,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
         for index, data in enumerate(need_delete):
             combo_box.removeItem(data - index)
 
-    @staticmethod
-    def _get_brand(name: str):
-        brand_in_db = brand_handler.get_brand_by_name(name)
-        if brand_in_db:
-            return brand_in_db[0]
-        else:
-            return brand_handler.add_brand(name)
-
-    @staticmethod
-    def _get_model(brand_id, model_name):
-        model_in_db = model_handler.get_model_by_name(model_name, brand_id)
-        if model_in_db:
-            return model_in_db[0]
-        else:
-            return model_handler.add_model(model_name, brand_id)
-
-    @staticmethod
-    def _get_supplier(name):
-        supplier_in_db = supplier_handler.get_supplier_by_name(name)
-        if supplier_in_db:
-            return supplier_in_db[0]
-        else:
-            return supplier_handler.add_supplier(name)
-
-    @staticmethod
-    def _add_stock_detail(stock_id, buy_id, total, number):
-        stock_detail = StockDetail()
-        stock_detail.changed_id(buy_id)
-        stock_detail.changed_money(abs(total))
-        stock_detail.changed_number(abs(number))
-        stock_detail.stock_id(stock_id)
-        if number < 0:
-            stock_detail.type(stock_detail.by_returned())
-        else:
-            stock_detail.type(StockDetail.by_bought())
-
-        stock_detail.update_time(time_utils.get_now()).update_op(common.config.login_user_info[0])
-        stock_detail_handler.add_stock_detail(stock_detail)
-
-    @staticmethod
-    def _update_buy_left(stock_id, number):
-        buy_of_left_gt_zero = buy_handler.get_left_gt_zero(stock_id)
-        if not buy_of_left_gt_zero:
-            return
-        number = abs(number)
-        for left_info in buy_of_left_gt_zero:
-            left_in_db = left_info[1]
-            if number >= left_in_db:
-                new_left = 0
-                number -= left_in_db
-            else:
-                new_left = left_in_db - number
-                number = 0
-            buy_handler.update_left_info(left_info[0], new_left)
-
-            if not number:
-                return
-
-    @staticmethod
-    def _update_buy_unpaid(stock_id: int, total: Decimal):
-        total = abs(total)
-
-        for unpaid_info in buy_handler.get_unpaid_gt_zero(stock_id):
-            unpaid_in_db = Decimal(unpaid_info[1])
-            if total >= unpaid_in_db:
-                new_unpaid = 0.0
-                new_paid = unpaid_in_db + Decimal(unpaid_info[2])
-                total -= unpaid_in_db
-            else:
-                new_unpaid = unpaid_in_db - total
-                new_paid = total + Decimal(unpaid_info[2])
-            buy_handler.update_paid_info(unpaid_info[0], new_unpaid, new_paid)
-
-            if not total:
-                return
-
     def _need_add_payment(self, index):
         combo_box = self.sender()
         if index == combo_box.count() - 1:
-            self._add_new_payment_method(combo_box)
-
-    def _add_new_payment_method(self, combo_box: QComboBox):
-        payment_method, ok = QInputDialog.getText(self.submit, '新增付款方式', '请输入付款方式')
-        if ok and not payment_method:
-            QMessageBox.warning(self.submit, '警告', '付款方式不能为空，请重新添加！')
-            return
-        if not ok:
-            return
-        exist_num = dictionary_handler.get_count_by_group_and_value(Payment.group_name(), payment_method)
-        if exist_num:
-            QMessageBox.warning(self.submit, '警告', '付款方式已经存在，请重新添加！')
-            return
-        key_id = dictionary_handler.get_max_key_id_by_group_name(Payment.group_name()) + 1
-        dictionary_handler.add_dictionary(key_id, payment_method, Payment.group_name())
-        QMessageBox.warning(self.submit, '提示', '付款方式添加成功！')
-        combo_box.insertItem(0, payment_method, key_id)
-        combo_box.setCurrentIndex(0)
+            view_utils.add_new_payment_method(combo_box, self.submit)

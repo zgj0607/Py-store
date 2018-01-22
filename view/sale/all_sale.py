@@ -1,4 +1,4 @@
-from controller.Interface.TableHandler import xiaofeiTableSet
+from controller.view_service.table_service import xiaofeiTableSet
 from view.sale.sale_base import SaleBase
 
 

@@ -39,7 +39,29 @@ def get_detail_by_buy_id(buy_id: int, stock_type=0):
                 ''' \
         .format(buy_id, stock_type)
 
-    result = execute(sql_text)
+    result = execute(sql_text, True)
+
+    return result
+
+
+def get_calibration_detail_by_buy_id(buy_id: int):
+    sql_text = '''
+                SELECT ID,
+                       STOCK_ID,
+                       changed_id,
+                       changed_money,
+                       changed_number,
+                       TYPE,
+                       UPDATE_TIME,
+                       UPDATE_OP
+                  FROM stock_detail
+                 WHERE changed_id = {}
+                   AND type in({},{})
+                 order by id
+                ''' \
+        .format(buy_id, StockDetail.by_increased(), StockDetail.by_decreased())
+
+    result = execute(sql_text, True)
 
     return result
 
@@ -117,3 +139,9 @@ def write_off_negative_on_hand(stock_id: int, buy_id: int, buy_price: float, sal
                 StockDetail.by_negative(), sale_id)
     result = execute(sql_text)
     return result
+
+
+def delete_stock_detail_by_changed_id(changed_id, changed_type):
+    sql_text = '''delete from stock_detail where changed_id = {} and type = {}''' \
+        .format(changed_id, changed_type)
+    execute(sql_text)

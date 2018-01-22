@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QInputDialog, QMessageBox, QWidget, QLineEdit
 
 from common import common, time_utils
-from view.service.ui.ui_attribute import Ui_AttributeQWidget
-from view.utils import table_utils, db_transaction_util
 from database.dao.sale import sale_item_handler
 from database.dao.service import attribute_handler, service_handler
 from domain.attribute import Attribute
+from view.service.ui.ui_attribute import Ui_AttributeQWidget
+from view.utils import table_utils, db_transaction_util
 
 
 class AttributeManage(QWidget, Ui_AttributeQWidget):
@@ -13,7 +13,7 @@ class AttributeManage(QWidget, Ui_AttributeQWidget):
         super(AttributeManage, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('服务项目属性管理')
-        self.table_title = ('ID', '属性名称', '是否必填', '必填标识')
+        self.table_title = ('ID', '属性名称', '是否必填', '显示顺序', '打印顺序', '必填标识')
 
         self._init_table()
         self._init_signal_and_slot()
@@ -23,7 +23,7 @@ class AttributeManage(QWidget, Ui_AttributeQWidget):
 
         table_utils.set_table_content(self.tableView, record, self.table_title)
         self.tableView.setColumnHidden(0, True)
-        self.tableView.setColumnHidden(3, True)
+        self.tableView.setColumnHidden(5, True)
 
     def _init_signal_and_slot(self):
         self.add.clicked.connect(self.do_add)

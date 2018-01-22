@@ -1,35 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-__author__ = 'Sunny'
-__mtime__ = '1/5/2017'
-
-                ┏┓     ┏┓
-              ┏┛┻━━━┛┻┓
-             ┃     ☃     ┃
-             ┃ ┳┛  ┗┳  ┃
-            ┃     ┻     ┃
-            ┗━┓     ┏━┛
-               ┃     ┗━━━┓
-              ┃  神兽保佑   ┣┓
-             ┃　永无BUG！  ┏┛
-            ┗┓┓┏━┳┓┏┛
-             ┃┫┫  ┃┫┫
-            ┗┻┛  ┗┻┛
-"""
-
 from tornado.concurrent import run_on_executor
 
 from common import config
 from common.exception import ApiException
 from common.static_func import ErrorCode, set_return_dicts
-from controller.Api.BaseHandler import BaseHandler
+from controller.web.base_handler import BaseHandler
 from database.dao.users import user_handler
 from remote import store_pc_info
 
 
-class ApiWorkerHandler(BaseHandler):
+class WorkerHandler(BaseHandler):
     def __init__(self, application, request, **kwargs):
-        super(ApiWorkerHandler, self).__init__(application, request, **kwargs)
+        super(WorkerHandler, self).__init__(application, request, **kwargs)
         self.func = self.worker
 
     @run_on_executor

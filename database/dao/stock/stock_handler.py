@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from database.db_connection import execute
+from domain.buy import BuyInfo
 from domain.stock import Stock
 from domain.stock_detail import StockDetail
 
@@ -80,7 +81,7 @@ def update_stock_balance(stock_id: int, balance: int, total: Decimal):
         sql_text = '''
                       UPDATE stock_info
                          SET balance = balance + {},
-                             total_cost = total_cost + {:.2f}
+                             total_cost = round(total_cost + {:.2f}, 2)
                        WHERE ID = {}'''.format(balance, total, stock_id)
         execute(sql_text)
 
@@ -102,6 +103,27 @@ def update_brand_id(stock_id: int, brand_id: int):
                    WHERE ID = {}''' \
         .format(brand_id, stock_id)
     execute(sql_text)
+
+
+def get_brand_by_second_service(service_id):
+    sql_text = '''SELECT BRAND_ID,
+                         BRAND_NAME
+                    FROM stock_info
+                   WHERE second_service_id = {}
+                   ORDER BY brand_name''' \
+        .format(service_id)
+    return execute(sql_text)
+
+
+def get_model_by_second_service_and_brand(service_id, brand_id):
+    sql_text = '''SELECT model_id,
+                         model_name 
+                    FROM stock_info
+                   WHERE second_service_id = {}
+                     and brand_id = {}
+                  ORDER BY model_name''' \
+        .format(service_id, brand_id)
+    return execute(sql_text)
 
 
 def update_model_name(stock_id: int, model_name: str):
@@ -178,8 +200,8 @@ def get_stock_money():
 
 
 def get_count_by_service(service_id):
-    sql_text = 'select count(1) from stock_info where second_service_id = {}'.format(service_id)
-    execute(sql_text, True)
+    sql_text = 'select count(1) as stock_num from stock_info where second_service_id = {}'.format(service_id)
+    return execute(sql_text, True)
 
 
 def update_first_service_name(service_id, service_name):
@@ -199,46 +221,67 @@ def update_second_service_name(service_id, service_name):
         .format(service_name, service_id)
     execute(sql_text)
 
-def get_calibration(state: str):
+
+def get_calibration(state: int):
     sql_text = '''
-                SELECT
-                       bi.create_time,
-                       BRAND_NAME,
-                       MODEL_NAME,
-                       si.balance,
-                       bi.total,
-                       bi.unit_price,
-                       ad.userName,
-                       bi.note,
-                      CASE bi.state WHEN 1 THEN '已审核'
-                    WHEN 0 THEN '未审核'
-                      END AS '未审核'
-                  FROM stock_info si,buy_info bi,Admin ad
-                  where si.id=bi.stock_id 
-                        and bi.buy_type='8' 
-                        and si.create_op=ad.id
-                        and bi.state= {}
-                ''' \
-        .format(state)
+                    SELECT
+                           bi.id,
+                           si.id as stock_id,
+                           bi.buy_date,
+                           BRAND_NAME,
+                           MODEL_NAME,
+                           di.value_desc,
+                           si.balance,
+                           bi.number,
+                           si.total_cost,
+                           bi.total,
+                           ad.userName,
+                           bi.note,
+                           dic.value_desc
+                      FROM stock_info si,buy_info bi, Admin ad, stock_detail sd, dictionary di,dictionary dic
+                      WHERE si.id=bi.stock_id
+                        AND bi.buy_type= {}
+                        AND si.create_op = ad.id
+                        AND sd.changed_id = bi.id
+                        AND sd.stock_id = si.id
+                        AND sd.type in ({},{})
+                        AND dic.key_id = bi.state
+                        AND dic.group_name = 'buy_state'
+                        AND di.key_id = sd.type
+                        AND bi.state = {}
+                        AND di.group_name = 'stock_type\'''' \
+        .format(BuyInfo.calibrated(), StockDetail.by_decreased(), StockDetail.by_increased(), state)
     result = execute(sql_text)
     return result
-def get_calibrationAll():
+
+
+def get_all_calibration():
     sql_text = '''
                 SELECT
-                       bi.create_time,
+                       bi.id,
+                       si.id as stock_id,
+                       bi.buy_date,
                        BRAND_NAME,
                        MODEL_NAME,
+                       di.value_desc,
                        si.balance,
+                       bi.number,
+                       si.total_cost,
                        bi.total,
-                       bi.unit_price,
                        ad.userName,
                        bi.note,
-                      CASE bi.state WHEN 1 THEN '已审核'
-                    WHEN 0 THEN '未审核'
-                      END AS '未审核'
-                  FROM stock_info si,buy_info bi,Admin ad
-                  where si.id=bi.stock_id and bi.buy_type='8' and si.create_op=ad.id
-                ''' \
-        .format()
+                       dic.value_desc
+                  FROM stock_info si,buy_info bi, Admin ad, stock_detail sd, dictionary di, dictionary dic
+                  WHERE si.id=bi.stock_id
+                    AND bi.buy_type= {}
+                    AND si.create_op = ad.id
+                    AND sd.changed_id = bi.id
+                    AND sd.stock_id = si.id
+                    AND sd.type in ({},{})
+                    AND dic.key_id = bi.state
+                    AND dic.group_name = 'buy_state'
+                    AND di.key_id = sd.type
+                    AND di.group_name = 'stock_type\'''' \
+        .format(BuyInfo.calibrated(), StockDetail.by_decreased(), StockDetail.by_increased())
     result = execute(sql_text)
     return result

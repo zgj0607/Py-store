@@ -11,14 +11,15 @@ from PyQt5.QtWidgets import QProgressDialog
 
 from common import config
 from common.common import SocketServer
-from common.static_func import get_order_id
 from common.config import savePath
+from common.static_func import get_uuid1
 from common.time_utils import get_now, format_time
 from controller import DbHandler
-from view.utils.excel_utils import MakeTempMsg, set_style
+from database.dao.customer import customer_handler
 from database.dao.customer.customer_handler import check_customer
 from database.dao.sale import sale_handler
 from database.dao.sale.sale_handler import get_sale_info_by_one_key
+from view.utils.excel_utils import MakeTempMsg, set_style
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +116,7 @@ class ExcelProcess:
                                                     attribute[title[ki]] = msg[ki]
 
                                             save_data['attribute'] = json.dumps(attribute)
-                                            save_data['id'] = get_order_id()
+                                            save_data['id'] = get_uuid1()
                                             sale_handler.add_sale_info(save_data)
 
                                         row_data = all_msg
@@ -143,20 +144,18 @@ class ExcelProcess:
                                                       user_save.get("carId"))
                                 if not user:
                                     # 没有此用户则添加
-                                    key = "userName,carPhone,carModel,carId,createdTime"
-                                    value = "'{}','{}','{}','{}','{}'".format(user_save.get("carUser"),
-                                                                              user_save.get("carPhone"),
-                                                                              user_save.get("carModel"),
-                                                                              user_save.get("carId"), get_now())
                                     try:
-                                        self.database_handler.InsertData("User", key, value)
+                                        customer_handler.insert_customer(user_save.get("carUser"),
+                                                                         user_save.get("carId"),
+                                                                         user_save.get("carModel"),
+                                                                         user_save.get("carPhone"))
                                     except Exception as e:
                                         logger.error(e.__str__())
                                         logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
                                         pass
 
                                 save_data['attribute'] = json.dumps(attribute)
-                                save_data['id'] = get_order_id()
+                                save_data['id'] = get_uuid1()
                                 sale_handler.add_sale_info(save_data)
 
                             # 清空缓存
@@ -197,7 +196,7 @@ class ExcelProcess:
                         break
                     progress_dialog.setValue(p)
                     p += 1
-                    order_check_id = get_order_id()
+                    order_check_id = get_uuid1()
                     # 对同一个订单进行录入
                     user_save = {}
                     for tempDict in v:
@@ -233,7 +232,7 @@ class ExcelProcess:
                             "workerName": worker_name,
                             "project": project,
                             "orderCheckId": order_check_id,
-                            "id": get_order_id(),
+                            "id": get_uuid1(),
                         }
                         temp_attribute = tempDict
 
@@ -260,13 +259,9 @@ class ExcelProcess:
                         user = check_customer(user_save.get("carPhone"), user_save.get("carId"))
                         if not user:
                             # 没有此用户则添加
-                            key = "userName,carPhone,carModel,carId,createdTime"
-                            value = "'{}','{}','{}','{}','{}'".format(user_save.get("carUser"),
-                                                                      user_save.get("carPhone"),
-                                                                      user_save.get("carModel"), user_save.get("carId"),
-                                                                      get_now())
                             try:
-                                self.database_handler.InsertData("User", key, value)
+                                customer_handler.insert_customer(user_save.get("carUser"), user_save.get("carId"),
+                                                                 user_save.get("carModel"), user_save.get("carPhone"))
                             except Exception as e:
                                 logger.error(e.__str__())
                                 logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))

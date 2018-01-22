@@ -16,14 +16,14 @@ __mtime__ = '12/11/2016'
              ┃┫┫  ┃┫┫
             ┗┻┛  ┗┻┛
 """
-from controller.Api import ApiWorkerHandler, ApiUserHandler, ApiOrderHandler, ApiServiceHandler
+from controller.web import worker_handler, customer_handler, order_handler, service_handler
 
 route = [
-    ("/worker/check/(code|ip|list)/", ApiWorkerHandler.ApiWorkerHandler),
-    ("/worker/get/(list)/", ApiWorkerHandler.ApiWorkerHandler),
-    ("/user/get/(find|order)/", ApiUserHandler.ApiUserHandler),
-    ("/user/post/(add)/", ApiUserHandler.ApiUserHandler),
-    ("/order/get/(detail)/", ApiOrderHandler.ApiOrder_Handler),
-    ("/order/post/(add|preview)/", ApiOrderHandler.ApiOrder_Handler),
-    ("/service/get/(one|two)/", ApiServiceHandler.ApiService_Handler),
+    ("/worker/check/(code|ip|list)/", worker_handler.WorkerHandler),
+    ("/worker/get/(list)/", worker_handler.WorkerHandler),
+    ("/user/get/(find|order)/", customer_handler.CustomerHandler),
+    ("/user/post/(add)/", customer_handler.CustomerHandler),
+    ("/order/get/(detail)/", order_handler.OrderHandler),
+    ("/order/post/(add|preview)/", order_handler.OrderHandler),
+    ("/service/get/(one|two|brand|model|balance)/", service_handler.ServiceHandler),
 ]

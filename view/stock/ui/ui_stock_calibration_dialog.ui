@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>297</height>
+    <width>331</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,13 +16,32 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>日期</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDateEdit" name="calibration_date">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="displayFormat">
+        <string>yyyy/MM/dd</string>
        </property>
       </widget>
      </item>
@@ -33,78 +52,19 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>调整数量</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="toal">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="brand_combo">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>165</width>
          <height>26</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>150</width>
+         <width>165</width>
          <height>26</height>
         </size>
-       </property>
-       <property name="inputMethodHints">
-        <set>Qt::ImhDigitsOnly|Qt::ImhPreferNumbers</set>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>经手人</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QComboBox" name="staffComb">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>26</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>调整金额</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="money">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -115,62 +75,185 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="brand_combo">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>26</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QComboBox" name="model_combo">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>165</width>
          <height>26</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>160</width>
+         <width>165</width>
          <height>26</height>
         </size>
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>现有数量</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="balance_in_db">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>库存金额</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="money_in_db">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item row="5" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>调整后数量</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="balance_changed">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly|Qt::ImhPreferNumbers</set>
+       </property>
+       <property name="placeholderText">
+        <string>请输入调整的数量</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>调整后金额</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="money_changed">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="placeholderText">
+        <string>请输入调整的数量</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>备注</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="7" column="1">
       <widget class="QLineEdit" name="notes">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>165</width>
          <height>26</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>150</width>
+         <width>165</width>
          <height>26</height>
         </size>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>经手人</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QComboBox" name="staffComb">
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>26</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
       <widget class="QPushButton" name="addButton">
        <property name="minimumSize">
         <size>
@@ -204,33 +287,21 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QDateEdit" name="dateEdit">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>160</width>
-         <height>26</height>
-        </size>
-       </property>
-       <property name="displayFormat">
-        <string>yyyy/MM/dd</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>toal</tabstop>
-  <tabstop>money</tabstop>
+  <tabstop>calibration_date</tabstop>
+  <tabstop>brand_combo</tabstop>
+  <tabstop>model_combo</tabstop>
+  <tabstop>balance_changed</tabstop>
+  <tabstop>money_changed</tabstop>
+  <tabstop>notes</tabstop>
   <tabstop>staffComb</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>balance_in_db</tabstop>
+  <tabstop>money_in_db</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -27,10 +27,10 @@ def create_sale():
               orderNo      VARCHAR(32)  NOT NULL,
               orderCheckId VARCHAR(32)  NOT NULL,
               unit         VARCHAR(20),
-              unit_price   VARCHAR(30),
+              unit_price   INT(18,2),
               number       INTEGER,
-              subtotal     INTEGER,
-              total        INTEGER,
+              subtotal     INT(18,2),
+              total        INT(18,2),
               note         TEXT,
               sale_date    VARCHAR(50),
               attribute    TEXT,
@@ -47,6 +47,19 @@ def create_sale():
     execute('''CREATE INDEX createdTime ON Sales (createdTime);''')
 
 
+#  销售扩展表
+def create_sale_item():
+    execute('''
+            CREATE TABLE sales_item
+            (
+              sale_id         VARCHAR(35),
+              attribute_id    INTEGER,
+              attribute_value VARCHAR(50)
+            )
+      ''')
+    execute('''CREATE INDEX sales_item_sale_id  ON sales_item (sale_id)''')
+
+
 # 客户信息表
 def create_customer():
     execute('''
@@ -60,7 +73,7 @@ def create_customer():
           createdTime DATETIME
         )'''
             )
-    execute('''CREATE UNIQUE INDEX carid ON User (carId)''')
+    execute('''CREATE UNIQUE INDEX user_car_id ON User (carId)''')
 
 
 # 门店职工表
@@ -103,9 +116,7 @@ def create_service():
           createdTime    DATETIME    NOT NULL,
           name           VARCHAR(20) NOT NULL,
           father         INTEGER     NOT NULL,
-          level          INT,
-          attribute      VARCHAR(1000),
-          attributeState VARCHAR(1000)
+          level          INT
         )
     ''')
 
@@ -139,21 +150,34 @@ def create_attribute():
           create_time  VARCHAR(50) NOT NULL,
           create_op    INT         NOT NULL,
           delete_state INT DEFAULT 0 NOT NULL,
-          display_order INT
+          display_order INTEGER,
+          print_order   INTEGER DEFAULT -1
         )
         ''')
     execute('''CREATE UNIQUE INDEX serviceAttribute_id_uindex ON attributes (id);''')
     execute('''CREATE UNIQUE INDEX serviceAttribute_name_uindex ON attributes (name)''')
-    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
-               VALUES (1, '数量', 1, '2018-01-07 23:23:34', 1, 0, 1)''')
-    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
-               VALUES (2, '单价', 1, '2018-01-07 23:24:02', 1, 0, 2)''')
-    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
-               VALUES (3, '小计', 1, '2018-01-07 23:24:11', 1, 0, 3)''')
-    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
-               VALUES (4, '总价', 1, '2018-01-07 23:24:18', 1, 0, 4)''')
-    execute('''INSERT INTO attributes (id, name, is_required, create_time, create_op, delete_state, display_order)
-               VALUES (5, '备注', 1, '2018-01-07 23:24:35', 1, 0, 5)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order)
+            VALUES (1, '数量', 1, '2018-01-07 23:23:34', 1, 0, 4, 2)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (2, '单价', 1, '2018-01-07 23:24:02', 1, 0, 5, 3)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (3, '小计', 1, '2018-01-07 23:24:11', 1, 0, 6, 4)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (4, '总价', 1, '2018-01-07 23:24:18', 1, 0, 7, 1000)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (5, '备注', 1, '2018-01-07 23:24:35', 1, 0, 8, -1)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (6, '花纹', 0, '2018-01-20 08:16:48', 1, 0, 0, 10)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (7, '品牌', 1, '2018-01-20 08:16:48', 1, 0, 1, 5)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (8, '型号', 1, '2018-01-20 08:16:48', 1, 0, 2, 6)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (9, '单位', 1, '2018-01-20 08:16:48', 1, 0, 3, 1)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (10, '工时费', 0, '2018-01-21 21:58:27', 1, 0, 9, 7)''')
+    execute('''INSERT INTO Attributes (id, name, is_required, create_time, create_op, delete_state, display_order, print_order) 
+                VALUES (11, '更换里程', 0, '2018-01-21 21:58:43', 1, 0, 10, 8)''')
 
 
 # PC设备IP管理表
@@ -181,7 +205,7 @@ def create_return_visit_info():
            phone VARCHAR(50) NOT NULL ,
            carId VARCHAR(10) NOT NULL ,
            username VARCHAR(50) NOT NULL ,
-           state VARCHAR (2) NOT NULL
+           state INT(2) NOT NULL
           )
     ''')
 
@@ -449,6 +473,12 @@ def create_all_table():
 
     try:
         create_sale()
+    except Exception as e:
+        logger.error(e)
+        pass
+
+    try:
+        create_sale_item()
     except Exception as e:
         logger.error(e)
         pass
