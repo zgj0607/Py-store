@@ -48,7 +48,7 @@ apscheduler.__version__
 
 # 运行之前要检查配置文件
 def pre_check():
-    result = True
+    result = False
     local_code = config.get_local_register_code()
 
     if common.compare_local_code_with_remote_register(local_code):
@@ -180,12 +180,12 @@ if __name__ == '__main__':
                         format=my_format,
                         datefmt=my_date_format)
     logger = logging.getLogger(__name__)
-    # common.test_mac()
-    if not is_open():
-        try:
-            init_database.create_all_table()
-            run()
-        except Exception as e:
-            logger.error(e.__str__())
-            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
-            pass
+    common.test_mac()
+    # if not is_open():
+    #     try:
+    #         init_database.create_all_table()
+    #         run()
+    #     except Exception as e:
+    #         logger.error(e.__str__())
+    #         logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+    #         pass
