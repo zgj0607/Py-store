@@ -16,9 +16,7 @@ def get_all_second_level_service():
                       one.id   AS father_id,
                       one.name AS father_name,
                       two.id,
-                      two.name,
-                      two.attribute,
-                      two.attributeState
+                      two.name
                     FROM service one, service two
                     WHERE two.father = one.id
                       AND two.level = 2
@@ -32,9 +30,7 @@ def get_service_by_id(service_id):
                           one.id   AS father_id,
                           one.name AS father_name,
                           two.id,
-                          two.name,
-                          two.attribute,
-                          two.attributeState
+                          two.name
                      FROM service two
                      LEFT JOIN service one ON two.father = one.id
                     WHERE two.id = {}
@@ -83,9 +79,7 @@ def get_second_service_by_father(father_id):
                       one.id   AS father_id,
                       one.name AS father_name,
                       two.id,
-                      two.name,
-                      two.attribute,
-                      two.attributeState
+                      two.name
                     FROM service one, service two
                     WHERE two.father = one.id
                       AND one.id = {}

@@ -393,13 +393,16 @@ def test_mac():
     confList = QNetworkConfigurationManager().allConfigurations()
     print(confList.__len__())
     for conf in confList:
-        if str(conf.bearerTypeName()) == "Ethernet":
-            print("name : ", QNetworkConfiguration(conf).name())
-            print(QNetworkConfiguration(conf).isValid())
-            print("bearerType : ", QNetworkConfiguration(conf).bearerTypeName())
+        print("name : ", QNetworkConfiguration(conf).name())
+        # if str(conf.bearerTypeName()) == "Ethernet":
+        print("name : ", QNetworkConfiguration(conf).name())
+        print(QNetworkConfiguration(conf).isValid())
+        print("bearerType : ", QNetworkConfiguration(conf).bearerTypeName())
 
     list = QNetworkInterface.allInterfaces()
     for interface in list:
+        if not QNetworkInterface.IsRunning:
+            continue
         print("")
         print("=============================")
         if str(interface.name()) == "lo":
@@ -430,6 +433,8 @@ def test_mac():
                 print("IP Address:", QNetworkAddressEntry(entry).ip().toString())
                 print("Netmask:", QNetworkAddressEntry(entry).netmask().toString())
                 print("Broadcast:", QNetworkAddressEntry(entry).broadcast().toString())
+    for address in QNetworkInterface.allAddresses():
+        print(address.__str__())
 
 
 if __name__ == '__main__':

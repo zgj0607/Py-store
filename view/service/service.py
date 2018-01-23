@@ -19,7 +19,7 @@ class Service(QtWidgets.QWidget, UiService):
         self.setWindowTitle('服务管理')
 
         self.first_service_title = ('ID', '一级服务名称')
-        self.second_service_title = ('一级服务ID', '一级服务名称', '二级服务ID', '二级服务名称', '属性列表', '属性状态')
+        self.second_service_title = ('一级服务ID', '一级服务名称', '二级服务ID', '二级服务名称')
 
         self._init_signal_and_slot()
         self._refresh_all_table()
@@ -56,8 +56,6 @@ class Service(QtWidgets.QWidget, UiService):
         self.second_service_table.setColumnHidden(0, True)
         self.second_service_table.setColumnHidden(1, True)
         self.second_service_table.setColumnHidden(2, True)
-        self.second_service_table.setColumnHidden(4, True)
-        self.second_service_table.setColumnHidden(5, True)
 
     def _refresh_attribute_table(self):
         attribute_list = self._get_attribute_list()
