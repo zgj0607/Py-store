@@ -33,6 +33,8 @@ from common import config
 from common.static_func import md5
 from server.MySocket import ADDR, myClient, code, linkKey
 
+from PyQt5.QtNetwork import *
+
 logger = logging.getLogger(__name__)
 
 
@@ -375,3 +377,60 @@ def skin_change(qss_file_name):
     qApp.setStyleSheet(style_file)
 
     qss_file.close()
+
+
+def test_mac():
+    address = ""
+    localHostName = QHostInfo.localHostName()
+    hostinfo = QHostInfo.fromName(localHostName)
+    listaddress = hostinfo.addresses()
+
+    for address in listaddress:
+        if QHostAddress(address).protocol() == QAbstractSocket.IPv4Protocol:
+            address = QHostAddress(address).toString()
+    print(address)
+
+    confList = QNetworkConfigurationManager().allConfigurations()
+    print(confList.__len__())
+    for conf in confList:
+        if str(conf.bearerTypeName()) == "Ethernet":
+            print("name : ", QNetworkConfiguration(conf).name())
+            print(QNetworkConfiguration(conf).isValid())
+            print("bearerType : ", QNetworkConfiguration(conf).bearerTypeName())
+
+    list = QNetworkInterface.allInterfaces()
+    for interface in list:
+        print("")
+        print("=============================")
+        if str(interface.name()) == "lo":
+            continue
+        if str(interface.name()) == "virbr0":
+            continue
+        print("name : ", interface.name())
+        print(QNetworkInterface(interface).hardwareAddress())
+        print(QNetworkInterface(interface).isValid())
+        print("---------")
+        if QNetworkInterface(interface).flags() & QNetworkInterface.IsUp:
+            print("Interface : is up")
+        if QNetworkInterface(interface).flags() & QNetworkInterface.IsLoopBack:
+            print("Interface : is loop back")  # 回环地址
+        if QNetworkInterface(interface).flags() & QNetworkInterface.IsRunning:
+            print("Interface : is running ")  # 网络已经启动运行
+        if interface.flags() & QNetworkInterface.CanMulticast:
+            print("Interface : CanMulticast")  # 多播
+        if interface.flags() & QNetworkInterface.CanBroadcast:
+            print("Interface : CanBroadcast")
+        print("---------")
+
+        entryList = QNetworkInterface(interface).addressEntries()
+        for entry in entryList:
+            address = entry.ip()
+            if QHostAddress(address).protocol() == QAbstractSocket.IPv4Protocol:  # and  \
+                # str(address.toString()) != "127.0.0.1":
+                print("IP Address:", QNetworkAddressEntry(entry).ip().toString())
+                print("Netmask:", QNetworkAddressEntry(entry).netmask().toString())
+                print("Broadcast:", QNetworkAddressEntry(entry).broadcast().toString())
+
+
+if __name__ == '__main__':
+    test_mac()

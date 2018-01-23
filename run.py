@@ -180,12 +180,12 @@ if __name__ == '__main__':
                         format=my_format,
                         datefmt=my_date_format)
     logger = logging.getLogger(__name__)
-
-    if not is_open():
-        try:
-            init_database.create_all_table()
-            run()
-        except Exception as e:
-            logger.error(e.__str__())
-            logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
-            pass
+    common.test_mac()
+    # if not is_open():
+    #     try:
+    #         init_database.create_all_table()
+    #         run()
+    #     except Exception as e:
+    #         logger.error(e.__str__())
+    #         logger.error('traceback.format_exc():\n{}'.format(traceback.format_exc()))
+    #         pass
