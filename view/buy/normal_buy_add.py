@@ -182,6 +182,7 @@ class NormalBuyAdd(QtWidgets.QWidget, Ui_stockQueryForm):
                 continue
 
             editor.clear()
+            view_utils.set_completer(editor, title)
 
     def _text_edit(self, text: str):
         editor = self.sender()
